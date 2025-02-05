@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Zutat;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Zutat;
 
 class ZutatRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class ZutatRepository extends DatenbankRepository
     function getById($id): ?Zutat
     {
         $sql = $this->getStatement()['SELECT_ZUTAT_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Zutat(

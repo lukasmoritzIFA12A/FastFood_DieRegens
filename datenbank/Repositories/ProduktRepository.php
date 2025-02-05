@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Produkt;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Produkt;
 
 class ProduktRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class ProduktRepository extends DatenbankRepository
     function getById($id): ?Produkt
     {
         $sql = $this->getStatement()['SELECT_PRODUKT_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Produkt(

@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Rechnung;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Rechnung;
 
 class RechnungRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class RechnungRepository extends DatenbankRepository
     function getById($id): ?Rechnung
     {
         $sql = $this->getStatement()['SELECT_RECHNUNG_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Rechnung(

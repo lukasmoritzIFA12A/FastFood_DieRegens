@@ -1,6 +1,6 @@
 <?php
 
-namespace Entitäten;
+namespace Entitaeten;
 
 use DateTime;
 

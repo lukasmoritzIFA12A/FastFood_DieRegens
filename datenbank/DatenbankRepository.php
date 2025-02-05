@@ -1,11 +1,9 @@
 <?php
 
-namespace Repositories;
-
 abstract class DatenbankRepository
 {
     private $stmnt;
-    private $conn;
+    private mysqli $conn;
 
     function __construct($conn)
     {
@@ -18,9 +16,17 @@ abstract class DatenbankRepository
         return $this->stmnt;
     }
 
-    public function getConnection()
+    public function getConnection(): mysqli
     {
         return $this->conn;
+    }
+
+    function getResultFromPreparedStatementById(string $statement, int $id) {
+        $stmt = $this->getConnection()->prepare($statement);
+        $stmt->bind_Param('i', $id);
+        $stmt->execute();
+
+        return $stmt->get_result();
     }
 
     abstract function getById($id);

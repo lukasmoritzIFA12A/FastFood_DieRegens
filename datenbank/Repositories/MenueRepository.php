@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Menue;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Menue;
 
 class MenueRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class MenueRepository extends DatenbankRepository
     function getById($id): ?Menue
     {
         $sql = $this->getStatement()['SELECT_MENUE_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Menue(

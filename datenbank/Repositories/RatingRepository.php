@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Rating;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Rating;
 
 class RatingRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class RatingRepository extends DatenbankRepository
     function getById($id): ?Rating
     {
         $sql = $this->getStatement()['SELECT_RATING_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Rating(

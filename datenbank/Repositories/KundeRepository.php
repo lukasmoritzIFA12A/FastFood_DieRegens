@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Kunde;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Kunde;
 
 class KundeRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class KundeRepository extends DatenbankRepository
     function getById($id): ?Kunde
     {
         $sql = $this->getStatement()['SELECT_KUNDE_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Kunde(

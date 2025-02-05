@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-include 'datenbank/Entitäten/Adresse.php';
-include 'datenbank/Repositories/DatenbankRepository.php';
-use Entitäten\Adresse;
+use DatenbankRepository;
+use Entitaeten\Adresse;
 
 class AdresseRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class AdresseRepository extends DatenbankRepository
     function getById($id): ?Adresse
     {
         $sql = $this->getStatement()['SELECT_ADRESSE_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Adresse(

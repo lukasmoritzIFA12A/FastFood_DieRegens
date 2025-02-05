@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Energiewert;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Energiewert;
 
 class EnergiewertRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class EnergiewertRepository extends DatenbankRepository
     function getById($id): ?Energiewert
     {
         $sql = $this->getStatement()['SELECT_ENERGIEWERT_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Energiewert(

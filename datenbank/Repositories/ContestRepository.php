@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Contest;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Contest;
 
 class ContestRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class ContestRepository extends DatenbankRepository
     function getById($id): ?Contest
     {
         $sql = $this->getStatement()['SELECT_CONTEST_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Contest(

@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Rabatt;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Rabatt;
 
 class RabattRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class RabattRepository extends DatenbankRepository
     function getById($id): ?Rabatt
     {
         $sql = $this->getStatement()['SELECT_RABATT_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Rabatt(

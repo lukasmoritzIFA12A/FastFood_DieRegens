@@ -2,7 +2,7 @@
 
 class DatenbankAccess
 {
-    protected $conn;
+    protected mysqli $conn;
     protected $configs;
 
     function __construct() {

@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Bestellung;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Bestellung;
 
 class BestellungRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class BestellungRepository extends DatenbankRepository
     function getById($id): ?Bestellung
     {
         $sql = $this->getStatement()['SELECT_BESTELLUNG_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Bestellung(

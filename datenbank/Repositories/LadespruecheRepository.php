@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Ladesprueche;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Ladesprueche;
 
 class LadespruecheRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class LadespruecheRepository extends DatenbankRepository
     function getById($id): ?Ladesprueche
     {
         $sql = $this->getStatement()['SELECT_LADESPRUECHE_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Ladesprueche(

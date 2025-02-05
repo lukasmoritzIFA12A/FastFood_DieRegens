@@ -1,5 +1,5 @@
 <?php
-namespace Entitäten;
+namespace Entitaeten;
 
 class Adresse
 {

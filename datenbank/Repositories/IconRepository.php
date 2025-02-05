@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Icon;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Icon;
 
 class IconRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class IconRepository extends DatenbankRepository
     function getById($id): ?Icon
     {
         $sql = $this->getStatement()['SELECT_ICON_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Icon(

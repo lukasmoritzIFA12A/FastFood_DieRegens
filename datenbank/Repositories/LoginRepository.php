@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Login;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Login;
 
 class LoginRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class LoginRepository extends DatenbankRepository
     function getById($id): ?Login
     {
         $sql = $this->getStatement()['SELECT_LOGIN_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Login(

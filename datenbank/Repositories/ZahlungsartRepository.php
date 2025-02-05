@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Zahlungsart;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Zahlungsart;
 
 class ZahlungsartRepository extends DatenbankRepository
 {
@@ -16,12 +15,7 @@ class ZahlungsartRepository extends DatenbankRepository
     function getById($id): ?Zahlungsart
     {
         $sql = $this->getStatement()['SELECT_ZAHLUNGSART_BY_ID'];
-
-        $stmt = $this->getConnection()->prepare($sql);
-        $stmt->bind_Param('i', $id);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
+        $result = $this->getResultFromPreparedStatementById($sql, $id);
 
         if ($row = $result->fetch_assoc()) {
             return new Zahlungsart(

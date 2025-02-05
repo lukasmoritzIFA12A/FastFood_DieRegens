@@ -2,9 +2,8 @@
 
 namespace Repositories;
 
-use Entitäten\Admin;
-
-include 'datenbank/Repositories/DatenbankRepository.php';
+use DatenbankRepository;
+use Entitaeten\Admin;
 
 class AdminRepository extends DatenbankRepository
 {
