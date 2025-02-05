@@ -28,6 +28,7 @@ class ContestRepository extends DatenbankRepository
                 $row['idContest'],
                 $row['bild'],
                 $row['Bestellung_idBestellung'],
+                $row['freigeschalten']
             );
         } else {
             return null;
@@ -47,6 +48,7 @@ class ContestRepository extends DatenbankRepository
                 $row['idContest'],
                 $row['bild'],
                 $row['Bestellung_idBestellung'],
+                $row['freigeschalten']
             );
         }
 

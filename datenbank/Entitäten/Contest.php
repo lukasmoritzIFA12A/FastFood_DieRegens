@@ -7,12 +7,14 @@ class Contest
     private int $idContest;
     private string $bild; //BLOB
     private int $Bestellung_idBestellung;
+    private bool $freigeschalten = false;
 
-    public function __construct(int $idContest, string $bild, int $Bestellung_idBestellung)
+    public function __construct(int $idContest, string $bild, int $Bestellung_idBestellung, bool $freigeschalten)
     {
         $this->idContest = $idContest;
         $this->bild = $bild;
         $this->Bestellung_idBestellung = $Bestellung_idBestellung;
+        $this->freigeschalten = $freigeschalten;
     }
 
     public function getIdContest(): int
@@ -43,5 +45,15 @@ class Contest
     public function setBild(string $bild): void
     {
         $this->bild = $bild;
+    }
+
+    public function isFreigeschalten(): bool
+    {
+        return $this->freigeschalten;
+    }
+
+    public function setFreigeschalten(bool $freigeschalten): void
+    {
+        $this->freigeschalten = $freigeschalten;
     }
 }
