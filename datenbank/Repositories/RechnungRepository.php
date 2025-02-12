@@ -2,54 +2,58 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Rechnung.php';
+
 use Entitaeten\Rechnung;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class RechnungRepository extends DatenbankRepository
+class RechnungRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'rechnung';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Rechnung::class);
     }
 
-    function getById($id): ?Rechnung
+    public function getById(int $id): ?Rechnung
     {
-        $sql = $this->getStatement()['SELECT_RECHNUNG_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Rechnung(
-                $row['idRechnung'],
-                $row['Bestellung_idBestellung'],
-                $row['Zahlungsdatum'],
-                $row['Rabatt_idRabatt'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($bestellung_id, $zahlungsdatum, $rabatt_id): Rechnung
     {
-        $sql = $this->getStatement()['SELECT_ALL_RECHNUNG'];
+        $object = R::dispense(self::TABLE_NAME);
+        $rechnung = new Rechnung($object);
 
-        $result = $this->getConnection()->query($sql);
+        $rechnung->setBestellungId($bestellung_id);
+        $rechnung->setZahlungsdatum($zahlungsdatum);
+        $rechnung->setRabattId($rabatt_id);
 
-        $resultArray = [];
+        $id = R::store($rechnung->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Rechnung(
-                $row['idRechnung'],
-                $row['Bestellung_idBestellung'],
-                $row['Zahlungsdatum'],
-                $row['Rabatt_idRabatt'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $bestellung_id, $zahlungsdatum, $rabatt_id): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Rechnung)
+        {
+            $object->setBestellungId($bestellung_id);
+            $object->setZahlungsdatum($zahlungsdatum);
+            $object->setRabattId($rabatt_id);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

@@ -2,46 +2,39 @@
 
 namespace Entitaeten;
 
-class Rabatt
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Rabatt extends EntitaetsBean
 {
-    private int $idRabatt;
-    private string $code;
-    private string $minderung; //kein float wegen rundungsfehlern!
-
-    public function __construct(int $idRabatt, string $code, string $minderung)
+    public function getId(): int
     {
-        $this->idRabatt = $idRabatt;
-        $this->code = $code;
-        $this->minderung = $minderung;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdRabatt(): int
+    public function setId(int $id): void
     {
-        return $this->idRabatt;
-    }
-
-    public function setIdRabatt(int $idRabatt): void
-    {
-        $this->idRabatt = $idRabatt;
+        $this->getBean()->id = $id;
     }
 
     public function getCode(): string
     {
-        return $this->code;
+        return $this->getBean()->getProperties()['code'];
     }
 
     public function setCode(string $code): void
     {
-        $this->code = $code;
+        $this->getBean()->code = $code;
     }
 
     public function getMinderung(): string
     {
-        return $this->minderung;
+        return $this->getBean()->getProperties()['minderung'];
     }
 
     public function setMinderung(string $minderung): void
     {
-        $this->minderung = $minderung;
+        $this->getBean()->minderung = $minderung;
     }
 }

@@ -1,31 +1,34 @@
 <?php
 
+use RedBeanPHP\R;
+
 class DatenbankAccess
 {
-    protected mysqli $conn;
-    protected $configs;
+    private array $configs;
 
-    function __construct() {
-        $this->configs = include('Config.php');
+    function __construct(?string $datenbankname)
+    {
+        $this->configs = include(dirname(__DIR__).'/datenbank/Config.php');
 
-        $this->conn = new mysqli(
-            $this->configs['servername'],
-            $this->configs['username'],
-            $this->configs['password'],
-            $this->configs['dbname']
-        );
-
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
+        if ($datenbankname) {
+            $dbName = $datenbankname;
+        } else {
+            $dbName = $this->configs['dbname'];
         }
+
+        R::setup('mysql:host='.$this->configs['servername'].';dbname='.$dbName, $this->configs['username'], $this->configs['password']);
+
+        if (!R::testConnection()) {
+            die("Fehler bei der Verbindung zur Datenbank");
+        }
+
+        R::freeze();
+
         echo "Connected successfully"."<br>";
     }
 
-    function __destruct() {
-        $this->conn->close();
-    }
-
-    function getConnection(): mysqli {
-        return $this->conn;
+    function close(): void
+    {
+        R::close();
     }
 }

@@ -2,96 +2,79 @@
 
 namespace Entitaeten;
 
-use DateTime;
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
 
-class Bestellung
+use EntitaetsBean;
+
+class Bestellung extends EntitaetsBean
 {
-    private int $idBestellung;
-    private DateTime $BestellungDatum;
-    private int $Kunde_idKunde;
-    private int $Zahlungsart_idZahlungsart;
-    private int $Produkt_idProdukt;
-    private int $Menue_idMenue;
-    private int $Bestellstatus_idBestellstatus;
-
-    public function __construct(int $idBestellung, DateTime $BestellungDatum, int $Kunde_idKunde, int $Zahlungsart_idZahlungsart, int $Produkt_idProdukt, int $Menue_idMenue, int $Bestellstatus_idBestellstatus)
+    public function getId(): int
     {
-        $this->idBestellung = $idBestellung;
-        $this->BestellungDatum = $BestellungDatum;
-        $this->Kunde_idKunde = $Kunde_idKunde;
-        $this->Zahlungsart_idZahlungsart = $Zahlungsart_idZahlungsart;
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
-        $this->Menue_idMenue = $Menue_idMenue;
-        $this->Bestellstatus_idBestellstatus = $Bestellstatus_idBestellstatus;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdBestellung(): int
+    public function setId(int $id): void
     {
-        return $this->idBestellung;
+        $this->getBean()->id = $id;
     }
 
-    public function setIdBestellung(int $idBestellung): void
+    public function getBestellungDatum(): string
     {
-        $this->idBestellung = $idBestellung;
+        return $this->getBean()->getProperties()['BestellungDatum'];
     }
 
-    public function getBestellungDatum(): DateTime
+    public function setBestellungDatum(string $BestellungDatum): void
     {
-        return $this->BestellungDatum;
+        $this->getBean()->bestellungdatum = $BestellungDatum;
     }
 
-    public function setBestellungDatum(DateTime $BestellungDatum): void
+    public function getKundeId(): int
     {
-        $this->BestellungDatum = $BestellungDatum;
+        return $this->getBean()->getProperties()['Kunde_id'];
     }
 
-    public function getKundeIdKunde(): int
+    public function setKundeId(int $Kunde_id): void
     {
-        return $this->Kunde_idKunde;
+        $this->getBean()->kunde_id = $Kunde_id;
     }
 
-    public function setKundeIdKunde(int $Kunde_idKunde): void
+    public function getZahlungsartId(): int
     {
-        $this->Kunde_idKunde = $Kunde_idKunde;
+        return $this->getBean()->getProperties()['Zahlungsart_id'];
     }
 
-    public function getZahlungsartIdZahlungsart(): int
+    public function setZahlungsartId(int $Zahlungsart_id): void
     {
-        return $this->Zahlungsart_idZahlungsart;
+        $this->getBean()->zahlungsart_id = $Zahlungsart_id;
     }
 
-    public function setZahlungsartIdZahlungsart(int $Zahlungsart_idZahlungsart): void
+    public function getProduktId(): int
     {
-        $this->Zahlungsart_idZahlungsart = $Zahlungsart_idZahlungsart;
+        return $this->getBean()->getProperties()['Produkt_id'];
     }
 
-    public function getProduktIdProdukt(): int
+    public function setProduktId(int $Produkt_id): void
     {
-        return $this->Produkt_idProdukt;
+        $this->getBean()->produkt_id = $Produkt_id;
     }
 
-    public function setProduktIdProdukt(int $Produkt_idProdukt): void
+    public function getMenueId(): int
     {
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
+        return $this->getBean()->getProperties()['Menue_id'];
     }
 
-    public function getMenueIdMenue(): int
+    public function setMenueId(int $Menue_id): void
     {
-        return $this->Menue_idMenue;
+        $this->getBean()->menue_id = $Menue_id;
     }
 
-    public function setMenueIdMenue(int $Menue_idMenue): void
+    public function getBestellstatusId(): int
     {
-        $this->Menue_idMenue = $Menue_idMenue;
+        return $this->getBean()->getProperties()['Bestellstatus_id'];
     }
 
-    public function getBestellstatusIdBestellstatus(): int
+    public function setBestellstatusId(int $Bestellstatus_id): void
     {
-        return $this->Bestellstatus_idBestellstatus;
-    }
-
-    public function setBestellstatusIdBestellstatus(int $Bestellstatus_idBestellstatus): void
-    {
-        $this->Bestellstatus_idBestellstatus = $Bestellstatus_idBestellstatus;
+        $this->getBean()->bestellstatus_id = $Bestellstatus_id;
     }
 }

@@ -4,5 +4,6 @@ return array(
     'servername' => 'localhost',
     'username' => 'root',
     'password' => "",
-    'dbname' => "fastfood"
+    'dbname' => "fastfood",
+    'dbtestname' => "fastfoodtest"
 );

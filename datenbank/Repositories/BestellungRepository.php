@@ -2,60 +2,65 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Bestellung.php';
+
 use Entitaeten\Bestellung;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class BestellungRepository extends DatenbankRepository
+class BestellungRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'bestellung';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Bestellung::class);
     }
 
-    function getById($id): ?Bestellung
+    public function getById(int $id): ?Bestellung
     {
-        $sql = $this->getStatement()['SELECT_BESTELLUNG_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Bestellung(
-                $row['idBestellung'],
-                $row['BestellungDatum'],
-                $row['Kunde_idKunde'],
-                $row['Zahlungsart_idZahlungsart'],
-                $row['Produkt_idProdukt'],
-                $row['Menue_idMenue'],
-                $row['Bestellstatus_idBestellstatus'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($bestellungdatum, $kunde_id, $zahlungsart_id, $produkt_id, $menue_id, $bestellstatus_id): Bestellung
     {
-        $sql = $this->getStatement()['SELECT_ALL_BESTELLUNG'];
+        $object = R::dispense(self::TABLE_NAME);
+        $bestellung = new Bestellung($object);
 
-        $result = $this->getConnection()->query($sql);
+        $bestellung->setBestellungdatum($bestellungdatum);
+        $bestellung->setKundeId($kunde_id);
+        $bestellung->setZahlungsartId($zahlungsart_id);
+        $bestellung->setProduktId($produkt_id);
+        $bestellung->setMenueId($menue_id);
+        $bestellung->setBestellstatusId($bestellstatus_id);
 
-        $resultArray = [];
+        $id = R::store($bestellung->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Bestellung(
-                $row['idBestellung'],
-                $row['BestellungDatum'],
-                $row['Kunde_idKunde'],
-                $row['Zahlungsart_idZahlungsart'],
-                $row['Produkt_idProdukt'],
-                $row['Menue_idMenue'],
-                $row['Bestellstatus_idBestellstatus'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $bestellungdatum, $kunde_id, $zahlungsart_id, $produkt_id, $menue_id, $bestellstatus_id): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Bestellung)
+        {
+            $object->setBestellungdatum($bestellungdatum);
+            $object->setKundeId($kunde_id);
+            $object->setZahlungsartId($zahlungsart_id);
+            $object->setProduktId($produkt_id);
+            $object->setMenueId($menue_id);
+            $object->setBestellstatusId($bestellstatus_id);
+
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

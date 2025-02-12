@@ -1,94 +1,79 @@
 <?php
 namespace Entitaeten;
 
-class Adresse
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Adresse extends EntitaetsBean
 {
-    private int $idAdresse;
-    private string $Strassenname;
-    private string $Hausnummer;
-    private ?string $Zusatz;
-    private string $PLZ;
-    private string $Stadt;
-    private string $Bundesland;
-
-    public function __construct(int $idAdresse, string $Strassenname, string $Hausnummer, ?string $Zusatz, string $PLZ, string $Stadt, string $Bundesland)
+    public function getId(): int
     {
-        $this->idAdresse = $idAdresse;
-        $this->Strassenname = $Strassenname;
-        $this->Hausnummer = $Hausnummer;
-        $this->Zusatz = $Zusatz;
-        $this->PLZ = $PLZ;
-        $this->Stadt = $Stadt;
-        $this->Bundesland = $Bundesland;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdAdresse(): int
+    public function setId(int $id): void
     {
-        return $this->idAdresse;
-    }
-
-    public function setIdAdresse(int $idAdresse): void
-    {
-        $this->idAdresse = $idAdresse;
+        $this->getBean()->id = $id;
     }
 
     public function getBundesland(): string
     {
-        return $this->Bundesland;
+        return $this->getBean()->getProperties()['Bundesland'];
     }
 
     public function setBundesland(string $Bundesland): void
     {
-        $this->Bundesland = $Bundesland;
+        $this->getBean()->bundesland = $Bundesland;
     }
 
     public function getStadt(): string
     {
-        return $this->Stadt;
+        return $this->getBean()->getProperties()['Stadt'];
     }
 
     public function setStadt(string $Stadt): void
     {
-        $this->Stadt = $Stadt;
+        $this->getBean()->stadt = $Stadt;
     }
 
     public function getZusatz(): ?string
     {
-        return $this->Zusatz;
+        return $this->getBean()->getProperties()['Zusatz'];
     }
 
     public function setZusatz(?string $Zusatz): void
     {
-        $this->Zusatz = $Zusatz;
+        $this->getBean()->zusatz = $Zusatz;
     }
 
     public function getPLZ(): string
     {
-        return $this->PLZ;
+        return $this->getBean()->getProperties()['PLZ'];
     }
 
     public function setPLZ(string $PLZ): void
     {
-        $this->PLZ = $PLZ;
+        $this->getBean()->plz = $PLZ;
     }
 
     public function getHausnummer(): string
     {
-        return $this->Hausnummer;
+        return $this->getBean()->getProperties()['Hausnummer'];
     }
 
     public function setHausnummer(string $Hausnummer): void
     {
-        $this->Hausnummer = $Hausnummer;
+        $this->getBean()->hausnummer = $Hausnummer;
     }
 
     public function getStrassenname(): string
     {
-        return $this->Strassenname;
+        return $this->getBean()->getProperties()['Strassenname'];
     }
 
     public function setStrassenname(string $Strassenname): void
     {
-        $this->Strassenname = $Strassenname;
+        $this->getBean()->strassenname = $Strassenname;
     }
 }

@@ -2,60 +2,49 @@
 
 namespace Entitaeten;
 
-use DateTime;
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
 
-class Rechnung
+use EntitaetsBean;
+
+class Rechnung extends EntitaetsBean
 {
-    private int $idRechnung;
-    private int $Bestellung_idBestellung;
-    private DateTime $ZahlungsDatum;
-    private int $Rabatt_idRabatt;
-
-    public function __construct(int $idRechnung, int $Bestellung_idBestellung, DateTime $ZahlungsDatum, int $Rabatt_idRabatt)
+    public function getId(): int
     {
-        $this->idRechnung = $idRechnung;
-        $this->Bestellung_idBestellung = $Bestellung_idBestellung;
-        $this->ZahlungsDatum = $ZahlungsDatum;
-        $this->Rabatt_idRabatt = $Rabatt_idRabatt;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdRechnung(): int
+    public function setId(int $id): void
     {
-        return $this->idRechnung;
+        $this->getBean()->id = $id;
     }
 
-    public function setIdRechnung(int $idRechnung): void
+    public function getBestellungId(): int
     {
-        $this->idRechnung = $idRechnung;
+        return $this->getBean()->getProperties()['Bestellung_id'];
     }
 
-    public function getBestellungIdBestellung(): int
+    public function setBestellungId(int $Bestellung_id): void
     {
-        return $this->Bestellung_idBestellung;
+        $this->getBean()->bestellung_id = $Bestellung_id;
     }
 
-    public function setBestellungIdBestellung(int $Bestellung_idBestellung): void
+    public function getZahlungsDatum(): string
     {
-        $this->Bestellung_idBestellung = $Bestellung_idBestellung;
+        return $this->getBean()->getProperties()['ZahlungsDatum'];
     }
 
-    public function getZahlungsDatum(): DateTime
+    public function setZahlungsDatum(string $ZahlungsDatum): void
     {
-        return $this->ZahlungsDatum;
+        $this->getBean()->zahlungsdatum = $ZahlungsDatum;
     }
 
-    public function setZahlungsDatum(DateTime $ZahlungsDatum): void
+    public function getRabattId(): int
     {
-        $this->ZahlungsDatum = $ZahlungsDatum;
+        return $this->getBean()->getProperties()['Rabatt_id'];
     }
 
-    public function getRabattIdRabatt(): int
+    public function setRabattId(?int $Rabatt_id): void
     {
-        return $this->Rabatt_idRabatt;
-    }
-
-    public function setRabattIdRabatt(int $Rabatt_idRabatt): void
-    {
-        $this->Rabatt_idRabatt = $Rabatt_idRabatt;
+        $this->getBean()->rabatt_id = $Rabatt_id;
     }
 }

@@ -2,52 +2,56 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Menue.php';
+
 use Entitaeten\Menue;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class MenueRepository extends DatenbankRepository
+class MenueRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'menue';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Menue::class);
     }
 
-    function getById($id): ?Menue
+    public function getById(int $id): ?Menue
     {
-        $sql = $this->getStatement()['SELECT_MENUE_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Menue(
-                $row['idMenue'],
-                $row['Titel'],
-                $row['Beschreibung'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($titel, $beschreibung): Menue
     {
-        $sql = $this->getStatement()['SELECT_ALL_MENUE'];
+        $object = R::dispense(self::TABLE_NAME);
+        $menue = new Menue($object);
 
-        $result = $this->getConnection()->query($sql);
+        $menue->setTitel($titel);
+        $menue->setBeschreibung($beschreibung);
 
-        $resultArray = [];
+        $id = R::store($menue->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Menue(
-                $row['idMenue'],
-                $row['Titel'],
-                $row['Beschreibung'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $titel, $beschreibung): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Menue)
+        {
+            $object->setTitel($titel);
+            $object->setBeschreibung($beschreibung);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

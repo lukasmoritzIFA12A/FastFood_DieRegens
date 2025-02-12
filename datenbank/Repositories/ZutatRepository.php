@@ -2,50 +2,54 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Zutat.php';
+
 use Entitaeten\Zutat;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class ZutatRepository extends DatenbankRepository
+class ZutatRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'zutat';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Zutat::class);
     }
 
-    function getById($id): ?Zutat
+    public function getById(int $id): ?Zutat
     {
-        $sql = $this->getStatement()['SELECT_ZUTAT_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Zutat(
-                $row['idZutat'],
-                $row['ZutatName'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($zutatname): Zutat
     {
-        $sql = $this->getStatement()['SELECT_ALL_ZUTAT'];
+        $object = R::dispense(self::TABLE_NAME);
+        $zutat = new Zutat($object);
 
-        $result = $this->getConnection()->query($sql);
+        $zutat->setZutatName($zutatname);
 
-        $resultArray = [];
+        $id = R::store($zutat->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Zutat(
-                $row['idZutat'],
-                $row['ZutatName'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $zutatname): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Zutat)
+        {
+            $object->setZutatName($zutatname);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

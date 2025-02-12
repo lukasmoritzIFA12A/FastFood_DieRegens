@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Ladesprueche
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Ladesprueche extends EntitaetsBean
 {
-    private int $idLadesprueche;
-    private string $spruch;
-
-    public function __construct(int $idLadesprueche, string $spruch)
+    public function getId(): int
     {
-        $this->idLadesprueche = $idLadesprueche;
-        $this->spruch = $spruch;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdLadesprueche(): int
+    public function setId(int $id): void
     {
-        return $this->idLadesprueche;
-    }
-
-    public function setIdLadesprueche(int $idLadesprueche): void
-    {
-        $this->idLadesprueche = $idLadesprueche;
+        $this->getBean()->id = $id;
     }
 
     public function getSpruch(): string
     {
-        return $this->spruch;
+        return $this->getBean()->getProperties()['spruch'];
     }
 
     public function setSpruch(string $spruch): void
     {
-        $this->spruch = $spruch;
+        $this->getBean()->spruch = $spruch;
     }
 }

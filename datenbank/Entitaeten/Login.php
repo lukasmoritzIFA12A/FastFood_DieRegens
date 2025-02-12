@@ -2,46 +2,39 @@
 
 namespace Entitaeten;
 
-class Login
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Login extends EntitaetsBean
 {
-    private int $idLogin;
-    private string $Nutzername;
-    private string $Passwort;
-
-    public function __construct(int $idLogin, string $Nutzername, string $Passwort)
+    public function getId(): int
     {
-        $this->idLogin = $idLogin;
-        $this->Nutzername = $Nutzername;
-        $this->Passwort = $Passwort;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdLogin(): int
+    public function setId(int $id): void
     {
-        return $this->idLogin;
-    }
-
-    public function setIdLogin(int $idLogin): void
-    {
-        $this->idLogin = $idLogin;
+        $this->getBean()->id = $id;
     }
 
     public function getNutzername(): string
     {
-        return $this->Nutzername;
+        return $this->getBean()->getProperties()['Nutzername'];
     }
 
     public function setNutzername(string $Nutzername): void
     {
-        $this->Nutzername = $Nutzername;
+        $this->getBean()->nutzername = $Nutzername;
     }
 
     public function getPasswort(): string
     {
-        return $this->Passwort;
+        return $this->getBean()->getProperties()['Passwort'];
     }
 
     public function setPasswort(string $Passwort): void
     {
-        $this->Passwort = $Passwort;
+        $this->getBean()->passwort = $Passwort;
     }
 }

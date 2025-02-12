@@ -2,59 +2,63 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Adresse.php';
+
 use Entitaeten\Adresse;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class AdresseRepository extends DatenbankRepository
+class AdresseRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'adresse';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Adresse::class);
     }
 
-    function getById($id): ?Adresse
+    public function getById(int $id): ?Adresse
     {
-        $sql = $this->getStatement()['SELECT_ADRESSE_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Adresse(
-                $row['idAdresse'],
-                $row['Strassenname'],
-                $row['Hausnummer'],
-                $row['Zusatz'],
-                $row['PLZ'],
-                $row['Stadt'],
-                $row['Bundesland']
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array {
-        $sql = $this->getStatement()['SELECT_ALL_ADRESSE'];
+    /**
+     * @throws SQL
+     */
+    function insert($strassenname, $hausnummer, $zusatz, $plz, $stadt, $bundesland): Adresse
+    {
+        $object = R::dispense(self::TABLE_NAME);
+        $adresse = new Adresse($object);
+        $adresse->setStrassenname($strassenname);
+        $adresse->setHausnummer($hausnummer);
+        $adresse->setZusatz($zusatz);
+        $adresse->setPLZ($plz);
+        $adresse->setStadt($stadt);
+        $adresse->setBundesland($bundesland);
 
-        $result = $this->getConnection()->query($sql);
+        $id = R::store($adresse->getBean());
+        return $this->getById($id);
+    }
 
-        $resultArray = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Adresse(
-                $row['idAdresse'],
-                $row['Strassenname'],
-                $row['Hausnummer'],
-                $row['Zusatz'],
-                $row['PLZ'],
-                $row['Stadt'],
-                $row['Bundesland']
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $strassenname, $hausnummer, $zusatz, $plz, $stadt, $bundesland): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Adresse)
+        {
+            $object->setStrassenname($strassenname);
+            $object->setHausnummer($hausnummer);
+            $object->setZusatz($zusatz);
+            $object->setPLZ($plz);
+            $object->setStadt($stadt);
+            $object->setBundesland($bundesland);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

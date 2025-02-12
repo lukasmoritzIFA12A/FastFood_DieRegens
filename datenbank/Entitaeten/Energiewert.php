@@ -2,106 +2,89 @@
 
 namespace Entitaeten;
 
-class Energiewert
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Energiewert extends EntitaetsBean
 {
-    private int $idEnergiewert;
-    private int $Produkt_idProdukt;
-    private ?string $PortionSize;
-    private ?string $Kalorien; //kein float wegen rundungsfehlern!
-    private ?string $Fett; //kein float wegen rundungsfehlern!
-    private ?string $Kohlenhydrate; //kein float wegen rundungsfehlern!
-    private ?string $Zucker; //kein float wegen rundungsfehlern!
-    private ?string $Eiweiss; //kein float wegen rundungsfehlern!
-
-    public function __construct(int $idEnergiewert, int $Produkt_idProdukt, ?string $PortionSize, ?string $Kalorien, ?string $Fett, ?string $Kohlenhydrate, ?string $Zucker, ?string $Eiweiss)
+    public function getId(): int
     {
-        $this->idEnergiewert = $idEnergiewert;
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
-        $this->PortionSize = $PortionSize;
-        $this->Kalorien = $Kalorien;
-        $this->Fett = $Fett;
-        $this->Kohlenhydrate = $Kohlenhydrate;
-        $this->Zucker = $Zucker;
-        $this->Eiweiss = $Eiweiss;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdEnergiewert(): int
+    public function setId(int $id): void
     {
-        return $this->idEnergiewert;
-    }
-
-    public function setIdEnergiewert(int $idEnergiewert): void
-    {
-        $this->idEnergiewert = $idEnergiewert;
+        $this->getBean()->id = $id;
     }
 
     public function getPortionSize(): ?string
     {
-        return $this->PortionSize;
+        return $this->getBean()->getProperties()['PortionSize'];
     }
 
     public function setPortionSize(?string $PortionSize): void
     {
-        $this->PortionSize = $PortionSize;
+        $this->getBean()->portionsize = $PortionSize;
     }
 
-    public function getProduktIdProdukt(): int
+    public function getProduktId(): int
     {
-        return $this->Produkt_idProdukt;
+        return $this->getBean()->getProperties()['Produkt_id'];
     }
 
-    public function setProduktIdProdukt(int $Produkt_idProdukt): void
+    public function setProduktId(int $Produkt_id): void
     {
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
+        $this->getBean()->produkt_id = $Produkt_id;
     }
 
     public function getKalorien(): ?string
     {
-        return $this->Kalorien;
+        return $this->getBean()->getProperties()['Kalorien'];
     }
 
     public function setKalorien(?string $Kalorien): void
     {
-        $this->Kalorien = $Kalorien;
+        $this->getBean()->kalorien = $Kalorien;
     }
 
     public function getFett(): ?string
     {
-        return $this->Fett;
+        return $this->getBean()->getProperties()['Fett'];
     }
 
     public function setFett(?string $Fett): void
     {
-        $this->Fett = $Fett;
+        $this->getBean()->fett = $Fett;
     }
 
     public function getKohlenhydrate(): ?string
     {
-        return $this->Kohlenhydrate;
+        return $this->getBean()->getProperties()['Kohlenhydrate'];
     }
 
     public function setKohlenhydrate(?string $Kohlenhydrate): void
     {
-        $this->Kohlenhydrate = $Kohlenhydrate;
+        $this->getBean()->kohlenhydrate = $Kohlenhydrate;
     }
 
     public function getZucker(): ?string
     {
-        return $this->Zucker;
+        return $this->getBean()->getProperties()['Zucker'];
     }
 
     public function setZucker(?string $Zucker): void
     {
-        $this->Zucker = $Zucker;
+        $this->getBean()->zucker = $Zucker;
     }
 
     public function getEiweiss(): ?string
     {
-        return $this->Eiweiss;
+        return $this->getBean()->getProperties()['Eiweiss'];
     }
 
     public function setEiweiss(?string $Eiweiss): void
     {
-        $this->Eiweiss = $Eiweiss;
+        $this->getBean()->eiweiss = $Eiweiss;
     }
 }

@@ -2,50 +2,53 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Bestellstatus.php';
+
 use Entitaeten\Bestellstatus;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class BestellstatusRepository extends DatenbankRepository
+class BestellstatusRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'bestellstatus';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Bestellstatus::class);
     }
 
-    function getById($id): ?Bestellstatus
+    public function getById(int $id): ?Bestellstatus
     {
-        $sql = $this->getStatement()['SELECT_BESTELLSTATUS_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Bestellstatus(
-                $row['idBestellstatus'],
-                $row['status'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($status): Bestellstatus
     {
-        $sql = $this->getStatement()['SELECT_ALL_BESTELLSTATUS'];
+        $object = R::dispense(self::TABLE_NAME);
+        $bestellstatus = new Bestellstatus($object);
+        $bestellstatus->setStatus($status);
 
-        $result = $this->getConnection()->query($sql);
+        $id = R::store($bestellstatus->getBean());
+        return $this->getById($id);
+    }
 
-        $resultArray = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Bestellstatus(
-                $row['idBestellstatus'],
-                $row['status'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $status): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Bestellstatus)
+        {
+            $object->setStatus($status);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

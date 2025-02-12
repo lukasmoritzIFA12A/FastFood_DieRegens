@@ -2,52 +2,56 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Rabatt.php';
+
 use Entitaeten\Rabatt;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class RabattRepository extends DatenbankRepository
+class RabattRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'rabatt';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Rabatt::class);
     }
 
-    function getById($id): ?Rabatt
+    public function getById(int $id): ?Rabatt
     {
-        $sql = $this->getStatement()['SELECT_RABATT_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Rabatt(
-                $row['idRabatt'],
-                $row['code'],
-                $row['minderung'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($code, $minderung): Rabatt
     {
-        $sql = $this->getStatement()['SELECT_ALL_RABATT'];
+        $object = R::dispense(self::TABLE_NAME);
+        $rabatt = new Rabatt($object);
 
-        $result = $this->getConnection()->query($sql);
+        $rabatt->setCode($code);
+        $rabatt->setMinderung($minderung);
 
-        $resultArray = [];
+        $id = R::store($rabatt->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Rabatt(
-                $row['idRabatt'],
-                $row['code'],
-                $row['minderung'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $code, $minderung): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Rabatt)
+        {
+            $object->setCode($code);
+            $object->setMinderung($minderung);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

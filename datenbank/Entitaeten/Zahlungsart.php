@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Zahlungsart
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Zahlungsart extends EntitaetsBean
 {
-    private int $idZahlungsart;
-    private string $Art;
-
-    public function __construct(int $idZahlungsart, string $Art)
+    public function getId(): int
     {
-        $this->idZahlungsart = $idZahlungsart;
-        $this->Art = $Art;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdZahlungsart(): int
+    public function setId(int $id): void
     {
-        return $this->idZahlungsart;
-    }
-
-    public function setIdZahlungsart(int $idZahlungsart): void
-    {
-        $this->idZahlungsart = $idZahlungsart;
+        $this->getBean()->id = $id;
     }
 
     public function getArt(): string
     {
-        return $this->Art;
+        return $this->getBean()->getProperties()['Art'];
     }
 
     public function setArt(string $Art): void
     {
-        $this->Art = $Art;
+        $this->getBean()->art = $Art;
     }
 }

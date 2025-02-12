@@ -2,54 +2,58 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Rating.php';
+
 use Entitaeten\Rating;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class RatingRepository extends DatenbankRepository
+class RatingRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'rating';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Rating::class);
     }
 
-    function getById($id): ?Rating
+    public function getById(int $id): ?Rating
     {
-        $sql = $this->getStatement()['SELECT_RATING_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Rating(
-                $row['idRating'],
-                $row['Kunde_idKunde'],
-                $row['Contest_idContest'],
-                $row['Rating'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($kunde_id, $contest_id, $rating): Rating
     {
-        $sql = $this->getStatement()['SELECT_ALL_RATING'];
+        $object = R::dispense(self::TABLE_NAME);
+        $ratingObj = new Rating($object);
 
-        $result = $this->getConnection()->query($sql);
+        $ratingObj->setKundeId($kunde_id);
+        $ratingObj->setContestId($contest_id);
+        $ratingObj->setRating($rating);
 
-        $resultArray = [];
+        $id = R::store($ratingObj->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Rating(
-                $row['idRating'],
-                $row['Kunde_idKunde'],
-                $row['Contest_idContest'],
-                $row['Rating'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $kunde_id, $contest_id, $rating): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Rating)
+        {
+            $object->setKundeId($kunde_id);
+            $object->setContestId($contest_id);
+            $object->setRating($rating);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

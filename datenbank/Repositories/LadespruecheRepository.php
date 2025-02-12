@@ -2,50 +2,54 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Ladesprueche.php';
+
 use Entitaeten\Ladesprueche;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class LadespruecheRepository extends DatenbankRepository
+class LadespruecheRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'ladesprueche';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Ladesprueche::class);
     }
 
-    function getById($id): ?Ladesprueche
+    public function getById(int $id): ?Ladesprueche
     {
-        $sql = $this->getStatement()['SELECT_LADESPRUECHE_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Ladesprueche(
-                $row['idLadesprueche'],
-                $row['spruch'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($spruch): Ladesprueche
     {
-        $sql = $this->getStatement()['SELECT_ALL_LADESPRUECHE'];
+        $object = R::dispense(self::TABLE_NAME);
+        $ladesprueche = new Ladesprueche($object);
 
-        $result = $this->getConnection()->query($sql);
+        $ladesprueche->setSpruch($spruch);
 
-        $resultArray = [];
+        $id = R::store($ladesprueche->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Ladesprueche(
-                $row['idLadesprueche'],
-                $row['spruch'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $spruch): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Ladesprueche)
+        {
+            $object->setSpruch($spruch);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

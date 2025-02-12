@@ -2,108 +2,79 @@
 
 namespace Entitaeten;
 
-use DateTime;
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
 
-class Kunde
+use EntitaetsBean;
+
+class Kunde extends EntitaetsBean
 {
-    private int $idKunde;
-    private int $Adresse_idAdresse;
-    private string $Vorname;
-    private string $Nachname;
-    private ?string $Telefonnummer;
-    private DateTime $Registrierungsdatum;
-    private int $Login_idLogin;
-    private int $Kundenstatus_idKundenstatus;
-
-    public function __construct(int $idKunde, int $Adresse_idAdresse, string $Vorname, ?string $Telefonnummer, string $Nachname, DateTime $Registrierungsdatum, int $Login_idLogin, int $Kundenstatus_idKundenstatus)
+    public function getId(): int
     {
-        $this->idKunde = $idKunde;
-        $this->Adresse_idAdresse = $Adresse_idAdresse;
-        $this->Vorname = $Vorname;
-        $this->Telefonnummer = $Telefonnummer;
-        $this->Nachname = $Nachname;
-        $this->Registrierungsdatum = $Registrierungsdatum;
-        $this->Login_idLogin = $Login_idLogin;
-        $this->Kundenstatus_idKundenstatus = $Kundenstatus_idKundenstatus;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdKunde(): int
+    private function setId(int $id): void
     {
-        return $this->idKunde;
-    }
-
-    public function setIdKunde(int $idKunde): void
-    {
-        $this->idKunde = $idKunde;
-    }
-
-    public function getKundenstatusIdKundenstatus(): int
-    {
-        return $this->Kundenstatus_idKundenstatus;
-    }
-
-    public function setKundenstatusIdKundenstatus(int $Kundenstatus_idKundenstatus): void
-    {
-        $this->Kundenstatus_idKundenstatus = $Kundenstatus_idKundenstatus;
+        $this->getBean()->id = $id;
     }
 
     public function getTelefonnummer(): ?string
     {
-        return $this->Telefonnummer;
+        return $this->getBean()->getProperties()['Telefonnummer'];
     }
 
     public function setTelefonnummer(?string $Telefonnummer): void
     {
-        $this->Telefonnummer = $Telefonnummer;
+        $this->getBean()->telefonnummer = $Telefonnummer;
     }
 
     public function getNachname(): string
     {
-        return $this->Nachname;
+        return $this->getBean()->getProperties()['Nachname'];
     }
 
     public function setNachname(string $Nachname): void
     {
-        $this->Nachname = $Nachname;
+        $this->getBean()->nachname = $Nachname;
     }
 
     public function getVorname(): string
     {
-        return $this->Vorname;
+        return $this->getBean()->getProperties()['Vorname'];
     }
 
     public function setVorname(string $Vorname): void
     {
-        $this->Vorname = $Vorname;
+        $this->getBean()->vorname = $Vorname;
     }
 
-    public function getAdresseIdAdresse(): int
+    public function getAdresseId(): int
     {
-        return $this->Adresse_idAdresse;
+        return $this->getBean()->getProperties()['Adresse_id'];
     }
 
-    public function setAdresseIdAdresse(int $Adresse_idAdresse): void
+    public function setAdresseId(int $Adresse_id): void
     {
-        $this->Adresse_idAdresse = $Adresse_idAdresse;
+        $this->getBean()->adresse_id = $Adresse_id;
     }
 
-    public function getRegistrierungsdatum(): DateTime
+    public function getRegistrierungsdatum(): string
     {
-        return $this->Registrierungsdatum;
+        return $this->getBean()->getProperties()['Registrierungsdatum'];
     }
 
-    public function setRegistrierungsdatum(DateTime $Registrierungsdatum): void
+    public function setRegistrierungsdatum(string $Registrierungsdatum): void
     {
-        $this->Registrierungsdatum = $Registrierungsdatum;
+        $this->getBean()->registrierungsdatum = $Registrierungsdatum;
     }
 
-    public function getLoginIdLogin(): int
+    public function getLoginId(): int
     {
-        return $this->Login_idLogin;
+        return $this->getBean()->getProperties()['Login_id'];
     }
 
-    public function setLoginIdLogin(int $Login_idLogin): void
+    public function setLoginId(int $Login_id): void
     {
-        $this->Login_idLogin = $Login_idLogin;
+        $this->getBean()->login_id = $Login_id;
     }
 }

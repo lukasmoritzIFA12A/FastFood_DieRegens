@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Produkt_Zutat
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Produkt_Zutat extends EntitaetsBean
 {
-    private int $Produkt_idProdukt;
-    private int $Zutat_idZutat;
-
-    public function __construct(int $Produkt_idProdukt, int $Zutat_idZutat)
+    public function getProduktId(): int
     {
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
-        $this->Zutat_idZutat = $Zutat_idZutat;
+        return $this->getBean()->getProperties()['Produkt_id'];
     }
 
-    public function getProduktIdProdukt(): int
+    public function setProduktId(int $Produkt_id): void
     {
-        return $this->Produkt_idProdukt;
+        $this->getBean()->produkt_id = $Produkt_id;
     }
 
-    public function setProduktIdProdukt(int $Produkt_idProdukt): void
+    public function getZutatId(): int
     {
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
+        return $this->getBean()->getProperties()['Zutat_id'];
     }
 
-    public function getZutatIdZutat(): int
+    public function setZutatId(int $Zutat_id): void
     {
-        return $this->Zutat_idZutat;
-    }
-
-    public function setZutatIdZutat(int $Zutat_idZutat): void
-    {
-        $this->Zutat_idZutat = $Zutat_idZutat;
+        $this->getBean()->zutat_id = $Zutat_id;
     }
 }

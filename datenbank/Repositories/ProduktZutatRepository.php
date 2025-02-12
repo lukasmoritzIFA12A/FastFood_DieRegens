@@ -2,82 +2,138 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
-use Entitaeten\Produkt_Zutat;
+include_once dirname(__DIR__) . '/RepositoryJOINAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Produkt_Zutat.php';
 
-class ProduktZutatRepository extends DatenbankRepository
+use Entitaeten\Produkt_Zutat;
+use RedBeanPHP\R;
+use RepositoryJOINAccess;
+
+class ProduktZutatRepository extends RepositoryJOINAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'produkt_zutat';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Produkt_Zutat::class);
     }
 
-    function getById($id): ?Produkt_Zutat
+    function getByProduktIdAndZutatId(int $produkt_id, int $zutat_id): ?Produkt_Zutat
     {
+        $bean = R::findOne(self::TABLE_NAME, 'produkt_id = ? AND zutat_id = ?', [$produkt_id, $zutat_id]);
+        if (!$bean)
+        {
+            return null;
+        }
+
+        return new Produkt_Zutat($bean);
+    }
+
+    function getAllByProduktId(int $produkt_id): ?array
+    {
+        $beans = R::findAll(self::TABLE_NAME, 'produkt_id = ?', [$produkt_id]);
+        if (!$beans)
+        {
+            return null;
+        }
+
+        return array_map(fn ($bean) => new Produkt_Zutat($bean), $beans);
+    }
+
+    function getAllByZutatId(int $zutat_id): ?array
+    {
+        $beans = R::findAll(self::TABLE_NAME, 'zutat_id = ?', [$zutat_id]);
+        if (!$beans)
+        {
+            return null;
+        }
+
+        return array_map(fn ($bean) => new Produkt_Zutat($bean), $beans);
+    }
+
+    function updateAllByProduktId(int $produkt_id, int $zutat_id): ?array
+    {
+        $object = $this->getAllByProduktId($produkt_id);
+        if ($object)
+        {
+            foreach ($object as $obj)
+            {
+                if ($obj instanceof Produkt_Zutat)
+                {
+                    $obj->setZutatId($zutat_id);
+                }
+            }
+
+            $beans = array_map(fn($obj) => $obj->getBean(), $object);
+            return R::storeAll($beans);
+        }
+
         return null;
     }
 
-    function getAllProduktByZutatId($zutatId): ?array
+    function updateAllByZutatId(int $zutat_id, int $produkt_id): ?array
     {
-        $sql = $this->getStatement()['SELECT_ALL_PRODUKT_VON_ZUTATID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $zutatId);
-
-        $resultArray = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Produkt_Zutat(
-                $row['Menue_idMenue'],
-                $row['Produkt_idProdukt'],
-            );
+        $object = $this->getAllByProduktId($zutat_id);
+        if ($object)
+        {
+            foreach ($object as $obj)
+            {
+                if ($obj instanceof Produkt_Zutat)
+                {
+                    $obj->setProduktId($produkt_id);
+                }
+            }
+            $beans = array_map(fn($obj) => $obj->getBean(), $object);
+            return R::storeAll($beans);
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 
-    function getAllZutatByProduktId($produktId): ?array
+    function insert(int $produkt_id, int $zutat_id): Produkt_Zutat
     {
-        $sql = $this->getStatement()['SELECT_ALL_ZUTAT_VON_PRODUKTID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $produktId);
+        $object = R::dispense(self::TABLE_NAME);
+        $produkt_zutat = new Produkt_Zutat($object);
 
-        $resultArray = [];
+        $produkt_zutat->setProduktId($produkt_id);
+        $produkt_zutat->setZutatId($zutat_id);
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Produkt_Zutat(
-                $row['Menue_idMenue'],
-                $row['Produkt_idProdukt'],
-            );
-        }
-
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        R::store($produkt_zutat->getBean());
+        return $this->getByProduktIdAndZutatId($produkt_id, $zutat_id);
     }
 
-    function getAll(): ?array
+    function deleteByProduktIdAndZutatId(int $produkt_id, int $zutat_id): ?int
     {
-        $sql = $this->getStatement()['SELECT_ALL_PRODUKT_UND_ZUTAT'];
-
-        $result = $this->getConnection()->query($sql);
-
-        $resultArray = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Produkt_Zutat(
-                $row['Produkt_idProdukt'],
-                $row['Zutat_idZutat'],
-            );
+        $object = $this->getByProduktIdAndZutatId($produkt_id, $zutat_id);
+        if ($object)
+        {
+            return R::trash($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
+        return null;
+    }
+
+    function deleteAllByProduktId(int $produkt_id): ?int
+    {
+        $object = $this->getAllByProduktId($produkt_id);
+        if ($object)
+        {
+            $beans = array_map(fn($obj) => $obj->getBean(), $object);
+            return R::trashAll($beans);
         }
+
+        return null;
+    }
+
+    function deleteAllByZutatId(int $zutat_id): ?int
+    {
+        $object = $this->getAllByZutatId($zutat_id);
+        if ($object)
+        {
+            $beans = array_map(fn($obj) => $obj->getBean(), $object);
+            return R::trashAll($beans);
+        }
+
+        return null;
     }
 }

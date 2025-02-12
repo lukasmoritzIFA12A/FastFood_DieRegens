@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Menue_Produkt
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Menue_Produkt extends EntitaetsBean
 {
-    private int $Menue_idMenue;
-    private int $Produkt_idProdukt;
-
-    public function __construct(int $Menue_idMenue, int $Produkt_idProdukt)
+    public function getMenueId(): int
     {
-        $this->Menue_idMenue = $Menue_idMenue;
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
+        return $this->getBean()->getProperties()['Menue_id'];
     }
 
-    public function getMenueIdMenue(): int
+    public function setMenueId(int $Menue_id): void
     {
-        return $this->Menue_idMenue;
+        $this->getBean()->menue_id = $Menue_id;
     }
 
-    public function setMenueIdMenue(int $Menue_idMenue): void
+    public function getProduktId(): int
     {
-        $this->Menue_idMenue = $Menue_idMenue;
+        return $this->getBean()->getProperties()['Produkt_id'];
     }
 
-    public function getProduktIdProdukt(): int
+    public function setProduktId(int $Produkt_id): void
     {
-        return $this->Produkt_idProdukt;
-    }
-
-    public function setProduktIdProdukt(int $Produkt_idProdukt): void
-    {
-        $this->Produkt_idProdukt = $Produkt_idProdukt;
+        $this->getBean()->produkt_id = $Produkt_id;
     }
 }

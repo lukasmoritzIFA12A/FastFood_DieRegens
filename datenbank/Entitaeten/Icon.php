@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Icon
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Icon extends EntitaetsBean
 {
-    private int $idIcon;
-    private string $BildPfad;
-
-    public function __construct(string $BildPfad, int $idIcon)
+    public function getId(): int
     {
-        $this->BildPfad = $BildPfad;
-        $this->idIcon = $idIcon;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdIcon(): int
+    public function setId(int $id): void
     {
-        return $this->idIcon;
-    }
-
-    public function setIdIcon(int $idIcon): void
-    {
-        $this->idIcon = $idIcon;
+        $this->getBean()->id = $id;
     }
 
     public function getBildPfad(): string
     {
-        return $this->BildPfad;
+        return $this->getBean()->getProperties()['BildPfad'];
     }
 
     public function setBildPfad(string $BildPfad): void
     {
-        $this->BildPfad = $BildPfad;
+        $this->getBean()->bildpfad = $BildPfad;
     }
 }

@@ -2,58 +2,49 @@
 
 namespace Entitaeten;
 
-class Rating
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Rating extends EntitaetsBean
 {
-    private int $idRating;
-    private int $Kunde_idKunde;
-    private int $Contest_idContest;
-    private int $Rating;
-
-    public function __construct(int $Kunde_idKunde, int $idRating, int $Contest_idContest, int $Rating)
+    public function getId(): int
     {
-        $this->Kunde_idKunde = $Kunde_idKunde;
-        $this->idRating = $idRating;
-        $this->Contest_idContest = $Contest_idContest;
-        $this->Rating = $Rating;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdRating(): int
+    public function setId(int $id): void
     {
-        return $this->idRating;
+        $this->getBean()->id = $id;
     }
 
-    public function setIdRating(int $idRating): void
+    public function getKundeId(): int
     {
-        $this->idRating = $idRating;
+        return $this->getBean()->getProperties()['Kunde_id'];
     }
 
-    public function getKundeIdKunde(): int
+    public function setKundeId(int $Kunde_id): void
     {
-        return $this->Kunde_idKunde;
+        $this->getBean()->kunde_id = $Kunde_id;
     }
 
-    public function setKundeIdKunde(int $Kunde_idKunde): void
+    public function getContestId(): int
     {
-        $this->Kunde_idKunde = $Kunde_idKunde;
+        return $this->getBean()->getProperties()['Contest_id'];
     }
 
-    public function getContestIdContest(): int
+    public function setContestId(int $Contest_id): void
     {
-        return $this->Contest_idContest;
-    }
-
-    public function setContestIdContest(int $Contest_idContest): void
-    {
-        $this->Contest_idContest = $Contest_idContest;
+        $this->getBean()->contest_id = $Contest_id;
     }
 
     public function getRating(): int
     {
-        return $this->Rating;
+        return $this->getBean()->getProperties()['Rating'];
     }
 
     public function setRating(int $Rating): void
     {
-        $this->Rating = $Rating;
+        $this->getBean()->rating = $Rating;
     }
 }

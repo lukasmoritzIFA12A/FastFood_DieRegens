@@ -2,52 +2,56 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Login.php';
+
 use Entitaeten\Login;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class LoginRepository extends DatenbankRepository
+class LoginRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'login';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Login::class);
     }
 
-    function getById($id): ?Login
+    public function getById(int $id): ?Login
     {
-        $sql = $this->getStatement()['SELECT_LOGIN_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Login(
-                $row['idLogin'],
-                $row['Nutzername'],
-                $row['Passwort'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($nutzername, $passwort): ?Login
     {
-        $sql = $this->getStatement()['SELECT_ALL_LOGIN'];
+        $object = R::dispense(self::TABLE_NAME);
+        $login = new Login($object);
 
-        $result = $this->getConnection()->query($sql);
+        $login->setNutzername($nutzername);
+        $login->setPasswort($passwort);
 
-        $resultArray = [];
+        $id = R::store($login->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Login(
-                $row['idLogin'],
-                $row['Nutzername'],
-                $row['Passwort'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $nutzername, $passwort): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Login)
+        {
+            $object->setNutzername($nutzername);
+            $object->setPasswort($passwort);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

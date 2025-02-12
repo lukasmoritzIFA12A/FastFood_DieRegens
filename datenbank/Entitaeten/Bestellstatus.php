@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Bestellstatus
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Bestellstatus extends EntitaetsBean
 {
-    private int $idBestellstatus;
-    private string $status;
-
-    public function __construct(int $idBestellstatus, string $status)
+    public function getId(): int
     {
-        $this->idBestellstatus = $idBestellstatus;
-        $this->status = $status;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdBestellstatus(): int
+    public function setId(int $id): void
     {
-        return $this->idBestellstatus;
-    }
-
-    public function setIdBestellstatus(int $idBestellstatus): void
-    {
-        $this->idBestellstatus = $idBestellstatus;
+        $this->getBean()->id = $id;
     }
 
     public function getStatus(): string
     {
-        return $this->status;
+        return $this->getBean()->getProperties()['status'];
     }
 
     public function setStatus(string $status): void
     {
-        $this->status = $status;
+        $this->getBean()->status = $status;
     }
 }

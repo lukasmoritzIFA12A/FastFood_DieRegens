@@ -2,50 +2,54 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Icon.php';
+
 use Entitaeten\Icon;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class IconRepository extends DatenbankRepository
+class IconRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'icon';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Icon::class);
     }
 
-    function getById($id): ?Icon
+    public function getById(int $id): ?Icon
     {
-        $sql = $this->getStatement()['SELECT_ICON_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Icon(
-                $row['idIcon'],
-                $row['BildPfad'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($bildpfad): Icon
     {
-        $sql = $this->getStatement()['SELECT_ALL_ICON'];
+        $object = R::dispense(self::TABLE_NAME);
+        $icon = new Icon($object);
 
-        $result = $this->getConnection()->query($sql);
+        $icon->setBildPfad($bildpfad);
 
-        $resultArray = [];
+        $id = R::store($icon->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Icon(
-                $row['idIcon'],
-                $row['BildPfad'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $bildpfad): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Icon)
+        {
+            $object->setBildPfad($bildpfad);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

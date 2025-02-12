@@ -2,60 +2,64 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Produkt.php';
+
 use Entitaeten\Produkt;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class ProduktRepository extends DatenbankRepository
+class ProduktRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'produkt';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Produkt::class);
     }
 
-    function getById($id): ?Produkt
+    public function getById(int $id): ?Produkt
     {
-        $sql = $this->getStatement()['SELECT_PRODUKT_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Produkt(
-                $row['idProdukt'],
-                $row['Icon_idIcon'],
-                $row['Titel'],
-                $row['Beschreibung'],
-                $row['Preis'],
-                $row['Lagerbestand'],
-                $row['Rabatt'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($icon_id, $titel, $beschreibung, $preis, $lagerbestand, $rabatt): Produkt
     {
-        $sql = $this->getStatement()['SELECT_ALL_PRODUKT'];
+        $object = R::dispense(self::TABLE_NAME);
+        $produkt = new Produkt($object);
 
-        $result = $this->getConnection()->query($sql);
+        $produkt->setIconId($icon_id);
+        $produkt->setTitel($titel);
+        $produkt->setBeschreibung($beschreibung);
+        $produkt->setPreis($preis);
+        $produkt->setLagerbestand($lagerbestand);
+        $produkt->setRabatt($rabatt);
 
-        $resultArray = [];
+        $id = R::store($produkt->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Produkt(
-                $row['idProdukt'],
-                $row['Icon_idIcon'],
-                $row['Titel'],
-                $row['Beschreibung'],
-                $row['Preis'],
-                $row['Lagerbestand'],
-                $row['Rabatt'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $icon_id, $titel, $beschreibung, $preis, $lagerbestand, $rabatt): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Produkt)
+        {
+            $object->setIconId($icon_id);
+            $object->setTitel($titel);
+            $object->setBeschreibung($beschreibung);
+            $object->setPreis($preis);
+            $object->setLagerbestand($lagerbestand);
+            $object->setRabatt($rabatt);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

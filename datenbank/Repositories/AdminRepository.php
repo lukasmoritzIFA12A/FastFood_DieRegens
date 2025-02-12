@@ -2,39 +2,46 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Admin.php';
+
 use Entitaeten\Admin;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class AdminRepository extends DatenbankRepository
+class AdminRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'admin';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Admin::class);
     }
 
-    function getById($id): ?Admin
+    public function getById(int $id): ?Admin
     {
-        return null;
-    }
-
-    function getAll(): ?array
-    {
-        $sql = $this->getStatement()['SELECT_ALL_ADMIN'];
-
-        $result = $this->getConnection()->query($sql);
-
-        $resultArray = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Admin(
-                $row['Login_idLogin'],
-            );
-        }
-
-        if (empty($resultArray)) {
+        $bean = R::findOne(self::TABLE_NAME, 'login_id = ?', [$id]);
+        if (!$bean)
+        {
             return null;
-        } else {
-            return $resultArray;
         }
+
+        return new Admin($bean);
+    }
+
+    /**
+     * @throws SQL
+     */
+    function insert(int $login_id): Admin
+    {
+        $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (login_id) VALUES (?)';
+        $result = R::exec($sql, [$login_id]);
+        if ($result)
+        {
+            return $this->getById($login_id);
+        }
+
+        throw new SQL("SQL Error: Konnte Admin nicht erstellen.");
     }
 }

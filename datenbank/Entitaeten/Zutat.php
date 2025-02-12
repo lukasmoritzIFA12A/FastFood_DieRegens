@@ -2,34 +2,29 @@
 
 namespace Entitaeten;
 
-class Zutat
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Zutat extends EntitaetsBean
 {
-    private int $idZutat;
-    private string $ZutatName;
-
-    public function __construct(int $idZutat, string $ZutatName)
+    public function getId(): int
     {
-        $this->idZutat = $idZutat;
-        $this->ZutatName = $ZutatName;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdZutat(): int
+    public function setId(int $id): void
     {
-        return $this->idZutat;
-    }
-
-    public function setIdZutat(int $idZutat): void
-    {
-        $this->idZutat = $idZutat;
+        $this->getBean()->id = $id;
     }
 
     public function getZutatName(): string
     {
-        return $this->ZutatName;
+        return $this->getBean()->getProperties()['ZutatName'];
     }
 
     public function setZutatName(string $ZutatName): void
     {
-        $this->ZutatName = $ZutatName;
+        $this->getBean()->zutatname = $ZutatName;
     }
 }

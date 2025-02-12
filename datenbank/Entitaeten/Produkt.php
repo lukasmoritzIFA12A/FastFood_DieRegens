@@ -2,94 +2,79 @@
 
 namespace Entitaeten;
 
-class Produkt
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Produkt extends EntitaetsBean
 {
-    private int $idProdukt;
-    private int $Icon_idIcon;
-    private string $Titel;
-    private ?string $Beschreibung;
-    private string $Preis; //kein float wegen rundungsfehlern!
-    private int $Lagerbestand;
-    private ?string $Rabatt; //kein float wegen rundungsfehlern!
-
-    public function __construct(int $idProdukt, int $Icon_idIcon, string $Titel, string $Preis, ?string $Beschreibung, int $Lagerbestand, ?string $Rabatt)
+    public function getId(): int
     {
-        $this->idProdukt = $idProdukt;
-        $this->Icon_idIcon = $Icon_idIcon;
-        $this->Titel = $Titel;
-        $this->Preis = $Preis;
-        $this->Beschreibung = $Beschreibung;
-        $this->Lagerbestand = $Lagerbestand;
-        $this->Rabatt = $Rabatt;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdProdukt(): int
+    public function setId(int $id): void
     {
-        return $this->idProdukt;
-    }
-
-    public function setIdProdukt(int $idProdukt): void
-    {
-        $this->idProdukt = $idProdukt;
+        $this->getBean()->id = $id;
     }
 
     public function getTitel(): string
     {
-        return $this->Titel;
+        return $this->getBean()->getProperties()['Titel'];
     }
 
     public function setTitel(string $Titel): void
     {
-        $this->Titel = $Titel;
+        $this->getBean()->titel = $Titel;
     }
 
-    public function getIconIdIcon(): int
+    public function getIconId(): int
     {
-        return $this->Icon_idIcon;
+        return $this->getBean()->getProperties()['Icon_id'];
     }
 
-    public function setIconIdIcon(int $Icon_idIcon): void
+    public function setIconId(int $Icon_id): void
     {
-        $this->Icon_idIcon = $Icon_idIcon;
+        $this->getBean()->icon_id = $Icon_id;
     }
 
     public function getBeschreibung(): ?string
     {
-        return $this->Beschreibung;
+        return $this->getBean()->getProperties()['Beschreibung'];
     }
 
     public function setBeschreibung(?string $Beschreibung): void
     {
-        $this->Beschreibung = $Beschreibung;
+        $this->getBean()->beschreibung = $Beschreibung;
     }
 
     public function getPreis(): string
     {
-        return $this->Preis;
+        return $this->getBean()->getProperties()['Preis'];
     }
 
     public function setPreis(string $Preis): void
     {
-        $this->Preis = $Preis;
+        $this->getBean()->preis = $Preis;
     }
 
     public function getLagerbestand(): int
     {
-        return $this->Lagerbestand;
+        return $this->getBean()->getProperties()['Lagerbestand'];
     }
 
     public function setLagerbestand(int $Lagerbestand): void
     {
-        $this->Lagerbestand = $Lagerbestand;
+        $this->getBean()->lagerbestand = $Lagerbestand;
     }
 
     public function getRabatt(): ?string
     {
-        return $this->Rabatt;
+        return $this->getBean()->getProperties()['Rabatt'];
     }
 
     public function setRabatt(?string $Rabatt): void
     {
-        $this->Rabatt = $Rabatt;
+        $this->getBean()->rabatt = $Rabatt;
     }
 }

@@ -2,62 +2,67 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Energiewert.php';
+
 use Entitaeten\Energiewert;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class EnergiewertRepository extends DatenbankRepository
+class EnergiewertRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'energiewert';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Energiewert::class);
     }
 
-    function getById($id): ?Energiewert
+    public function getById(int $id): ?Energiewert
     {
-        $sql = $this->getStatement()['SELECT_ENERGIEWERT_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Energiewert(
-                $row['idEnergiewert'],
-                $row['Produkt_idProdukt'],
-                $row['PortionSize'],
-                $row['Kalorien'],
-                $row['Fett'],
-                $row['Kohlenhydrate'],
-                $row['Zucker'],
-                $row['Eiweiss'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($produkt_id, $portionsize, $kalorien, $fett, $kohlenhydrate, $zucker, $eiweiss): Energiewert
     {
-        $sql = $this->getStatement()['SELECT_ALL_ENERGIEWERT'];
+        $object = R::dispense(self::TABLE_NAME);
+        $energiewert = new Energiewert($object);
 
-        $result = $this->getConnection()->query($sql);
+        $energiewert->setProduktId($produkt_id);
+        $energiewert->setPortionSize($portionsize);
+        $energiewert->setKalorien($kalorien);
+        $energiewert->setFett($fett);
+        $energiewert->setKohlenhydrate($kohlenhydrate);
+        $energiewert->setZucker($zucker);
+        $energiewert->setEiweiss($eiweiss);
 
-        $resultArray = [];
+        $id = R::store($energiewert->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Energiewert(
-                $row['idEnergiewert'],
-                $row['Produkt_idProdukt'],
-                $row['PortionSize'],
-                $row['Kalorien'],
-                $row['Fett'],
-                $row['Kohlenhydrate'],
-                $row['Zucker'],
-                $row['Eiweiss'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $produkt_id, $portionsize, $kalorien, $fett, $kohlenhydrate, $zucker, $eiweiss): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Energiewert)
+        {
+            $object->setProduktId($produkt_id);
+            $object->setPortionSize($portionsize);
+            $object->setKalorien($kalorien);
+            $object->setFett($fett);
+            $object->setKohlenhydrate($kohlenhydrate);
+            $object->setZucker($zucker);
+            $object->setEiweiss($eiweiss);
+
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

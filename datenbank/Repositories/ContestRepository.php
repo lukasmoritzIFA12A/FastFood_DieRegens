@@ -2,54 +2,59 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Contest.php';
+
 use Entitaeten\Contest;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class ContestRepository extends DatenbankRepository
+class ContestRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'contest';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Contest::class);
     }
 
-    function getById($id): ?Contest
+    public function getById(int $id): ?Contest
     {
-        $sql = $this->getStatement()['SELECT_CONTEST_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Contest(
-                $row['idContest'],
-                $row['bild'],
-                $row['Bestellung_idBestellung'],
-                $row['freigeschalten']
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($bild, $bestellung_id, $freigeschalten): Contest
     {
-        $sql = $this->getStatement()['SELECT_ALL_CONTEST'];
+        $object = R::dispense(self::TABLE_NAME);
+        $contest = new Contest($object);
 
-        $result = $this->getConnection()->query($sql);
+        $contest->setBild($bild);
+        $contest->setBestellungId($bestellung_id);
+        $contest->setFreigeschalten($freigeschalten);
 
-        $resultArray = [];
+        $id = R::store($contest->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Contest(
-                $row['idContest'],
-                $row['bild'],
-                $row['Bestellung_idBestellung'],
-                $row['freigeschalten']
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $bild, $bestellung_id, $freigeschalten): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Contest)
+        {
+            $object->setBild($bild);
+            $object->setBestellungId($bestellung_id);
+            $object->setFreigeschalten($freigeschalten);
+
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

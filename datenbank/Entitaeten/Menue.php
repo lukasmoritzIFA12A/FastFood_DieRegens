@@ -2,46 +2,39 @@
 
 namespace Entitaeten;
 
-class Menue
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Menue extends EntitaetsBean
 {
-    private int $idMenue;
-    private string $Titel;
-    private ?string $Beschreibung;
-
-    public function __construct(int $idMenue, string $Titel, ?string $Beschreibung)
+    public function getId(): int
     {
-        $this->idMenue = $idMenue;
-        $this->Titel = $Titel;
-        $this->Beschreibung = $Beschreibung;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdMenue(): int
+    public function setId(int $id): void
     {
-        return $this->idMenue;
-    }
-
-    public function setIdMenue(int $idMenue): void
-    {
-        $this->idMenue = $idMenue;
+        $this->getBean()->id = $id;
     }
 
     public function getTitel(): string
     {
-        return $this->Titel;
+        return $this->getBean()->getProperties()['Titel'];
     }
 
     public function setTitel(string $Titel): void
     {
-        $this->Titel = $Titel;
+        $this->getBean()->titel = $Titel;
     }
 
     public function getBeschreibung(): ?string
     {
-        return $this->Beschreibung;
+        return $this->getBean()->getProperties()['Beschreibung'];
     }
 
     public function setBeschreibung(?string $Beschreibung): void
     {
-        $this->Beschreibung = $Beschreibung;
+        $this->getBean()->beschreibung = $Beschreibung;
     }
 }

@@ -2,58 +2,49 @@
 
 namespace Entitaeten;
 
-class Contest
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Contest extends EntitaetsBean
 {
-    private int $idContest;
-    private string $bild; //BLOB
-    private int $Bestellung_idBestellung;
-    private bool $freigeschalten = false;
-
-    public function __construct(int $idContest, string $bild, int $Bestellung_idBestellung, bool $freigeschalten)
+    public function getId(): int
     {
-        $this->idContest = $idContest;
-        $this->bild = $bild;
-        $this->Bestellung_idBestellung = $Bestellung_idBestellung;
-        $this->freigeschalten = $freigeschalten;
+        return $this->getBean()->getProperties()['id'];
     }
 
-    public function getIdContest(): int
+    public function setId(int $id): void
     {
-        return $this->idContest;
+        $this->getBean()->id = $id;
     }
 
-    public function setIdContest(int $idContest): void
+    public function getBestellungId(): int
     {
-        $this->idContest = $idContest;
+        return $this->getBean()->getProperties()['Bestellung_id'];
     }
 
-    public function getBestellungIdBestellung(): int
+    public function setBestellungId(int $Bestellung_id): void
     {
-        return $this->Bestellung_idBestellung;
-    }
-
-    public function setBestellungIdBestellung(int $Bestellung_idBestellung): void
-    {
-        $this->Bestellung_idBestellung = $Bestellung_idBestellung;
+        $this->getBean()->bestellung_id = $Bestellung_id;
     }
 
     public function getBild(): string
     {
-        return $this->bild;
+        return $this->getBean()->getProperties()['Bild'];
     }
 
     public function setBild(string $bild): void
     {
-        $this->bild = $bild;
+        $this->getBean()->bild = $bild;
     }
 
     public function isFreigeschalten(): bool
     {
-        return $this->freigeschalten;
+        return $this->getBean()->getProperties()['Freigeschalten'];
     }
 
     public function setFreigeschalten(bool $freigeschalten): void
     {
-        $this->freigeschalten = $freigeschalten;
+        $this->getBean()->freigeschalten = $freigeschalten;
     }
 }

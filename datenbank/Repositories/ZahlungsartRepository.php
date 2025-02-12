@@ -2,50 +2,54 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Zahlungsart.php';
+
 use Entitaeten\Zahlungsart;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class ZahlungsartRepository extends DatenbankRepository
+class ZahlungsartRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'zahlungsart';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Zahlungsart::class);
     }
 
-    function getById($id): ?Zahlungsart
+    public function getById(int $id): ?Zahlungsart
     {
-        $sql = $this->getStatement()['SELECT_ZAHLUNGSART_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Zahlungsart(
-                $row['idZahlungsart'],
-                $row['Art'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($art): Zahlungsart
     {
-        $sql = $this->getStatement()['SELECT_ALL_ZAHLUNGSART'];
+        $object = R::dispense(self::TABLE_NAME);
+        $zahlungsart = new Zahlungsart($object);
 
-        $result = $this->getConnection()->query($sql);
+        $zahlungsart->setArt($art);
 
-        $resultArray = [];
+        $id = R::store($zahlungsart->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Zahlungsart(
-                $row['idZahlungsart'],
-                $row['Art'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $art): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Zahlungsart)
+        {
+            $object->setArt($art);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

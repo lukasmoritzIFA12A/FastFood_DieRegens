@@ -2,62 +2,64 @@
 
 namespace Repositories;
 
-use DatenbankRepository;
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
+include_once dirname(__DIR__) . '/Entitaeten/Kunde.php';
+
 use Entitaeten\Kunde;
+use RedBeanPHP\R;
+use RedBeanPHP\RedException\SQL;
+use RepositoryAccess;
 
-class KundeRepository extends DatenbankRepository
+class KundeRepository extends RepositoryAccess
 {
-    function __construct($conn)
+    private const TABLE_NAME = 'kunde';
+
+    function __construct()
     {
-        parent::__construct($conn);
+        parent::__construct(self::TABLE_NAME, Kunde::class);
     }
 
-    function getById($id): ?Kunde
+    public function getById(int $id): ?Kunde
     {
-        $sql = $this->getStatement()['SELECT_KUNDE_BY_ID'];
-        $result = $this->getResultFromPreparedStatementById($sql, $id);
-
-        if ($row = $result->fetch_assoc()) {
-            return new Kunde(
-                $row['idKunde'],
-                $row['Adresse_idAdresse'],
-                $row['Vorname'],
-                $row['Nachname'],
-                $row['Telefonnummer'],
-                $row['Registrierungsdatum'],
-                $row['Login_idLogin'],
-                $row['Kundenstatus_idKundenstatus'],
-            );
-        } else {
-            return null;
-        }
+        return parent::getById($id);
     }
 
-    function getAll(): ?array
+    /**
+     * @throws SQL
+     */
+    function insert($adresse_id, $vorname, $nachname, $telefonnummer, $registierungsdatum, $login_id): Kunde
     {
-        $sql = $this->getStatement()['SELECT_ALL_KUNDE'];
+        $object = R::dispense(self::TABLE_NAME);
+        $kunde = new Kunde($object);
 
-        $result = $this->getConnection()->query($sql);
+        $kunde->setAdresseId($adresse_id);
+        $kunde->setVorname($vorname);
+        $kunde->setNachname($nachname);
+        $kunde->setTelefonnummer($telefonnummer);
+        $kunde->setRegistrierungsdatum($registierungsdatum);
+        $kunde->setLoginId($login_id);
 
-        $resultArray = [];
+        $id = R::store($kunde->getBean());
+        return $this->getById($id);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $resultArray[] = new Kunde(
-                $row['idKunde'],
-                $row['Adresse_idAdresse'],
-                $row['Vorname'],
-                $row['Nachname'],
-                $row['Telefonnummer'],
-                $row['Registrierungsdatum'],
-                $row['Login_idLogin'],
-                $row['Kundenstatus_idKundenstatus'],
-            );
+    /**
+     * @throws SQL
+     */
+    function update(int $id, $adresse_id, $vorname, $nachname, $telefonnummer, $registierungsdatum, $login_id): int|string|null
+    {
+        $object = $this->getById($id);
+        if ($object instanceof Kunde)
+        {
+            $object->setAdresseId($adresse_id);
+            $object->setVorname($vorname);
+            $object->setNachname($nachname);
+            $object->setTelefonnummer($telefonnummer);
+            $object->setRegistrierungsdatum($registierungsdatum);
+            $object->setLoginId($login_id);
+            return R::store($object->getBean());
         }
 
-        if (empty($resultArray)) {
-            return null;
-        } else {
-            return $resultArray;
-        }
+        return null;
     }
 }

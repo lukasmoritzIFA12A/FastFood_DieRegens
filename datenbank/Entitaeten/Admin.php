@@ -2,22 +2,19 @@
 
 namespace Entitaeten;
 
-class Admin
+include_once dirname(__DIR__) . '/EntitaetsBean.php';
+
+use EntitaetsBean;
+
+class Admin extends EntitaetsBean
 {
-    private int $Login_idLogin;
-
-    public function __construct(int $Login_idLogin)
+    public function getLoginId(): int
     {
-        $this->Login_idLogin = $Login_idLogin;
+        return $this->getBean()->getProperties()['Login_id'];
     }
 
-    public function getLoginIdLogin(): int
+    public function setLoginId(int $Login_id): void
     {
-        return $this->Login_idLogin;
-    }
-
-    public function setLoginIdLogin(int $Login_idLogin): void
-    {
-        $this->Login_idLogin = $Login_idLogin;
+        $this->getBean()->login_id = $Login_id;
     }
 }
