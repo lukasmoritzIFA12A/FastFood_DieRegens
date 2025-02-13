@@ -5,7 +5,7 @@ namespace src\datenbank\Repositories;
 include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Rechnung.php';
 
-use OLDENTITIES\Rechnung;
+use datenbank\Entitaeten\Rechnung;
 use RedBeanPHP\R;
 use RedBeanPHP\RedException\SQL;
 use src\datenbank\RepositoryAccess;

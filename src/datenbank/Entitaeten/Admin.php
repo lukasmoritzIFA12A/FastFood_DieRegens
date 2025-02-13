@@ -9,17 +9,17 @@ use Doctrine\ORM\Mapping as ORM;
 class Admin
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue]
-    private int $Login_id;
+    #[ORM\ManyToOne(targetEntity: Login::class)]
+    #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id")]
+    private Login $login;
 
-    public function getLoginId(): int
+    public function getLogin(): Login
     {
-        return $this->Login_id;
+        return $this->login;
     }
 
-    public function setLoginId(int $Login_id): void
+    public function setLogin(Login $login): void
     {
-        $this->Login_id = $Login_id;
+        $this->login = $login;
     }
 }

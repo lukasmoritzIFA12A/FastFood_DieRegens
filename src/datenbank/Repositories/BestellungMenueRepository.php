@@ -5,7 +5,7 @@ namespace src\datenbank\Repositories;
 include_once dirname(__DIR__) . '/RepositoryJOINAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Bestellung_Menue.php';
 
-use OLDENTITIES\Bestellung_Menue;
+use datenbank\Entitaeten\Bestellung_Menue;
 use RedBeanPHP\R;
 use RedBeanPHP\RedException\SQL;
 use src\datenbank\RepositoryJOINAccess;
