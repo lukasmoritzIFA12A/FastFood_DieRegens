@@ -7,9 +7,9 @@ include_once dirname(__DIR__, 2) . '/datenbank/Repositories/LoginRepository.php'
 include_once dirname(__DIR__) . '/DatenbankTest.php';
 
 use DatenbankTest;
-use Repositories\AdminRepository;
-use Repositories\LoginRepository;
 use RedBeanPHP\RedException\SQL;
+use src\datenbank\Repositories\AdminRepository;
+use src\datenbank\Repositories\LoginRepository;
 
 class AdminRepositoryTest extends DatenbankTest
 {
@@ -46,6 +46,21 @@ class AdminRepositoryTest extends DatenbankTest
     /**
      * @throws SQL
      */
+    public function testGetById(): void
+    {
+        $login = self::$loginRepository->insert("TestGetById", "PasswordGetById");
+
+        self::$adminRepository->insert($login->getId());
+
+        $retrievedAdmin = self::$adminRepository->getById($login->getId());
+
+        $this->assertNotNull($retrievedAdmin);
+        $this->assertEquals($login->getId(), $retrievedAdmin->getLoginId());
+    }
+
+    /**
+     * @throws SQL
+     */
     public function testDeleteAll(): void
     {
         $login1 = self::$loginRepository->insert("AdminUser1", "Password1");
@@ -63,15 +78,33 @@ class AdminRepositoryTest extends DatenbankTest
     /**
      * @throws SQL
      */
-    public function testGetById(): void
+    public function testGetAll(): void
     {
-        $login = self::$loginRepository->insert("TestGetById", "PasswordGetById");
+        $login1 = self::$loginRepository->insert("Test1", "Password1");
+        $login2 = self::$loginRepository->insert("Test2", "Password2");
 
-        self::$adminRepository->insert($login->getId());
+        self::$adminRepository->insert($login1->getId());
+        self::$adminRepository->insert($login2->getId());
 
-        $retrievedAdmin = self::$adminRepository->getById($login->getId());
+        $allAdmins = self::$adminRepository->getAll();
 
-        $this->assertNotNull($retrievedAdmin);
-        $this->assertEquals($login->getId(), $retrievedAdmin->getLoginId());
+        $this->assertIsArray($allAdmins);
+        $this->assertCount(2, $allAdmins);
+
+        $firstAdmin = array_values($allAdmins)[0] ?? null;
+        $this->assertNotNull($firstAdmin);
+        $this->assertEquals($login1->getId(), $firstAdmin->getLoginId());
+    }
+
+    public function testUpdate(): void
+    {
+        //Gibt es bei Admin Repository nicht!
+        $this->assertTrue(true);
+    }
+
+    public function testDeleteById(): void
+    {
+        //Gibt es bei Admin Repository nicht!
+        $this->assertTrue(true);
     }
 }

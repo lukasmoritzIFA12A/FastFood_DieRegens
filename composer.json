@@ -1,11 +1,17 @@
 {
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "gabordemooij/redbean": "*"
+        "phpunit/phpunit": "*"
     },
 
     "require": {
+        "doctrine/orm": "*",
+        "doctrine/dbal": "*",
+        "symfony/cache": "*",
         "ext-mysqli": "*",
         "ext-pdo": "*"
+    },
+
+    "autoload": {
+        "psr-0": {"": "src/"}
     }
 }

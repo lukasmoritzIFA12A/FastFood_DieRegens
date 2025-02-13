@@ -3,28 +3,24 @@
 namespace Test\Datenbank;
 
 include_once dirname(__DIR__, 2) . '/datenbank/Repositories/AdresseRepository.php';
-include_once dirname(__DIR__, 2) . '/datenbank/DatenbankAccess.php';
+include_once dirname(__DIR__) . '/DatenbankTest.php';
 
-use PHPUnit\Framework\TestCase;
-use Repositories\AdresseRepository;
-use DatenbankAccess;
+use DatenbankTest;
 use RedBeanPHP\RedException\SQL;
+use src\datenbank\Repositories\AdresseRepository;
 
-class AdresseRepositoryTest extends TestCase
+class AdresseRepositoryTest extends DatenbankTest
 {
     private static AdresseRepository $adresseRepository;
-    private static DatenbankAccess $datenbankAccess;
 
     public static function setUpBeforeClass(): void
     {
-        $configs = include dirname(__DIR__, 2) . '/datenbank/Config.php';
-        self::$datenbankAccess = new DatenbankAccess($configs['dbtestname']);
         self::$adresseRepository = new AdresseRepository();
 
-        self::$adresseRepository->deleteAll();
+        parent::setUpBeforeClass();
     }
 
-    protected function setUp(): void
+    protected static function cleanup(): void
     {
         self::$adresseRepository->deleteAll();
     }
@@ -55,6 +51,26 @@ class AdresseRepositoryTest extends TestCase
     /**
      * @throws SQL
      */
+    public function testGetById(): void
+    {
+        $strassenname = "Baumstr.";
+        $hausnummer = "21b";
+        $hausnummerzusatz = null;
+        $plz = "90523";
+        $stadt = "Nürnberg";
+        $bundesland = "Bayern";
+
+        $insertedAdresse = self::$adresseRepository->insert($strassenname, $hausnummer, $hausnummerzusatz, $plz, $stadt, $bundesland);
+
+        $retrievedAdresse = self::$adresseRepository->getById($insertedAdresse->getId());
+
+        $this->assertNotNull($retrievedAdresse);
+        $this->assertEquals($insertedAdresse->getId(), $retrievedAdresse->getId());
+    }
+
+    /**
+     * @throws SQL
+     */
     public function testDeleteAll(): void
     {
         $strassenname = "Baumstr.";
@@ -73,23 +89,18 @@ class AdresseRepositoryTest extends TestCase
         $this->assertEmpty($adressen);
     }
 
-    /**
-     * @throws SQL
-     */
-    public function testGetById(): void
+    protected function testGetAll(): void
     {
-        $strassenname = "Baumstr.";
-        $hausnummer = "21b";
-        $hausnummerzusatz = null;
-        $plz = "90523";
-        $stadt = "Nürnberg";
-        $bundesland = "Bayern";
+        // TODO: Implement testGetAll() method.
+    }
 
-        $insertedAdresse = self::$adresseRepository->insert($strassenname, $hausnummer, $hausnummerzusatz, $plz, $stadt, $bundesland);
+    protected function testUpdate(): void
+    {
+        // TODO: Implement testUpdate() method.
+    }
 
-        $retrievedAdresse = self::$adresseRepository->getById($insertedAdresse->getId());
-
-        $this->assertNotNull($retrievedAdresse);
-        $this->assertEquals($insertedAdresse->getId(), $retrievedAdresse->getId());
+    protected function testDeleteById(): void
+    {
+        // TODO: Implement testDeleteById() method.
     }
 }

@@ -4,30 +4,55 @@ namespace Test\Datenbank;
 
 include_once dirname(__DIR__, 2) . '/datenbank/Repositories/ContestRepository.php';
 include_once dirname(__DIR__, 2) . '/datenbank/Repositories/BestellungRepository.php';
-include_once dirname(__DIR__, 2) . '/datenbank/DatenbankAccess.php';
+include_once dirname(__DIR__, 2) . '/datenbank/Repositories/KundeRepository.php';
+include_once dirname(__DIR__, 2) . '/datenbank/Repositories/ZahlungsartRepository.php';
+include_once dirname(__DIR__, 2) . '/datenbank/Repositories/BestellstatusRepository.php';
+include_once dirname(__DIR__, 2) . '/datenbank/Repositories/AdresseRepository.php';
+include_once dirname(__DIR__, 2) . '/datenbank/Repositories/LoginRepository.php';
+include_once dirname(__DIR__) . '/DatenbankTest.php';
 
-use PHPUnit\Framework\TestCase;
-use Repositories\AdresseRepository;
-use DatenbankAccess;
+use DatenbankTest;
 use RedBeanPHP\RedException\SQL;
+use src\datenbank\Repositories\AdresseRepository;
+use src\datenbank\Repositories\BestellstatusRepository;
+use src\datenbank\Repositories\BestellungRepository;
+use src\datenbank\Repositories\ContestRepository;
+use src\datenbank\Repositories\KundeRepository;
+use src\datenbank\Repositories\LoginRepository;
+use src\datenbank\Repositories\ZahlungsartRepository;
 
-class ContestRepositoryTest extends TestCase
+class ContestRepositoryTest extends DatenbankTest
 {
+    private static ContestRepository $contestRepository;
+    private static BestellungRepository $bestellungRepository;
     private static AdresseRepository $adresseRepository;
-    private static DatenbankAccess $datenbankAccess;
+    private static KundeRepository $kundeRepository;
+    private static ZahlungsartRepository $zahlungsartRepository;
+    private static BestellstatusRepository $bestellstatusRepository;
+    private static LoginRepository $loginRepository;
 
     public static function setUpBeforeClass(): void
     {
-        $configs = include dirname(__DIR__, 2) . '/datenbank/Config.php';
-        self::$datenbankAccess = new DatenbankAccess($configs['dbtestname']);
+        self::$contestRepository = new ContestRepository();
+        self::$bestellungRepository = new BestellungRepository();
         self::$adresseRepository = new AdresseRepository();
+        self::$kundeRepository = new KundeRepository();
+        self::$zahlungsartRepository = new ZahlungsartRepository();
+        self::$bestellstatusRepository = new BestellstatusRepository();
+        self::$loginRepository = new LoginRepository();
 
-        self::$adresseRepository->deleteAll();
+        parent::setUpBeforeClass();
     }
 
-    protected function setUp(): void
+    protected static function cleanup(): void
     {
+        self::$contestRepository->deleteAll();
+        self::$bestellungRepository->deleteAll();
         self::$adresseRepository->deleteAll();
+        self::$kundeRepository->deleteAll();
+        self::$zahlungsartRepository->deleteAll();
+        self::$bestellstatusRepository->deleteAll();
+        self::$loginRepository->deleteAll();
     }
 
     /**
@@ -35,22 +60,27 @@ class ContestRepositoryTest extends TestCase
      */
     public function testInsert(): void
     {
-        $strassenname = "Baumstr.";
-        $hausnummer = "21b";
-        $hausnummerzusatz = null;
-        $plz = "90523";
-        $stadt = "Nürnberg";
-        $bundesland = "Bayern";
+        $login = self::$loginRepository->insert("User", "Passwort");
+        $adresse = self::$adresseRepository->insert("Baumstr.", "21b", null, "90523", "Nürnberg", "Bayern");
+        $kunde = self::$kundeRepository->insert($adresse->getId(), "Max", "Mustermann", "123456789", "2023-10-01 00:00:00", $login->getId());
+        $zahlungsart = self::$zahlungsartRepository->insert("Kreditkarte");
+        $bestellstatus = self::$bestellstatusRepository->insert("Bestellung in Bearbeitung");
+        $bestellung = self::$bestellungRepository->insert("2023-10-15 00:00:00", $kunde->getId(), $zahlungsart->getId(), $bestellstatus->getId());
 
-        $insertedAdresse = self::$adresseRepository->insert($strassenname, $hausnummer, $hausnummerzusatz, $plz, $stadt, $bundesland);
+        $bild = base64_encode("Testbild ");
+        $bestellungId = $bestellung->getId();
+        $freigeschalten = false;
 
-        $this->assertNotNull($insertedAdresse);
-        $this->assertEquals($strassenname, $insertedAdresse->getStrassenname());
-        $this->assertEquals($hausnummer, $insertedAdresse->getHausnummer());
-        $this->assertEquals($hausnummerzusatz, $insertedAdresse->getZusatz());
-        $this->assertEquals($plz, $insertedAdresse->getPLZ());
-        $this->assertEquals($stadt, $insertedAdresse->getStadt());
-        $this->assertEquals($bundesland, $insertedAdresse->getBundesland());
+        $insertedContest = self::$contestRepository->insert(
+            $bild,
+            $bestellungId,
+            $freigeschalten
+        );
+
+        $this->assertNotNull($insertedContest);
+        $this->assertNotNull($insertedContest->getBild());
+        $this->assertEquals($bestellungId, $insertedContest->getBestellungId());
+        $this->assertEquals($freigeschalten, $insertedContest->isFreigeschalten());
     }
 
     /**
@@ -58,20 +88,24 @@ class ContestRepositoryTest extends TestCase
      */
     public function testDeleteAll(): void
     {
-        $strassenname = "Baumstr.";
-        $hausnummer = "21b";
-        $hausnummerzusatz = null;
-        $plz = "90523";
-        $stadt = "Nürnberg";
-        $bundesland = "Bayern";
+        $login = self::$loginRepository->insert("User", "Passwort");
+        $adresse = self::$adresseRepository->insert("Baumstr.", "21b", null, "90523", "Nürnberg", "Bayern");
+        $kunde = self::$kundeRepository->insert($adresse->getId(), "Max", "Mustermann", "123456789", "2023-10-01 00:00:00", $login->getId());
+        $zahlungsart = self::$zahlungsartRepository->insert("Kreditkarte");
+        $bestellstatus = self::$bestellstatusRepository->insert("Bestellung in Bearbeitung");
+        $bestellung = self::$bestellungRepository->insert("2023-10-15 00:00:00", $kunde->getId(), $zahlungsart->getId(), $bestellstatus->getId());
 
-        self::$adresseRepository->insert($strassenname, $hausnummer, $hausnummerzusatz, $plz, $stadt, $bundesland);
-        self::$adresseRepository->insert($strassenname, $hausnummer, $hausnummerzusatz, $plz, $stadt, $bundesland);
+        $bild = base64_encode("Testbild ");
+        $bestellungId = $bestellung->getId();
+        $freigeschalten = false;
 
-        self::$adresseRepository->deleteAll();
+        self::$contestRepository->insert($bild, $bestellungId, $freigeschalten);
+        self::$contestRepository->insert($bild, $bestellungId, $freigeschalten);
 
-        $adressen = self::$adresseRepository->getAll();
-        $this->assertEmpty($adressen);
+        self::$contestRepository->deleteAll();
+
+        $contests = self::$contestRepository->getAll();
+        $this->assertEmpty($contests);
     }
 
     /**
@@ -79,18 +113,41 @@ class ContestRepositoryTest extends TestCase
      */
     public function testGetById(): void
     {
-        $strassenname = "Baumstr.";
-        $hausnummer = "21b";
-        $hausnummerzusatz = null;
-        $plz = "90523";
-        $stadt = "Nürnberg";
-        $bundesland = "Bayern";
+        $login = self::$loginRepository->insert("User", "Passwort");
+        $adresse = self::$adresseRepository->insert("Baumstr.", "21b", null, "90523", "Nürnberg", "Bayern");
+        $kunde = self::$kundeRepository->insert($adresse->getId(), "Max", "Mustermann", "123456789", "2023-10-01 00:00:00", $login->getId());
+        $zahlungsart = self::$zahlungsartRepository->insert("Kreditkarte");
+        $bestellstatus = self::$bestellstatusRepository->insert("Bestellung in Bearbeitung");
+        $bestellung = self::$bestellungRepository->insert("2023-10-15 00:00:00", $kunde->getId(), $zahlungsart->getId(), $bestellstatus->getId());
 
-        $insertedAdresse = self::$adresseRepository->insert($strassenname, $hausnummer, $hausnummerzusatz, $plz, $stadt, $bundesland);
+        $bild = base64_encode("Testbild ");
+        $bestellungId = $bestellung->getId();
+        $freigeschalten = false;
 
-        $retrievedAdresse = self::$adresseRepository->getById($insertedAdresse->getId());
+        $insertedContest = self::$contestRepository->insert(
+            $bild,
+            $bestellungId,
+            $freigeschalten
+        );
 
-        $this->assertNotNull($retrievedAdresse);
-        $this->assertEquals($insertedAdresse->getId(), $retrievedAdresse->getId());
+        $retrievedContest = self::$contestRepository->getById($insertedContest->getId());
+
+        $this->assertNotNull($retrievedContest);
+        $this->assertEquals($insertedContest->getId(), $retrievedContest->getId());
+    }
+
+    protected function testGetAll(): void
+    {
+        // TODO: Implement testGetAll() method.
+    }
+
+    protected function testUpdate(): void
+    {
+        // TODO: Implement testUpdate() method.
+    }
+
+    protected function testDeleteById(): void
+    {
+        // TODO: Implement testDeleteById() method.
     }
 }

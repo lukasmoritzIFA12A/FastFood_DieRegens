@@ -3,28 +3,24 @@
 namespace Test\Datenbank;
 
 include_once dirname(__DIR__, 2) . '/datenbank/Repositories/BestellstatusRepository.php';
-include_once dirname(__DIR__, 2) . '/datenbank/DatenbankAccess.php';
+include_once dirname(__DIR__) . '/DatenbankTest.php';
 
-use PHPUnit\Framework\TestCase;
-use Repositories\BestellstatusRepository;
-use DatenbankAccess;
+use DatenbankTest;
 use RedBeanPHP\RedException\SQL;
+use src\datenbank\Repositories\BestellstatusRepository;
 
-class BestellstatusRepositoryTest extends TestCase
+class BestellstatusRepositoryTest extends DatenbankTest
 {
     private static BestellstatusRepository $bestellstatusRepository;
-    private static DatenbankAccess $datenbankAccess;
 
     public static function setUpBeforeClass(): void
     {
-        $configs = include dirname(__DIR__, 2) . '/datenbank/Config.php';
-        self::$datenbankAccess = new DatenbankAccess($configs['dbtestname']);
         self::$bestellstatusRepository = new BestellstatusRepository();
 
-        self::$bestellstatusRepository->deleteAll();
+        parent::setUpBeforeClass();
     }
 
-    protected function setUp(): void
+    protected static function cleanup(): void
     {
         self::$bestellstatusRepository->deleteAll();
     }
@@ -41,6 +37,28 @@ class BestellstatusRepositoryTest extends TestCase
         $this->assertNotNull($insertedStatus);
         $this->assertGreaterThan(0, $insertedStatus->getId());
         $this->assertEquals($statusName, $insertedStatus->getStatus());
+    }
+
+    /**
+     * @throws SQL
+     */
+    public function testGetById(): void
+    {
+        $statusName = "In Bearbeitung";
+        $insertedStatus = self::$bestellstatusRepository->insert($statusName);
+
+        $retrievedStatus = self::$bestellstatusRepository->getById($insertedStatus->getId());
+
+        $this->assertNotNull($retrievedStatus);
+        $this->assertEquals($statusName, $retrievedStatus->getStatus());
+    }
+
+    /**
+     * @throws SQL
+     */
+    public function testGetAll(): void
+    {
+
     }
 
     /**
@@ -74,17 +92,8 @@ class BestellstatusRepositoryTest extends TestCase
         $this->assertEmpty($statuses);
     }
 
-    /**
-     * @throws SQL
-     */
-    public function testGetById(): void
+    protected function testDeleteById(): void
     {
-        $statusName = "In Bearbeitung";
-        $insertedStatus = self::$bestellstatusRepository->insert($statusName);
-
-        $retrievedStatus = self::$bestellstatusRepository->getById($insertedStatus->getId());
-
-        $this->assertNotNull($retrievedStatus);
-        $this->assertEquals($statusName, $retrievedStatus->getStatus());
+        // TODO: Implement testDeleteById() method.
     }
 }

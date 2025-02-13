@@ -1,8 +1,9 @@
 <?php
 
-    use Repositories\AdresseRepository;
+use src\datenbank\DatenbankAccess;
+use src\datenbank\Repositories\AdresseRepository;
 
-    require 'datenbank/DatenbankAccess.php';
+require 'datenbank/DatenbankAccess.php';
     require 'datenbank/Repositories/AdresseRepository.php';
 
     $datenbank = new DatenbankAccess();

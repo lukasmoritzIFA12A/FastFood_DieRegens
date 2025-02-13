@@ -3,8 +3,9 @@
 include_once dirname(__DIR__) . '/datenbank/DatenbankAccess.php';
 
 use PHPUnit\Framework\TestCase;
+use src\datenbank\DatenbankAccess;
 
-class DatenbankTest extends TestCase
+abstract class DatenbankTest extends TestCase
 {
     private static DatenbankAccess $datenbankAccess;
 
@@ -30,4 +31,16 @@ class DatenbankTest extends TestCase
     {
         self::$datenbankAccess->close();
     }
+
+    abstract public function testGetById(): void;
+
+    abstract public function testGetAll(): void;
+
+    abstract public function testInsert(): void;
+
+    abstract public function testUpdate(): void;
+
+    abstract public function testDeleteById(): void;
+
+    abstract public function testDeleteAll(): void;
 }
