@@ -20,7 +20,7 @@ class Adresse
     private string $Hausnummer;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $Zusatz;
+    private ?string $Zusatz;
 
     #[ORM\Column(type: 'string', length: 10)]
     private string $PLZ;
@@ -61,12 +61,12 @@ class Adresse
         $this->Hausnummer = $Hausnummer;
     }
 
-    public function getZusatz(): string
+    public function getZusatz(): ?string
     {
         return $this->Zusatz;
     }
 
-    public function setZusatz(string $Zusatz): void
+    public function setZusatz(?string $Zusatz): void
     {
         $this->Zusatz = $Zusatz;
     }

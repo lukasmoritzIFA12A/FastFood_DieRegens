@@ -14,7 +14,7 @@ include_once dirname(__DIR__) . '/Repositories/AdminRepository.php';
 class Admin
 {
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Login::class)]
+    #[ORM\ManyToOne(targetEntity: Login::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id")]
     private Login $login;
 

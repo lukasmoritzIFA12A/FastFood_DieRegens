@@ -2,6 +2,7 @@
 
 namespace datenbank\Entitaeten;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use datenbank\Repositories\KundeRepository;
 
@@ -14,7 +15,7 @@ class Kunde
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Adresse::class)]
+    #[ORM\ManyToOne(targetEntity: Adresse::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Adresse_id", referencedColumnName: "id")]
     private Adresse $adresse;
 
@@ -28,9 +29,9 @@ class Kunde
     private string $Telefonnummer;
 
     #[ORM\Column(type: 'datetime')]
-    private string $Registrierungsdatum;
+    private DateTime $Registrierungsdatum;
 
-    #[ORM\ManyToOne(targetEntity: Login::class)]
+    #[ORM\ManyToOne(targetEntity: Login::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id")]
     private Login $login;
 
@@ -74,22 +75,22 @@ class Kunde
         $this->Nachname = $Nachname;
     }
 
-    public function getTelefonnummer(): string
+    public function getTelefonnummer(): ?string
     {
         return $this->Telefonnummer;
     }
 
-    public function setTelefonnummer(string $Telefonnummer): void
+    public function setTelefonnummer(?string $Telefonnummer): void
     {
         $this->Telefonnummer = $Telefonnummer;
     }
 
-    public function getRegistrierungsdatum(): string
+    public function getRegistrierungsdatum(): DateTime
     {
         return $this->Registrierungsdatum;
     }
 
-    public function setRegistrierungsdatum(string $Registrierungsdatum): void
+    public function setRegistrierungsdatum(DateTime $Registrierungsdatum): void
     {
         $this->Registrierungsdatum = $Registrierungsdatum;
     }

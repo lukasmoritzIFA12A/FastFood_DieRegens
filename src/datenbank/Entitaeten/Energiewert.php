@@ -19,22 +19,22 @@ class Energiewert
     private Produkt $produkt;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private string $PortionSize;
+    private ?string $PortionSize;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Kalorien;
+    private ?string $Kalorien;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Fett;
+    private ?string $Fett;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Kohlenhydrate;
+    private ?string $Kohlenhydrate;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Zucker;
+    private ?string $Zucker;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Eiweiss;
+    private ?string $Eiweiss;
 
     public function getId(): int
     {
@@ -56,62 +56,62 @@ class Energiewert
         $this->produkt = $produkt;
     }
 
-    public function getPortionSize(): string
+    public function getPortionSize(): ?string
     {
         return $this->PortionSize;
     }
 
-    public function setPortionSize(string $PortionSize): void
+    public function setPortionSize(?string $PortionSize): void
     {
         $this->PortionSize = $PortionSize;
     }
 
-    public function getKalorien(): string
+    public function getKalorien(): ?string
     {
         return $this->Kalorien;
     }
 
-    public function setKalorien(string $Kalorien): void
+    public function setKalorien(?string $Kalorien): void
     {
         $this->Kalorien = $Kalorien;
     }
 
-    public function getFett(): string
+    public function getFett(): ?string
     {
         return $this->Fett;
     }
 
-    public function setFett(string $Fett): void
+    public function setFett(?string $Fett): void
     {
         $this->Fett = $Fett;
     }
 
-    public function getKohlenhydrate(): string
+    public function getKohlenhydrate(): ?string
     {
         return $this->Kohlenhydrate;
     }
 
-    public function setKohlenhydrate(string $Kohlenhydrate): void
+    public function setKohlenhydrate(?string $Kohlenhydrate): void
     {
         $this->Kohlenhydrate = $Kohlenhydrate;
     }
 
-    public function getZucker(): string
+    public function getZucker(): ?string
     {
         return $this->Zucker;
     }
 
-    public function setZucker(string $Zucker): void
+    public function setZucker(?string $Zucker): void
     {
         $this->Zucker = $Zucker;
     }
 
-    public function getEiweiss(): string
+    public function getEiweiss(): ?string
     {
         return $this->Eiweiss;
     }
 
-    public function setEiweiss(string $Eiweiss): void
+    public function setEiweiss(?string $Eiweiss): void
     {
         $this->Eiweiss = $Eiweiss;
     }

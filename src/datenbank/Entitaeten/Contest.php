@@ -17,7 +17,7 @@ class Contest
     #[ORM\Column(type: 'blob')]
     private string $bild;
 
-    #[ORM\ManyToOne(targetEntity: Bestellung::class)]
+    #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id")]
     private Bestellung $bestellung;
 

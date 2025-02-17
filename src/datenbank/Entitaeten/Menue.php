@@ -2,6 +2,7 @@
 
 namespace datenbank\Entitaeten;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use datenbank\Repositories\MenueRepository;
@@ -21,8 +22,13 @@ class Menue
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private string $Beschreibung;
 
-    #[ORM\ManyToMany(targetEntity: Produkt::class)]
+    #[ORM\ManyToMany(targetEntity: Produkt::class, cascade: ["persist"])]
     private Collection $produkte;
+
+    public function __construct()
+    {
+        $this->produkte = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -34,12 +40,12 @@ class Menue
         $this->id = $id;
     }
 
-    public function getBeschreibung(): string
+    public function getBeschreibung(): ?string
     {
         return $this->Beschreibung;
     }
 
-    public function setBeschreibung(string $Beschreibung): void
+    public function setBeschreibung(?string $Beschreibung): void
     {
         $this->Beschreibung = $Beschreibung;
     }

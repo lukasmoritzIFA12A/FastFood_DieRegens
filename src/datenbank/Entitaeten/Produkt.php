@@ -2,6 +2,8 @@
 
 namespace datenbank\Entitaeten;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use datenbank\Repositories\ProduktRepository;
 
@@ -14,7 +16,7 @@ class Produkt
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Icon::class)]
+    #[ORM\ManyToOne(targetEntity: Icon::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Icon_id", referencedColumnName: "id")]
     private Icon $icon;
 
@@ -33,8 +35,13 @@ class Produkt
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
     private string $Rabatt;
 
-    #[ORM\ManyToMany(targetEntity: Zutat::class)]
-    private Zutat $zutat;
+    #[ORM\ManyToMany(targetEntity: Zutat::class, cascade: ["persist"])]
+    private Collection $zutat;
+
+    public function __construct()
+    {
+        $this->zutat = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -66,12 +73,12 @@ class Produkt
         $this->Preis = $Preis;
     }
 
-    public function getBeschreibung(): string
+    public function getBeschreibung(): ?string
     {
         return $this->Beschreibung;
     }
 
-    public function setBeschreibung(string $Beschreibung): void
+    public function setBeschreibung(?string $Beschreibung): void
     {
         $this->Beschreibung = $Beschreibung;
     }
@@ -96,22 +103,22 @@ class Produkt
         $this->Titel = $Titel;
     }
 
-    public function getRabatt(): string
+    public function getRabatt(): ?string
     {
         return $this->Rabatt;
     }
 
-    public function setRabatt(string $Rabatt): void
+    public function setRabatt(?string $Rabatt): void
     {
         $this->Rabatt = $Rabatt;
     }
 
-    public function getZutat(): Zutat
+    public function getZutat(): Collection
     {
         return $this->zutat;
     }
 
-    public function setZutat(Zutat $zutat): void
+    public function setZutat(Collection $zutat): void
     {
         $this->zutat = $zutat;
     }

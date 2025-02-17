@@ -1,37 +1,61 @@
 <?php
 
-namespace src\datenbank;
+namespace datenbank;
 
-use RedBeanPHP\R;
+use datenbank\Entitaeten\Admin;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Exception;
 
 /**
  * @template T
  */
-class RepositoryAccess
+class RepositoryAccess extends EntityRepository
 {
-    /** @var class-string<T> */
-    protected string $entitaetsKlasse;
+    private EntityManager $entityManager;
 
-    private string $tableName;
-
-    function __construct(string $tableName, string $entitaetsKlasse)
+    function __construct(EntityManager $entityManager, string $entitaetsKlasse)
     {
-        $this->tableName = $tableName;
-        $this->entitaetsKlasse = $entitaetsKlasse;
+        parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * @return T|null
+     * @throws Exception
      */
-    function getById(int $id): ?EntitaetsBean
+    function getById(int $id): object
     {
-        $bean = R::load($this->tableName, $id);
+        $entity = $this->find($id);
 
-        if ($bean->getProperties()['id']) {
-            return new $this->entitaetsKlasse($bean);
+        if (!$entity)
+        {
+            throw new Exception("Entität mit ID $id wurde nicht gefunden.");
         }
 
-        return null;
+        return $entity;
+    }
+
+    function exists(int $id): bool
+    {
+        try
+        {
+            return $this->getById($id) !== null;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    /**
+     * @throws ORMException
+     */
+    function save(object $entity): void
+    {
+        $this->entityManager->persist($entity);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -39,26 +63,30 @@ class RepositoryAccess
      */
     function getAll(): ?array
     {
-        $beans = R::findAll($this->tableName);
-        if (!$beans) {
-            return null;
-        }
-
-        return array_map(fn($bean) => new $this->entitaetsKlasse($bean), $beans);
+        return $this->findAll();
     }
 
-    function deleteById(int $id): ?int
+    function deleteById(int $id): bool
     {
-        $object = $this->getById($id);
-        if ($object->getBean()) {
-            return R::trash($object->getBean());
+        try
+        {
+            $entity = $this->find($id);
+            if ($entity !== null) {
+                $this->entityManager->remove($entity);
+                $this->entityManager->flush();
+                return true;
+            }
+            return false;
         }
-
-        return null;
+        catch (OptimisticLockException | ORMException $e)
+        {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 
-    function deleteAll(): bool
+    function deleteAll(): void
     {
-        return R::exec('DELETE FROM ' . $this->tableName);
+        $this->getEntityManager()->createQuery("DELETE FROM ".$this->getEntityName())->execute();
     }
 }

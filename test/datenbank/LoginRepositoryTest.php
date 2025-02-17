@@ -4,23 +4,23 @@ namespace Test\Datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
 
-use datenbank\Repositories\ZutatRepository;
+use datenbank\Repositories\LoginRepository;
 use DatenbankTest;
 
-class ZutatRepositoryTest extends DatenbankTest
+class LoginRepositoryTest extends DatenbankTest
 {
-    private static ZutatRepository $zutatRepository;
+    private static LoginRepository $loginRepository;
 
     public static function setUpBeforeClass(): void
     {
         $entityManager = parent::createEntityManager();
 
-        self::$zutatRepository =  new ZutatRepository($entityManager);
+        self::$loginRepository =  new LoginRepository($entityManager);
     }
 
     protected static function cleanup(): void
     {
-        self::$zutatRepository->deleteAll();
+        self::$loginRepository->deleteAll();
     }
 
     public function testSaveByInsert(): void

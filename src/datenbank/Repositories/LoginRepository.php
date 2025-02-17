@@ -3,29 +3,16 @@
 namespace datenbank\Repositories;
 
 include_once dirname(__DIR__) . '/Entitaeten/Login.php';
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
 
 use datenbank\Entitaeten\Login;
-use Doctrine\ORM\EntityRepository;
-use Exception;
+use datenbank\RepositoryAccess;
+use Doctrine\ORM\EntityManager;
 
-class LoginRepository extends EntityRepository
+class LoginRepository extends RepositoryAccess
 {
-    public function exists(int $id): bool
+    public function __construct(EntityManager $entityManager)
     {
-        $login = $this->findOneBy(['id' => $id]);
-        return $login !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function create(string $Nutzername, string $Passwort): Login
-    {
-        $login = new Login();
-        $login->setNutzername($Nutzername);
-        $login->setPasswort($Passwort);
-        $this->getEntityManager()->persist($login);
-        $this->getEntityManager()->flush();
-        return $login;
+        parent::__construct($entityManager, Login::class);
     }
 }

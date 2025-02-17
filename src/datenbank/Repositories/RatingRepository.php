@@ -3,53 +3,16 @@
 namespace datenbank\Repositories;
 
 include_once dirname(__DIR__) . '/Entitaeten/Rating.php';
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
 
 use datenbank\Entitaeten\Rating;
+use datenbank\RepositoryAccess;
+use Doctrine\ORM\EntityManager;
 
-class RatingRepository
+class RatingRepository extends RepositoryAccess
 {
-    private const TABLE_NAME = 'rating';
-
-    function __construct()
+    public function __construct(EntityManager $entityManager)
     {
-        parent::__construct(self::TABLE_NAME, Rating::class);
-    }
-
-    public function getById(int $id): ?Rating
-    {
-        return parent::getById($id);
-    }
-
-    /**
-     * @throws SQL
-     */
-    function insert($kunde_id, $contest_id, $rating): Rating
-    {
-        $object = R::dispense(self::TABLE_NAME);
-        $ratingObj = new Rating($object);
-
-        $ratingObj->setKundeId($kunde_id);
-        $ratingObj->setContestId($contest_id);
-        $ratingObj->setRating($rating);
-
-        $id = R::store($ratingObj->getBean());
-        return $this->getById($id);
-    }
-
-    /**
-     * @throws SQL
-     */
-    function update(int $id, $kunde_id, $contest_id, $rating): int|string|null
-    {
-        $object = $this->getById($id);
-        if ($object instanceof Rating)
-        {
-            $object->setKundeId($kunde_id);
-            $object->setContestId($contest_id);
-            $object->setRating($rating);
-            return R::store($object->getBean());
-        }
-
-        return null;
+        parent::__construct($entityManager, Rating::class);
     }
 }

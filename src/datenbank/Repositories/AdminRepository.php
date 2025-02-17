@@ -3,32 +3,16 @@
 namespace datenbank\Repositories;
 
 include_once dirname(__DIR__) . '/Entitaeten/Admin.php';
+include_once dirname(__DIR__) . '/RepositoryAccess.php';
 
 use datenbank\Entitaeten\Admin;
-use datenbank\Entitaeten\Login;
-use Doctrine\ORM\EntityRepository;
+use datenbank\RepositoryAccess;
+use Doctrine\ORM\EntityManager;
 
-class AdminRepository extends EntityRepository
+class AdminRepository extends RepositoryAccess
 {
-    public function exists(Login $login): bool
+    public function __construct(EntityManager $entityManager)
     {
-        $admin = $this->findOneBy(['login' => $login]);
-        return $admin !== null;
-    }
-
-    public function create(Login $login): Admin
-    {
-        $loginRepository = $this->getEntityManager()->getRepository(Login::class);
-        $login = $loginRepository->find($login->getId());
-
-        if (!$login) {
-            throw new \Exception("Login nicht gefunden");
-        }
-
-        $admin = new Admin();
-        $admin->setLogin($login);
-        $this->getEntityManager()->persist($admin);
-        $this->getEntityManager()->flush();
-        return $admin;
+        parent::__construct($entityManager, Admin::class);
     }
 }

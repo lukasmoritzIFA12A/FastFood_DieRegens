@@ -14,11 +14,11 @@ class Rating
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Kunde::class)]
+    #[ORM\ManyToOne(targetEntity: Kunde::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Kunde_id", referencedColumnName: "id")]
     private Kunde $kunde;
 
-    #[ORM\ManyToOne(targetEntity: Contest::class)]
+    #[ORM\ManyToOne(targetEntity: Contest::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Contest_id", referencedColumnName: "id")]
     private Contest $contest;
 

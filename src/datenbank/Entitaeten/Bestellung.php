@@ -2,6 +2,8 @@
 
 namespace datenbank\Entitaeten;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use datenbank\Repositories\BestellungRepository;
@@ -16,25 +18,31 @@ class Bestellung
     private int $id;
 
     #[ORM\Column(type: 'datetime')]
-    private string $BestellungDatum;
+    private DateTime $BestellungDatum;
 
-    #[ORM\ManyToOne(targetEntity: Kunde::class)]
+    #[ORM\ManyToOne(targetEntity: Kunde::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Kunde_id", referencedColumnName: "id")]
     private Kunde $kunde;
 
-    #[ORM\ManyToOne(targetEntity: Zahlungsart::class)]
+    #[ORM\ManyToOne(targetEntity: Zahlungsart::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Zahlungsart_id", referencedColumnName: "id")]
     private Zahlungsart $zahlungsart;
 
-    #[ORM\ManyToOne(targetEntity: Bestellstatus::class)]
+    #[ORM\ManyToOne(targetEntity: Bestellstatus::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Bestellstatus_id", referencedColumnName: "id")]
     private Bestellstatus $bestellstatus;
 
-    #[ORM\ManyToMany(targetEntity: Menue::class)]
+    #[ORM\ManyToMany(targetEntity: Menue::class, cascade: ["persist"])]
     private Collection $menues;
 
-    #[ORM\ManyToMany(targetEntity: Produkt::class)]
+    #[ORM\ManyToMany(targetEntity: Produkt::class, cascade: ["persist"])]
     private Collection $produkte;
+
+    public function __construct()
+    {
+        $this->menues = new ArrayCollection();
+        $this->produkte = new ArrayCollection();
+    }
 
     public function getId(): int
     {
@@ -56,12 +64,12 @@ class Bestellung
         $this->kunde = $kunde;
     }
 
-    public function getBestellungDatum(): string
+    public function getBestellungDatum(): DateTime
     {
         return $this->BestellungDatum;
     }
 
-    public function setBestellungDatum(string $BestellungDatum): void
+    public function setBestellungDatum(DateTime $BestellungDatum): void
     {
         $this->BestellungDatum = $BestellungDatum;
     }

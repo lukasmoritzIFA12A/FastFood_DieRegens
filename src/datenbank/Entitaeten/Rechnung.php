@@ -14,14 +14,14 @@ class Rechnung
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Bestellung::class)]
+    #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id")]
     private Bestellung $bestellung;
 
     #[ORM\Column(type: 'datetime')]
     private string $ZahlungsDatum;
 
-    #[ORM\ManyToOne(targetEntity: Rabatt::class)]
+    #[ORM\ManyToOne(targetEntity: Rabatt::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true)]
     private Rabatt $rabatt;
 
@@ -35,12 +35,12 @@ class Rechnung
         $this->id = $id;
     }
 
-    public function getRabatt(): Rabatt
+    public function getRabatt(): ?Rabatt
     {
         return $this->rabatt;
     }
 
-    public function setRabatt(Rabatt $rabatt): void
+    public function setRabatt(?Rabatt $rabatt): void
     {
         $this->rabatt = $rabatt;
     }
