@@ -5,7 +5,7 @@ use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 
-require_once "vendor/autoload.php";
+require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 $config = ORMSetup::createAttributeMetadataConfiguration(
     paths: [dirname(__DIR__, 2) . '/src/datenbank/Entitaeten'],

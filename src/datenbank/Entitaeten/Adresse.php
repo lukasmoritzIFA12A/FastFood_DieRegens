@@ -2,8 +2,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\AdresseRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AdresseRepository::class)]
 #[ORM\Table(name: 'adresse')]
 class Adresse
 {

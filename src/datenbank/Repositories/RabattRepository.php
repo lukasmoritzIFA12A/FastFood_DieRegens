@@ -1,16 +1,12 @@
 <?php
 
-namespace src\datenbank\Repositories;
+namespace datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Rabatt.php';
 
 use datenbank\Entitaeten\Rabatt;
-use RedBeanPHP\R;
-use RedBeanPHP\RedException\SQL;
-use src\datenbank\RepositoryAccess;
 
-class RabattRepository extends RepositoryAccess
+class RabattRepository
 {
     private const TABLE_NAME = 'rabatt';
 

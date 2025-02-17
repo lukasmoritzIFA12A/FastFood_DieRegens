@@ -3,8 +3,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\ContestRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ContestRepository::class)]
 #[ORM\Table(name: 'contest')]
 class Contest
 {

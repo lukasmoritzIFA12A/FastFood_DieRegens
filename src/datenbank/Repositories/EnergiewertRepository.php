@@ -1,16 +1,12 @@
 <?php
 
-namespace src\datenbank\Repositories;
+namespace datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Energiewert.php';
 
 use datenbank\Entitaeten\Energiewert;
-use RedBeanPHP\R;
-use RedBeanPHP\RedException\SQL;
-use src\datenbank\RepositoryAccess;
 
-class EnergiewertRepository extends RepositoryAccess
+class EnergiewertRepository
 {
     private const TABLE_NAME = 'energiewert';
 

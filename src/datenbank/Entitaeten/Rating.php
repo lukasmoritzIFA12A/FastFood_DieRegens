@@ -3,8 +3,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\RatingRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: RatingRepository::class)]
 #[ORM\Table(name: 'rating')]
 class Rating
 {

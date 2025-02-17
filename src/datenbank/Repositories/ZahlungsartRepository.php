@@ -1,16 +1,12 @@
 <?php
 
-namespace src\datenbank\Repositories;
+namespace datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Zahlungsart.php';
 
 use datenbank\Entitaeten\Zahlungsart;
-use RedBeanPHP\R;
-use RedBeanPHP\RedException\SQL;
-use src\datenbank\RepositoryAccess;
 
-class ZahlungsartRepository extends RepositoryAccess
+class ZahlungsartRepository
 {
     private const TABLE_NAME = 'zahlungsart';
 

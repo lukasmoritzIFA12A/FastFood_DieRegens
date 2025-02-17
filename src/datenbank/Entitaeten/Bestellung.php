@@ -4,8 +4,9 @@ namespace datenbank\Entitaeten;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\BestellungRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BestellungRepository::class)]
 #[ORM\Table(name: 'bestellung')]
 class Bestellung
 {

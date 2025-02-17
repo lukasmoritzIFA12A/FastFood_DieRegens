@@ -3,8 +3,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\RabattRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: RabattRepository::class)]
 #[ORM\Table(name: 'rabatt')]
 class Rabatt
 {

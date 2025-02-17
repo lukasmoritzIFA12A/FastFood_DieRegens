@@ -3,8 +3,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\BestellstatusRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BestellstatusRepository::class)]
 #[ORM\Table(name: 'bestellstatus')]
 class Bestellstatus
 {

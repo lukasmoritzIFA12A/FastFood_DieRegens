@@ -3,8 +3,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\EnergiewertRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: EnergiewertRepository::class)]
 #[ORM\Table(name: 'energiewert')]
 class Energiewert
 {

@@ -2,9 +2,14 @@
 
 namespace datenbank\Entitaeten;
 
+
+
+use datenbank\Repositories\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+include_once dirname(__DIR__) . '/Repositories/AdminRepository.php';
+
+#[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\Table(name: 'admin')]
 class Admin
 {

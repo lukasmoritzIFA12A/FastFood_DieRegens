@@ -4,8 +4,9 @@ namespace datenbank\Entitaeten;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\MenueRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: MenueRepository::class)]
 #[ORM\Table(name: 'menue')]
 class Menue
 {

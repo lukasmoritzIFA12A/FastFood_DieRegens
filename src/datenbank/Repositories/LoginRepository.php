@@ -1,57 +1,31 @@
 <?php
 
-namespace src\datenbank\Repositories;
+namespace datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Login.php';
 
 use datenbank\Entitaeten\Login;
-use RedBeanPHP\R;
-use RedBeanPHP\RedException\SQL;
-use src\datenbank\RepositoryAccess;
+use Doctrine\ORM\EntityRepository;
+use Exception;
 
-class LoginRepository extends RepositoryAccess
+class LoginRepository extends EntityRepository
 {
-    private const TABLE_NAME = 'login';
-
-    function __construct()
+    public function exists(int $id): bool
     {
-        parent::__construct(self::TABLE_NAME, Login::class);
-    }
-
-    public function getById(int $id): ?Login
-    {
-        return parent::getById($id);
+        $login = $this->findOneBy(['id' => $id]);
+        return $login !== null;
     }
 
     /**
-     * @throws SQL
+     * @throws Exception
      */
-    function insert($nutzername, $passwort): ?Login
+    public function create(string $Nutzername, string $Passwort): Login
     {
-        $object = R::dispense(self::TABLE_NAME);
-        $login = new Login($object);
-
-        $login->setNutzername($nutzername);
-        $login->setPasswort($passwort);
-
-        $id = R::store($login->getBean());
-        return $this->getById($id);
-    }
-
-    /**
-     * @throws SQL
-     */
-    function update(int $id, $nutzername, $passwort): int|string|null
-    {
-        $object = $this->getById($id);
-        if ($object instanceof Login)
-        {
-            $object->setNutzername($nutzername);
-            $object->setPasswort($passwort);
-            return R::store($object->getBean());
-        }
-
-        return null;
+        $login = new Login();
+        $login->setNutzername($Nutzername);
+        $login->setPasswort($Passwort);
+        $this->getEntityManager()->persist($login);
+        $this->getEntityManager()->flush();
+        return $login;
     }
 }

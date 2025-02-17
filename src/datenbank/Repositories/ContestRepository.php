@@ -1,16 +1,12 @@
 <?php
 
-namespace src\datenbank\Repositories;
+namespace datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Contest.php';
 
 use datenbank\Entitaeten\Contest;
-use RedBeanPHP\R;
-use RedBeanPHP\RedException\SQL;
-use src\datenbank\RepositoryAccess;
 
-class ContestRepository extends RepositoryAccess
+class ContestRepository
 {
     private const TABLE_NAME = 'contest';
 

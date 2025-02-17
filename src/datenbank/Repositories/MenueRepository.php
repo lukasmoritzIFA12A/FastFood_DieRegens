@@ -1,16 +1,12 @@
 <?php
 
-namespace src\datenbank\Repositories;
+namespace datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
 include_once dirname(__DIR__) . '/Entitaeten/Menue.php';
 
 use datenbank\Entitaeten\Menue;
-use RedBeanPHP\R;
-use RedBeanPHP\RedException\SQL;
-use src\datenbank\RepositoryAccess;
 
-class MenueRepository extends RepositoryAccess
+class MenueRepository
 {
     private const TABLE_NAME = 'menue';
 

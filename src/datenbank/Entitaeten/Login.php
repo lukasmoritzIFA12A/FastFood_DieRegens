@@ -3,8 +3,11 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\LoginRepository;
 
-#[ORM\Entity]
+include_once dirname(__DIR__) . '/Repositories/LoginRepository.php';
+
+#[ORM\Entity(repositoryClass: LoginRepository::class)]
 #[ORM\Table(name: 'login')]
 class Login
 {

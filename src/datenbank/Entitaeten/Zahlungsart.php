@@ -3,8 +3,9 @@
 namespace datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
+use datenbank\Repositories\ZahlungsartRepository;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ZahlungsartRepository::class)]
 #[ORM\Table(name: 'zahlungsart')]
 class Zahlungsart
 {
