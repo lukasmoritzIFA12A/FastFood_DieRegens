@@ -8,8 +8,6 @@ include_once dirname(__DIR__, 2) . '/test/Datenbank/IconRepositoryTest.php';
 use datenbank\Entitaeten\Zahlungsart;
 use datenbank\Repositories\ZahlungsartRepository;
 use DatenbankTest;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class ZahlungsartRepositoryTest extends DatenbankTest
 {

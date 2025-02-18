@@ -10,8 +10,6 @@ use datenbank\Entitaeten\Kunde;
 use datenbank\Repositories\KundeRepository;
 use DatenbankTest;
 use DateTime;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class KundeRepositoryTest extends DatenbankTest
 {

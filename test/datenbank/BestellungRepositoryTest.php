@@ -15,8 +15,6 @@ use datenbank\Repositories\BestellungRepository;
 use DatenbankTest;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class BestellungRepositoryTest extends DatenbankTest
 {

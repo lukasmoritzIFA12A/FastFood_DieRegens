@@ -7,8 +7,6 @@ include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
 use datenbank\Entitaeten\Bestellstatus;
 use datenbank\Repositories\BestellstatusRepository;
 use DatenbankTest;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class BestellstatusRepositoryTest extends DatenbankTest
 {

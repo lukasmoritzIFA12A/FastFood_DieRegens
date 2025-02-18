@@ -2,7 +2,6 @@
 
 namespace datenbank;
 
-use datenbank\Entitaeten\Admin;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;

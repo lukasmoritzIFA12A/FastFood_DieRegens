@@ -9,8 +9,6 @@ use datenbank\Entitaeten\Menue;
 use datenbank\Repositories\MenueRepository;
 use DatenbankTest;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class MenueRepositoryTest extends DatenbankTest
 {

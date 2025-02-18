@@ -8,8 +8,6 @@ include_once dirname(__DIR__, 2) . '/test/datenbank/ContestRepositoryTest.php';
 use datenbank\Entitaeten\Rating;
 use datenbank\Repositories\RatingRepository;
 use DatenbankTest;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class RatingRepositoryTest extends DatenbankTest
 {

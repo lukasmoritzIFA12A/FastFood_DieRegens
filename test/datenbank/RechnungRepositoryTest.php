@@ -10,8 +10,6 @@ use datenbank\Entitaeten\Rechnung;
 use datenbank\Repositories\RechnungRepository;
 use DatenbankTest;
 use DateTime;
-use Doctrine\ORM\Exception\ORMException;
-use Exception;
 
 class RechnungRepositoryTest extends DatenbankTest
 {
