@@ -88,6 +88,7 @@ class RepositoryAccess extends EntityRepository
         }
     }
 
+    /** @noinspection SqlWithoutWhere */
     function deleteAll(): void
     {
         $this->getEntityManager()->createQuery("DELETE FROM ".$this->getEntityName())->execute();
