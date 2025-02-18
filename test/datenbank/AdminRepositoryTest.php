@@ -1,11 +1,11 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/LoginRepositoryTest.php';
 
 use datenbank\Entitaeten\Admin;
-use datenbank\Entitaeten\Login;
 use datenbank\Repositories\AdminRepository;
 use DatenbankTest;
 use Doctrine\ORM\Exception\ORMException;
@@ -27,31 +27,20 @@ class AdminRepositoryTest extends DatenbankTest
         self::$adminRepository->deleteAll();
     }
 
-    /**
-     * @throws ORMException
-     */
-    public function createAndSaveAdmin(string $nutzername): Admin
+    public static function createAdmin(string $nutzername): Admin
     {
         $admin = new Admin();
 
-        $login = new Login();
-        $login->setNutzername($nutzername);
-        $login->setPasswort("Geheim");
-
+        $login = LoginRepositoryTest::createLogin($nutzername);
         $admin->setLogin($login);
-
-        self::$adminRepository->save($admin);
         return $admin;
     }
 
-    /**
-     * @throws ORMException
-     * @throws Exception
-     */
     public function testSaveByInsert(): void
     {
     //when
-        $admin = $this->createAndSaveAdmin("Nutzer1");
+        $admin = $this->createAdmin("NutzerInsert");
+        self::$adminRepository->save($admin);
         $savedAdmin = self::$adminRepository->getById($admin->getLogin()->getId());
 
     //then
@@ -67,15 +56,13 @@ class AdminRepositoryTest extends DatenbankTest
         $this->assertTrue(true);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testGetAll(): void
     {
     //given
         for ($i = 1; $i <= 3; $i++)
         {
-            $this->createAndSaveAdmin("Nutzer$i");
+            $admin = $this->createAdmin("NutzerGet$i");
+            self::$adminRepository->save($admin);
         }
 
     //when
@@ -85,13 +72,11 @@ class AdminRepositoryTest extends DatenbankTest
         $this->assertCount(3, $admins);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testExists(): void
     {
     //given
-        $admin = $this->createAndSaveAdmin("Nutzer1");
+        $admin = $this->createAdmin("Nutzer0");
+        self::$adminRepository->save($admin);
 
     //when
         $ifExistsTrue = self::$adminRepository->exists($admin->getLogin()->getId());
@@ -108,15 +93,13 @@ class AdminRepositoryTest extends DatenbankTest
         $this->assertTrue(true);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testDeleteAll(): void
     {
     //given
         for ($i = 1; $i <= 3; $i++)
         {
-            $this->createAndSaveAdmin("Nutzer$i");
+            $admin = $this->createAdmin("NutzerDelete$i");
+            self::$adminRepository->save($admin);
         }
 
     //when

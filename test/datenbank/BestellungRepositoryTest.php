@@ -1,18 +1,16 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/BestellstatusRepositoryTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/AdresseRepositoryTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/KundeRepositoryTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/ZahlungsartRepositoryTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/ProduktRepositoryTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/MenueRepositoryTest.php';
 
-use datenbank\Entitaeten\Adresse;
-use datenbank\Entitaeten\Bestellstatus;
 use datenbank\Entitaeten\Bestellung;
-use datenbank\Entitaeten\Icon;
-use datenbank\Entitaeten\Kunde;
-use datenbank\Entitaeten\Login;
-use datenbank\Entitaeten\Menue;
-use datenbank\Entitaeten\Produkt;
-use datenbank\Entitaeten\Zahlungsart;
 use datenbank\Repositories\BestellungRepository;
 use DatenbankTest;
 use DateTime;
@@ -36,48 +34,16 @@ class BestellungRepositoryTest extends DatenbankTest
         self::$bestellungRepository->deleteAll();
     }
 
-    /**
-     * @throws ORMException
-     */
-    public function createAndSaveBestellung(string $LoginName): Bestellung
+    public static function createBestellung(string $LoginName): Bestellung
     {
-        $adresse = new Adresse();
-        $adresse->setStrassenname("Musterstr.");
-        $adresse->setHausnummer("5");
-        $adresse->setPlz("90115");
-        $adresse->setStadt("Berlin");
-        $adresse->setBundesland("Berlin");
+        $kunde = KundeRepositoryTest::createKunde($LoginName);
+        $zahlungsart = ZahlungsartRepositoryTest::createZahlungsart();
+        $bestellstatus = BestellstatusRepositoryTest::createBestellstatus();
 
-        $login = new Login();
-        $login->setNutzername($LoginName);
-        $login->setPasswort("Geheim");
-
-        $kunde = new Kunde();
-        $kunde->setVorname("Max");
-        $kunde->setNachname("Mustermann");
-        $kunde->setRegistrierungsdatum(new DateTime("2023-01-01 10:00:00"));
-        $kunde->setAdresse($adresse);
-        $kunde->setLogin($login);
-
-        $zahlungsart = new Zahlungsart();
-        $zahlungsart->setArt("Kreditkarte");
-
-        $bestellstatus = new Bestellstatus();
-        $bestellstatus->setStatus("Neu");
-
-        $icon = new Icon();
-        $icon->setBildPfad("/pfad/zum/huhn.png");
-
-        $produkt = new Produkt();
-        $produkt->setTitel("Coca-Cola");
-        $produkt->setPreis(1.5);
-        $produkt->setLagerbestand(10);
-        $produkt->setIcon($icon);
+        $produkt = ProduktRepositoryTest::createProdukt();
         $produkte = new ArrayCollection([$produkt]);
 
-        $menue = new Menue();
-        $menue->setTitel("Cooles Menue");
-        $menue->setProdukte($produkte);
+        $menue = MenueRepositoryTest::createMenue();
         $menues = new ArrayCollection([$menue]);
 
         $bestellung = new Bestellung();
@@ -87,19 +53,14 @@ class BestellungRepositoryTest extends DatenbankTest
         $bestellung->setBestellstatus($bestellstatus);
         $bestellung->setMenues($menues);
         $bestellung->setProdukte($produkte);
-
-        self::$bestellungRepository->save($bestellung);
         return $bestellung;
     }
 
-    /**
-     * @throws ORMException
-     * @throws Exception
-     */
     public function testSaveByInsert(): void
     {
     //when
-        $bestellung = $this->createAndSaveBestellung("User1Insert");
+        $bestellung = $this->createBestellung("User1Insert");
+        self::$bestellungRepository->save($bestellung);
         $savedBestellung = self::$bestellungRepository->getById($bestellung->getId());
 
     //then
@@ -111,14 +72,11 @@ class BestellungRepositoryTest extends DatenbankTest
         $this->assertCount(1, $savedBestellung->getProdukte());
     }
 
-    /**
-     * @throws ORMException
-     * @throws Exception
-     */
     public function testSaveByUpdate(): void
     {
     //given
-        $bestellung = $this->createAndSaveBestellung("User1Update");
+        $bestellung = $this->createBestellung("User1Update");
+        self::$bestellungRepository->save($bestellung);
 
     //when
         $bestellung->getBestellstatus()->setStatus("Abgeschlossen");
@@ -130,15 +88,15 @@ class BestellungRepositoryTest extends DatenbankTest
         $this->assertEquals($bestellung->getBestellstatus()->getStatus(), $updatedBestellung->getBestellstatus()->getStatus());
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testGetAll(): void
     {
     //given
-        $this->createAndSaveBestellung("User1Get");
-        $this->createAndSaveBestellung("User2Get");
-        $this->createAndSaveBestellung("User3Get");
+        $bestellung = $this->createBestellung("User1Get");
+        self::$bestellungRepository->save($bestellung);
+        $bestellung = $this->createBestellung("User2Get");
+        self::$bestellungRepository->save($bestellung);
+        $bestellung = $this->createBestellung("User3Get");
+        self::$bestellungRepository->save($bestellung);
 
     //when
         $allBestellungen = self::$bestellungRepository->getAll();
@@ -147,13 +105,11 @@ class BestellungRepositoryTest extends DatenbankTest
         $this->assertCount(3, $allBestellungen);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testExists(): void
     {
     //given
-        $bestellung = $this->createAndSaveBestellung("User1Exists");
+        $bestellung = $this->createBestellung("User1Exists");
+        self::$bestellungRepository->save($bestellung);
 
     //when
         $exists = self::$bestellungRepository->exists($bestellung->getId());
@@ -164,13 +120,11 @@ class BestellungRepositoryTest extends DatenbankTest
         $this->assertFalse($doesNotExist);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testDeleteById(): void
     {
     //given
-        $bestellung = $this->createAndSaveBestellung("User1Delete");
+        $bestellung = $this->createBestellung("User1Delete");
+        self::$bestellungRepository->save($bestellung);
         $id = $bestellung->getId();
 
     //when
@@ -182,15 +136,15 @@ class BestellungRepositoryTest extends DatenbankTest
         $this->assertFalse($stillExists);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testDeleteAll(): void
     {
     //given
-        $this->createAndSaveBestellung("User1DeleteAll");
-        $this->createAndSaveBestellung("User2DeleteAll");
-        $this->createAndSaveBestellung("User3DeleteAll");
+        $bestellung = $this->createBestellung("User1DeleteAll");
+        self::$bestellungRepository->save($bestellung);
+        $bestellung = $this->createBestellung("User2DeleteAll");
+        self::$bestellungRepository->save($bestellung);
+        $bestellung = $this->createBestellung("User3DeleteAll");
+        self::$bestellungRepository->save($bestellung);
 
     //when
         self::$bestellungRepository->deleteAll();

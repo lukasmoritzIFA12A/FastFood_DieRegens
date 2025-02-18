@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
 
@@ -26,44 +26,30 @@ class BestellstatusRepositoryTest extends DatenbankTest
         self::$bestellstatusRepository->deleteAll();
     }
 
-    /**
-     * @throws ORMException
-     */
-    public function createAndSaveBestellstatus(string $status): Bestellstatus
+    public static function createBestellstatus(): Bestellstatus
     {
         $bestellstatus = new Bestellstatus();
-        $bestellstatus->setStatus($status);
-
-        self::$bestellstatusRepository->save($bestellstatus);
+        $bestellstatus->setStatus("Offen");
         return $bestellstatus;
     }
 
-    /**
-     * @throws ORMException
-     * @throws Exception
-     */
     public function testSaveByInsert(): void
     {
-    //given
-        $status = "In Bearbeitung";
-
     //when
-        $bestellstatus = $this->createAndSaveBestellstatus($status);
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
         $savedStatus = self::$bestellstatusRepository->getById($bestellstatus->getId());
 
     //then
         $this->assertInstanceOf(Bestellstatus::class, $savedStatus);
-        $this->assertEquals($status, $savedStatus->getStatus());
+        $this->assertEquals($bestellstatus->getStatus(), $savedStatus->getStatus());
     }
 
-    /**
-     * @throws ORMException
-     * @throws Exception
-     */
     public function testSaveByUpdate(): void
     {
     //given
-        $bestellstatus = $this->createAndSaveBestellstatus("Offen");
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
 
     //when
         $bestellstatus->setStatus("Abgeschlossen");
@@ -75,15 +61,15 @@ class BestellstatusRepositoryTest extends DatenbankTest
         $this->assertEquals("Abgeschlossen", $updatedStatus->getStatus());
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testGetAll(): void
     {
     //given
-        $this->createAndSaveBestellstatus("Offen");
-        $this->createAndSaveBestellstatus("In Bearbeitung");
-        $this->createAndSaveBestellstatus("Abgeschlossen");
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
 
     //when
         $allStatuses = self::$bestellstatusRepository->getAll();
@@ -92,13 +78,11 @@ class BestellstatusRepositoryTest extends DatenbankTest
         $this->assertCount(3, $allStatuses);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testExists(): void
     {
     //given
-        $bestellstatus = $this->createAndSaveBestellstatus("Offen");
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
 
     //when
         $exists = self::$bestellstatusRepository->exists($bestellstatus->getId());
@@ -109,13 +93,11 @@ class BestellstatusRepositoryTest extends DatenbankTest
         $this->assertFalse($doesNotExist);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testDeleteById(): void
     {
     //given
-        $bestellstatus = $this->createAndSaveBestellstatus("Offen");
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
         $id = $bestellstatus->getId();
 
     //when
@@ -127,15 +109,15 @@ class BestellstatusRepositoryTest extends DatenbankTest
         $this->assertFalse($stillExists);
     }
 
-    /**
-     * @throws ORMException
-     */
     public function testDeleteAll(): void
     {
     //given
-        $this->createAndSaveBestellstatus("Offen");
-        $this->createAndSaveBestellstatus("In Bearbeitung");
-        $this->createAndSaveBestellstatus("Abgeschlossen");
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
+        $bestellstatus = $this->createBestellstatus();
+        self::$bestellstatusRepository->save($bestellstatus);
 
     //when
         self::$bestellstatusRepository->deleteAll();

@@ -1,11 +1,15 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/BestellungRepositoryTest.php';
 
+use datenbank\Entitaeten\Contest;
 use datenbank\Repositories\ContestRepository;
 use DatenbankTest;
+use Doctrine\ORM\Exception\ORMException;
+use Exception;
 
 class ContestRepositoryTest extends DatenbankTest
 {
@@ -23,33 +27,105 @@ class ContestRepositoryTest extends DatenbankTest
         self::$contestRepository->deleteAll();
     }
 
+    public static function createContest(string $loginName): Contest
+    {
+        $bestellung = BestellungRepositoryTest::createBestellung($loginName);
+
+        $contest = new Contest();
+        $contest->setBild("bild/zum/huhn.png");
+        $contest->setBestellung($bestellung);
+        $contest->setFreigeschalten(false);
+        return $contest;
+    }
+
     public function testSaveByInsert(): void
     {
-        // TODO: Implement testSaveByInsert() method.
+    //when
+        $contest = self::createContest("UserSaveInsert");
+        self::$contestRepository->save($contest);
+        $savedContest = self::$contestRepository->getById($contest->getId());
+
+    //then
+        $this->assertInstanceOf(Contest::class, $savedContest);
+        $this->assertEquals($contest->getBild(), $savedContest->getBild());
+        $this->assertEquals($contest->getBestellung()->getId(), $savedContest->getBestellung()->getId());
+        $this->assertEquals($contest->isFreigeschalten(), $savedContest->isFreigeschalten());
     }
 
     public function testSaveByUpdate(): void
     {
-        // TODO: Implement testSaveByUpdate() method.
+    //given
+        $contest = self::createContest("UserSaveUpdate");
+        self::$contestRepository->save($contest);
+
+    //when
+        $contest->setBild("pfad/wo/anders/hin.jpg");
+        self::$contestRepository->save($contest);
+
+        $updatedContest = self::$contestRepository->getById($contest->getId());
+
+    //then
+        $this->assertEquals($contest->getBild(), $updatedContest->getBild());
     }
 
     public function testGetAll(): void
     {
-        // TODO: Implement testGetAll() method.
+    //given
+        $contest = self::createContest("UserGet1");
+        self::$contestRepository->save($contest);
+        $contest = self::createContest("UserGet2");
+        self::$contestRepository->save($contest);
+
+    //when
+        $allContests = self::$contestRepository->getAll();
+
+    //then
+        $this->assertCount(2, $allContests);
     }
 
     public function testExists(): void
     {
-        // TODO: Implement testExists() method.
+    //given
+        $contest = self::createContest("UserExists");
+        self::$contestRepository->save($contest);
+
+    //when
+        $exists = self::$contestRepository->exists($contest->getId());
+        $doesNotExist = self::$contestRepository->exists(-1);
+
+    //then
+        $this->assertTrue($exists);
+        $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-        // TODO: Implement testDeleteById() method.
+    //given
+        $contest = self::createContest("UserDelete");
+        self::$contestRepository->save($contest);
+        $id = $contest->getId();
+
+    //when
+        $deleted = self::$contestRepository->deleteById($id);
+        $stillExists = self::$contestRepository->exists($id);
+
+    //then
+        $this->assertTrue($deleted);
+        $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-        // TODO: Implement testDeleteAll() method.
+    //given
+        $contest = self::createContest("UserDeleteAll1");
+        self::$contestRepository->save($contest);
+        $contest = self::createContest("UserDeleteAll2");
+        self::$contestRepository->save($contest);
+
+    //when
+        self::$contestRepository->deleteAll();
+
+    //then
+        $this->assertEmpty(self::$contestRepository->getAll());
     }
 }

@@ -1,11 +1,14 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
 
+use datenbank\Entitaeten\Icon;
 use datenbank\Repositories\IconRepository;
 use DatenbankTest;
+use Doctrine\ORM\Exception\ORMException;
+use Exception;
 
 class IconRepositoryTest extends DatenbankTest
 {
@@ -23,33 +26,106 @@ class IconRepositoryTest extends DatenbankTest
         self::$iconRepository->deleteAll();
     }
 
+    public static function createIcon(): Icon
+    {
+        $icon = new Icon();
+        $icon->setBildPfad("bild/zum/icon.png");
+        return $icon;
+    }
+
     public function testSaveByInsert(): void
     {
-        // TODO: Implement testSaveByInsert() method.
+    //given
+        $icon = self::createIcon();
+
+    //when
+        self::$iconRepository->save($icon);
+        $savedIcon = self::$iconRepository->getById($icon->getId());
+
+    //then
+        $this->assertInstanceOf(Icon::class, $savedIcon);
+        $this->assertEquals($icon->getBildPfad(), $savedIcon->getBildPfad());
     }
 
     public function testSaveByUpdate(): void
     {
-        // TODO: Implement testSaveByUpdate() method.
+    //given
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+
+    //when
+        $icon->setBildPfad("/pfad/zum/aktualisierten_bild.png");
+        self::$iconRepository->save($icon);
+
+        $updatedIcon = self::$iconRepository->getById($icon->getId());
+
+    //then
+        $this->assertInstanceOf(Icon::class, $updatedIcon);
+        $this->assertEquals($icon->getBildPfad(), $updatedIcon->getBildPfad());
     }
 
     public function testGetAll(): void
     {
-        // TODO: Implement testGetAll() method.
+    //given
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+
+    //when
+        $allIcons = self::$iconRepository->getAll();
+
+    //then
+        $this->assertCount(3, $allIcons);
     }
 
     public function testExists(): void
     {
-        // TODO: Implement testExists() method.
+    //given
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+
+    //when
+        $exists = self::$iconRepository->exists($icon->getId());
+        $doesNotExist = self::$iconRepository->exists(-1);
+
+    //then
+        $this->assertTrue($exists);
+        $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-        // TODO: Implement testDeleteById() method.
+    //given
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+        $id = $icon->getId();
+
+    //when
+        $deleted = self::$iconRepository->deleteById($id);
+        $stillExists = self::$iconRepository->exists($id);
+
+    //then
+        $this->assertTrue($deleted);
+        $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-        // TODO: Implement testDeleteAll() method.
+    //given
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+        $icon = self::createIcon();
+        self::$iconRepository->save($icon);
+
+    //when
+        self::$iconRepository->deleteAll();
+
+    //then
+        $this->assertEmpty(self::$iconRepository->getAll());
     }
 }

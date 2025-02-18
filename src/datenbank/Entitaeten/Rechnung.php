@@ -2,6 +2,7 @@
 
 namespace datenbank\Entitaeten;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use datenbank\Repositories\RechnungRepository;
 
@@ -19,7 +20,7 @@ class Rechnung
     private Bestellung $bestellung;
 
     #[ORM\Column(type: 'datetime')]
-    private string $ZahlungsDatum;
+    private DateTime $ZahlungsDatum;
 
     #[ORM\ManyToOne(targetEntity: Rabatt::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true)]
@@ -45,12 +46,12 @@ class Rechnung
         $this->rabatt = $rabatt;
     }
 
-    public function getZahlungsDatum(): string
+    public function getZahlungsDatum(): DateTime
     {
         return $this->ZahlungsDatum;
     }
 
-    public function setZahlungsDatum(string $ZahlungsDatum): void
+    public function setZahlungsDatum(DateTime $ZahlungsDatum): void
     {
         $this->ZahlungsDatum = $ZahlungsDatum;
     }

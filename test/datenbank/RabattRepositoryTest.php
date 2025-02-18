@@ -1,11 +1,14 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
 
+use datenbank\Entitaeten\Rabatt;
 use datenbank\Repositories\RabattRepository;
 use DatenbankTest;
+use Doctrine\ORM\Exception\ORMException;
+use Exception;
 
 class RabattRepositoryTest extends DatenbankTest
 {
@@ -23,33 +26,109 @@ class RabattRepositoryTest extends DatenbankTest
         self::$rabattRepository->deleteAll();
     }
 
+    public static function createRabatt(): Rabatt
+    {
+        $rabatt = new Rabatt();
+        $rabatt->setCode("RABATT1");
+        $rabatt->setMinderung("24%");
+        return $rabatt;
+    }
+
     public function testSaveByInsert(): void
     {
-        // TODO: Implement testSaveByInsert() method.
+    //given
+        $rabatt = self::createRabatt();
+
+    //when
+        self::$rabattRepository->save($rabatt);
+        $savedRabatt = self::$rabattRepository->getById($rabatt->getId());
+
+    //then
+        $this->assertInstanceOf(Rabatt::class, $savedRabatt);
+        $this->assertEquals($rabatt->getCode(), $savedRabatt->getCode());
+        $this->assertEquals($rabatt->getMinderung(), $savedRabatt->getMinderung());
     }
 
     public function testSaveByUpdate(): void
     {
-        // TODO: Implement testSaveByUpdate() method.
+    //given
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+
+    //when
+        $rabatt->setCode("RABATT_UPDATED");
+        $rabatt->setMinderung("20.00");
+        self::$rabattRepository->save($rabatt);
+        $updatedRabatt = self::$rabattRepository->getById($rabatt->getId());
+
+    //then
+        $this->assertInstanceOf(Rabatt::class, $updatedRabatt);
+        $this->assertEquals($rabatt->getCode(), $updatedRabatt->getCode());
+        $this->assertEquals($rabatt->getMinderung(), $updatedRabatt->getMinderung());
     }
 
     public function testGetAll(): void
     {
-        // TODO: Implement testGetAll() method.
+    //given
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+
+    //when
+        $allRabatte = self::$rabattRepository->getAll();
+
+    //then
+        $this->assertCount(3, $allRabatte);
     }
 
     public function testExists(): void
     {
-        // TODO: Implement testExists() method.
+    //given
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+
+    //when
+        $exists = self::$rabattRepository->exists($rabatt->getId());
+        $doesNotExist = self::$rabattRepository->exists(-1);
+
+    //then
+        $this->assertTrue($exists);
+        $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-        // TODO: Implement testDeleteById() method.
+    //given
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+        $id = $rabatt->getId();
+
+    //when
+        $deleted = self::$rabattRepository->deleteById($id);
+        $stillExists = self::$rabattRepository->exists($id);
+
+    //then
+        $this->assertTrue($deleted);
+        $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-        // TODO: Implement testDeleteAll() method.
+    //given
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+        $rabatt = self::createRabatt();
+        self::$rabattRepository->save($rabatt);
+
+    //when
+        self::$rabattRepository->deleteAll();
+
+    //then
+        $this->assertEmpty(self::$rabattRepository->getAll());
     }
 }

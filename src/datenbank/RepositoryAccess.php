@@ -22,16 +22,13 @@ class RepositoryAccess extends EntityRepository
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @throws Exception
-     */
-    function getById(int $id): object
+    function getById(int $id): ?object
     {
         $entity = $this->find($id);
 
         if (!$entity)
         {
-            throw new Exception("Entität mit ID $id wurde nicht gefunden.");
+            return null;
         }
 
         return $entity;
@@ -49,13 +46,19 @@ class RepositoryAccess extends EntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     */
-    function save(object $entity): void
+    function save(object $entity): bool
     {
-        $this->entityManager->persist($entity);
-        $this->getEntityManager()->flush();
+        try
+        {
+            $this->entityManager->persist($entity);
+            $this->getEntityManager()->flush();
+            return true;
+        }
+        catch (ORMException $e)
+        {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 
     /**

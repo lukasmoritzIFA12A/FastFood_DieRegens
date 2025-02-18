@@ -14,7 +14,7 @@ class Energiewert
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Produkt::class)]
+    #[ORM\ManyToOne(targetEntity: Produkt::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Produkt_id", referencedColumnName: "id")]
     private Produkt $produkt;
 

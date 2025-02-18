@@ -1,11 +1,16 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
+include_once dirname(__DIR__, 2) . '/test/datenbank/ProduktRepositoryTest.php';
 
+use datenbank\Entitaeten\Menue;
 use datenbank\Repositories\MenueRepository;
 use DatenbankTest;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Exception\ORMException;
+use Exception;
 
 class MenueRepositoryTest extends DatenbankTest
 {
@@ -23,33 +28,109 @@ class MenueRepositoryTest extends DatenbankTest
         self::$menueRepository->deleteAll();
     }
 
+    public static function createMenue(): Menue
+    {
+        $produkt = ProduktRepositoryTest::createProdukt();
+        $produkte = new ArrayCollection([$produkt]);
+
+        $menue = new Menue();
+        $menue->setTitel("Cooles Menue");
+        $menue->setProdukte($produkte);
+        return $menue;
+    }
+
     public function testSaveByInsert(): void
     {
-        // TODO: Implement testSaveByInsert() method.
+    //given
+        $menue = self::createMenue();
+
+    //when
+        self::$menueRepository->save($menue);
+        $savedMenue = self::$menueRepository->getById($menue->getId());
+
+    //then
+        $this->assertInstanceOf(Menue::class, $savedMenue);
+        $this->assertEquals($menue->getTitel(), $savedMenue->getTitel());
     }
 
     public function testSaveByUpdate(): void
     {
-        // TODO: Implement testSaveByUpdate() method.
+    //given
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+
+    //when
+        $menue->setTitel("Updated Menue");
+        self::$menueRepository->save($menue);
+        $updatedMenue = self::$menueRepository->getById($menue->getId());
+
+    //then
+        $this->assertInstanceOf(Menue::class, $updatedMenue);
+        $this->assertEquals($menue->getTitel(), $updatedMenue->getTitel());
     }
 
     public function testGetAll(): void
     {
-        // TODO: Implement testGetAll() method.
+    //given
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+
+    //when
+        $allMenues = self::$menueRepository->getAll();
+
+    //then
+        $this->assertCount(3, $allMenues);
     }
 
     public function testExists(): void
     {
-        // TODO: Implement testExists() method.
+    //given
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+
+    //when
+        $exists = self::$menueRepository->exists($menue->getId());
+        $doesNotExist = self::$menueRepository->exists(-1);
+
+    //then
+        $this->assertTrue($exists);
+        $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-        // TODO: Implement testDeleteById() method.
+    //given
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+        $id = $menue->getId();
+
+    //when
+        $deleted = self::$menueRepository->deleteById($id);
+        $stillExists = self::$menueRepository->exists($id);
+
+    //then
+        $this->assertTrue($deleted);
+        $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-        // TODO: Implement testDeleteAll() method.
+    //given
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+        $menue = self::createMenue();
+        self::$menueRepository->save($menue);
+
+    //when
+        self::$menueRepository->deleteAll();
+
+    //then
+        $this->assertEmpty(self::$menueRepository->getAll());
     }
 }

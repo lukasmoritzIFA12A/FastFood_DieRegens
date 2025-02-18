@@ -1,11 +1,17 @@
 <?php
 
-namespace Test\Datenbank;
+namespace datenbank;
 
 include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/LoginRepositoryTest.php';
+include_once dirname(__DIR__, 2) . '/test/Datenbank/AdresseRepositoryTest.php';
 
+use datenbank\Entitaeten\Kunde;
 use datenbank\Repositories\KundeRepository;
 use DatenbankTest;
+use DateTime;
+use Doctrine\ORM\Exception\ORMException;
+use Exception;
 
 class KundeRepositoryTest extends DatenbankTest
 {
@@ -23,33 +29,116 @@ class KundeRepositoryTest extends DatenbankTest
         self::$kundeRepository->deleteAll();
     }
 
+    public static function createKunde(string $LoginName): Kunde
+    {
+        $adresse = AdresseRepositoryTest::createAdresse();
+        $login = LoginRepositoryTest::createLogin($LoginName);
+
+        $kunde = new Kunde();
+        $kunde->setVorname("Max");
+        $kunde->setNachname("Mustermann");
+        $kunde->setRegistrierungsdatum(new DateTime("2023-01-01 10:00:00"));
+        $kunde->setAdresse($adresse);
+        $kunde->setLogin($login);
+        return $kunde;
+    }
+
     public function testSaveByInsert(): void
     {
-        // TODO: Implement testSaveByInsert() method.
+    //given
+        $kunde = self::createKunde("LoginInsert");
+
+    //when
+        self::$kundeRepository->save($kunde);
+        $savedKunde = self::$kundeRepository->getById($kunde->getId());
+
+    //then
+        $this->assertInstanceOf(Kunde::class, $savedKunde);
+        $this->assertEquals($kunde->getVorname(), $savedKunde->getVorname());
+        $this->assertEquals($kunde->getNachname(), $savedKunde->getNachname());
+        $this->assertEquals($kunde->getRegistrierungsdatum(), $savedKunde->getRegistrierungsdatum());
     }
 
     public function testSaveByUpdate(): void
     {
-        // TODO: Implement testSaveByUpdate() method.
+    //given
+        $kunde = self::createKunde("LoginUpdate");
+        self::$kundeRepository->save($kunde);
+
+    //when
+        $kunde->setVorname("Moritz");
+        $kunde->setNachname("Musteränderung");
+        self::$kundeRepository->save($kunde);
+        $updatedKunde = self::$kundeRepository->getById($kunde->getId());
+
+    //then
+        $this->assertInstanceOf(Kunde::class, $updatedKunde);
+        $this->assertEquals($kunde->getVorname(), $updatedKunde->getVorname());
+        $this->assertEquals($kunde->getNachname(), $updatedKunde->getNachname());
     }
 
     public function testGetAll(): void
     {
-        // TODO: Implement testGetAll() method.
+    //given
+        $kunde = self::createKunde("LoginGet1");
+        self::$kundeRepository->save($kunde);
+        $kunde = self::createKunde("LoginGet2");
+        self::$kundeRepository->save($kunde);
+        $kunde = self::createKunde("LoginGet3");
+        self::$kundeRepository->save($kunde);
+
+    //when
+        $allKunden = self::$kundeRepository->getAll();
+
+    //then
+        $this->assertCount(3, $allKunden);
     }
 
     public function testExists(): void
     {
-        // TODO: Implement testExists() method.
+    //given
+        $kunde = self::createKunde("LoginExists");
+        self::$kundeRepository->save($kunde);
+
+    //when
+        $exists = self::$kundeRepository->exists($kunde->getId());
+        $doesNotExist = self::$kundeRepository->exists(-1);
+
+    //then
+        $this->assertTrue($exists);
+        $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-        // TODO: Implement testDeleteById() method.
+    //given
+        $kunde = self::createKunde("LoginDelete");
+        self::$kundeRepository->save($kunde);
+        $id = $kunde->getId();
+
+    //when
+        $deleted = self::$kundeRepository->deleteById($id);
+        $stillExists = self::$kundeRepository->exists($id);
+
+    //then
+        $this->assertTrue($deleted);
+        $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-        // TODO: Implement testDeleteAll() method.
+    //given
+        $kunde = self::createKunde("LoginDelete1");
+        self::$kundeRepository->save($kunde);
+        $kunde = self::createKunde("LoginDelete2");
+        self::$kundeRepository->save($kunde);
+        $kunde = self::createKunde("LoginDelete3");
+        self::$kundeRepository->save($kunde);
+
+    //when
+        self::$kundeRepository->deleteAll();
+
+    //then
+        $this->assertEmpty(self::$kundeRepository->getAll());
     }
 }
