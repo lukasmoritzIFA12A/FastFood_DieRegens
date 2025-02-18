@@ -1,2 +1,4 @@
 <?php
-    echo "Hello, World! Test";
+$welcomeMessage = "Willkommen auf meiner PHP-Seite!";
+?>
+
