@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\RatingRepository;
+use App\datenbank\Repositories\RatingRepository;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
 #[ORM\Table(name: 'rating')]

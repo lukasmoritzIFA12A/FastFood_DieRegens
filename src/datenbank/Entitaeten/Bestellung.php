@@ -1,12 +1,12 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\BestellungRepository;
+use App\datenbank\Repositories\BestellungRepository;
 
 #[ORM\Entity(repositoryClass: BestellungRepository::class)]
 #[ORM\Table(name: 'bestellung')]

@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Bestellung.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Bestellung;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Bestellung;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class BestellungRepository extends RepositoryAccess

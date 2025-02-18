@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\RabattRepository;
+use App\datenbank\Repositories\RabattRepository;
 
 #[ORM\Entity(repositoryClass: RabattRepository::class)]
 #[ORM\Table(name: 'rabatt')]

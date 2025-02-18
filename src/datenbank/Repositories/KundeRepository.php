@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Kunde.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Kunde;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Kunde;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class KundeRepository extends RepositoryAccess

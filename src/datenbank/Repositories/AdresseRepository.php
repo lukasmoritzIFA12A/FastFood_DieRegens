@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Adresse.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Adresse;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Adresse;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class AdresseRepository extends RepositoryAccess

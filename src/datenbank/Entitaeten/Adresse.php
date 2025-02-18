@@ -1,8 +1,8 @@
 <?php
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\AdresseRepository;
+use App\datenbank\Repositories\AdresseRepository;
 
 #[ORM\Entity(repositoryClass: AdresseRepository::class)]
 #[ORM\Table(name: 'adresse')]

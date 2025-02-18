@@ -1,10 +1,10 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\KundeRepository;
+use App\datenbank\Repositories\KundeRepository;
 
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
 #[ORM\Table(name: 'kunde')]

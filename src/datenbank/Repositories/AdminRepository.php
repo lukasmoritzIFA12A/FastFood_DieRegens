@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Admin.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Admin;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Admin;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class AdminRepository extends RepositoryAccess

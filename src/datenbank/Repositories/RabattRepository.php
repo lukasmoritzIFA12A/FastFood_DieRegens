@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Rabatt.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Rabatt;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Rabatt;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class RabattRepository extends RepositoryAccess

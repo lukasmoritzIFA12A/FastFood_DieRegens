@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Login.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Login;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Login;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class LoginRepository extends RepositoryAccess

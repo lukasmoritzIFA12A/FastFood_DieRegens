@@ -1,12 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-
-use datenbank\Entitaeten\Adresse;
-use datenbank\Repositories\AdresseRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Adresse;
+use App\datenbank\Repositories\AdresseRepository;
+use Test\DatenbankTest;
 
 class AdresseRepositoryTest extends DatenbankTest
 {

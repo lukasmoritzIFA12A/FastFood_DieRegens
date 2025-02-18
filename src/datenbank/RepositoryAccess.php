@@ -1,6 +1,6 @@
 <?php
 
-namespace datenbank;
+namespace App\datenbank;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

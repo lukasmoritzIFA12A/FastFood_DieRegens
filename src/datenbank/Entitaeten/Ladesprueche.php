@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\LadespruecheRepository;
+use App\datenbank\Repositories\LadespruecheRepository;
 
 #[ORM\Entity(repositoryClass: LadespruecheRepository::class)]
 #[ORM\Table(name: 'ladesprueche')]

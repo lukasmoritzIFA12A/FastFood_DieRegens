@@ -1,13 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-include_once dirname(__DIR__, 2) . '/test/datenbank/ProduktRepositoryTest.php';
-
-use datenbank\Entitaeten\Menue;
-use datenbank\Repositories\MenueRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Menue;
+use App\datenbank\Repositories\MenueRepository;
+use Test\DatenbankTest;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class MenueRepositoryTest extends DatenbankTest

@@ -1,12 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Energiewert.php';
-include_once dirname(__DIR__) . '/RepositoryAccess.php';
-
-use datenbank\Entitaeten\Energiewert;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Energiewert;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class EnergiewertRepository extends RepositoryAccess

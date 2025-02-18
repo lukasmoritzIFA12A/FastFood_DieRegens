@@ -1,11 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\LoginRepository;
-
-include_once dirname(__DIR__) . '/Repositories/LoginRepository.php';
+use App\datenbank\Repositories\LoginRepository;
 
 #[ORM\Entity(repositoryClass: LoginRepository::class)]
 #[ORM\Table(name: 'login')]

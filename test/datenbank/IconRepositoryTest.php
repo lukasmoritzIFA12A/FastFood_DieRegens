@@ -1,12 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-
-use datenbank\Entitaeten\Icon;
-use datenbank\Repositories\IconRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Icon;
+use App\datenbank\Repositories\IconRepository;
+use Test\DatenbankTest;
 
 class IconRepositoryTest extends DatenbankTest
 {

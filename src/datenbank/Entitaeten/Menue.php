@@ -1,11 +1,11 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\MenueRepository;
+use App\datenbank\Repositories\MenueRepository;
 
 #[ORM\Entity(repositoryClass: MenueRepository::class)]
 #[ORM\Table(name: 'menue')]

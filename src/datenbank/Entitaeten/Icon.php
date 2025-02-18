@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\IconRepository;
+use App\datenbank\Repositories\IconRepository;
 
 #[ORM\Entity(repositoryClass: IconRepository::class)]
 #[ORM\Table(name: 'icon')]

@@ -1,10 +1,10 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\RechnungRepository;
+use App\datenbank\Repositories\RechnungRepository;
 
 #[ORM\Entity(repositoryClass: RechnungRepository::class)]
 #[ORM\Table(name: 'rechnung')]

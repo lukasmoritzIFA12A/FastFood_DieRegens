@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\ZutatRepository;
+use App\datenbank\Repositories\ZutatRepository;
 
 #[ORM\Entity(repositoryClass: ZutatRepository::class)]
 #[ORM\Table(name: 'zutat')]

@@ -1,11 +1,9 @@
 <?php
 
-namespace datenbank\Repositories;
+namespace App\datenbank\Repositories;
 
-include_once dirname(__DIR__) . '/Entitaeten/Menue.php';
-
-use datenbank\Entitaeten\Menue;
-use datenbank\RepositoryAccess;
+use App\datenbank\Entitaeten\Menue;
+use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 
 class MenueRepository extends RepositoryAccess

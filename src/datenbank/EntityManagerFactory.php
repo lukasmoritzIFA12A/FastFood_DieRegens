@@ -1,6 +1,6 @@
 <?php
 
-namespace datenbank;
+namespace App\datenbank;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -9,12 +9,15 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\SchemaTool;
+use RuntimeException;
 
 class EntityManagerFactory
 {
+    private static array $CONFIG_SCHLUESSEL = ['servername', 'username', 'password', 'dbname', 'dbtestname'];
+
     public static function createEntityManager(bool $isTestMode = false): EntityManager
     {
-        $config = static::getMetadataConfiguration();
+        $config = static::getMetadataConfiguration($isTestMode);
         $connection = static::getDriverConnection($config, $isTestMode);
 
         return new EntityManager($connection, $config);
@@ -26,11 +29,11 @@ class EntityManagerFactory
         return DriverManager::getConnection($connectionParams, $configuration);
     }
 
-    private static function getMetadataConfiguration(): Configuration
+    private static function getMetadataConfiguration(bool $isTestMode = false): Configuration
     {
         return ORMSetup::createAttributeMetadataConfiguration(
             paths: [dirname(__DIR__, 2) . '/src/datenbank/Entitaeten'],
-            isDevMode: true,
+            isDevMode: $isTestMode,
         );
     }
 
@@ -88,6 +91,22 @@ class EntityManagerFactory
     public static function getDatabaseName(bool $isTestMode = false): string
     {
         $datenbankConfig = include(dirname(__DIR__) . '/datenbank/Config.php');
-        return $isTestMode ? $datenbankConfig['dbtestname'] : $datenbankConfig['dbname'];
+        if (static::isValidDatabaseConfig($datenbankConfig))
+        {
+            return $isTestMode ? $datenbankConfig['dbtestname'] : $datenbankConfig['dbname'];
+        }
+
+        throw new RuntimeException("Config.php hat nicht alle erforderlichen Schlüssel: \n" . implode(", ", static::$CONFIG_SCHLUESSEL));
+    }
+
+    private static function isValidDatabaseConfig(array $config): bool {
+        foreach (static::$CONFIG_SCHLUESSEL as $key)
+        {
+            if (!isset($config[$key]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

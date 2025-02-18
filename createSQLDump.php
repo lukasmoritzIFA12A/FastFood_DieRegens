@@ -1,6 +1,6 @@
 <?php
 
-use datenbank\EntityManagerFactory;
+use App\datenbank\EntityManagerFactory;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -23,4 +23,4 @@ finally
     restore_error_handler();
 }
 
-echo "Prozess abgeschlossen...\n";
+echo "SQL Dump Erstellung wurde erfolgreich abgeschlossen...\n";

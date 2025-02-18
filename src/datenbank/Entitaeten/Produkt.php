@@ -1,11 +1,11 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\ProduktRepository;
+use App\datenbank\Repositories\ProduktRepository;
 
 #[ORM\Entity(repositoryClass: ProduktRepository::class)]
 #[ORM\Table(name: 'produkt')]

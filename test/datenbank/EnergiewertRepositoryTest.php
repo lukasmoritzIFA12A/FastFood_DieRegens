@@ -1,13 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/ProduktRepositoryTest.php';
-
-use datenbank\Entitaeten\Energiewert;
-use datenbank\Repositories\EnergiewertRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Energiewert;
+use App\datenbank\Repositories\EnergiewertRepository;
+use Test\DatenbankTest;
 
 class EnergiewertRepositoryTest extends DatenbankTest
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\ZahlungsartRepository;
+use App\datenbank\Repositories\ZahlungsartRepository;
 
 #[ORM\Entity(repositoryClass: ZahlungsartRepository::class)]
 #[ORM\Table(name: 'zahlungsart')]

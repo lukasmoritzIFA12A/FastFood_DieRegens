@@ -1,13 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/IconRepositoryTest.php';
-
-use datenbank\Entitaeten\Zahlungsart;
-use datenbank\Repositories\ZahlungsartRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Zahlungsart;
+use App\datenbank\Repositories\ZahlungsartRepository;
+use Test\DatenbankTest;
 
 class ZahlungsartRepositoryTest extends DatenbankTest
 {

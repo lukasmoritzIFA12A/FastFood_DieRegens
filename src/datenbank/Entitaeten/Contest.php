@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\ContestRepository;
+use App\datenbank\Repositories\ContestRepository;
 
 #[ORM\Entity(repositoryClass: ContestRepository::class)]
 #[ORM\Table(name: 'contest')]

@@ -1,18 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/BestellstatusRepositoryTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/AdresseRepositoryTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/KundeRepositoryTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/ZahlungsartRepositoryTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/ProduktRepositoryTest.php';
-include_once dirname(__DIR__, 2) . '/test/Datenbank/MenueRepositoryTest.php';
-
-use datenbank\Entitaeten\Bestellung;
-use datenbank\Repositories\BestellungRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Bestellung;
+use App\datenbank\Repositories\BestellungRepository;
+use Test\DatenbankTest;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 

@@ -1,14 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-include_once dirname(__DIR__, 2) . '/test/datenbank/BestellungRepositoryTest.php';
-include_once dirname(__DIR__, 2) . '/test/datenbank/RabattRepositoryTest.php';
-
-use datenbank\Entitaeten\Rechnung;
-use datenbank\Repositories\RechnungRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Rechnung;
+use App\datenbank\Repositories\RechnungRepository;
+use Test\DatenbankTest;
 use DateTime;
 
 class RechnungRepositoryTest extends DatenbankTest

@@ -1,13 +1,10 @@
 <?php
 
-namespace datenbank;
+namespace Test\datenbank;
 
-include_once dirname(__DIR__, 2) . '/test/DatenbankTest.php';
-include_once dirname(__DIR__, 2) . '/test/datenbank/ContestRepositoryTest.php';
-
-use datenbank\Entitaeten\Rating;
-use datenbank\Repositories\RatingRepository;
-use DatenbankTest;
+use App\datenbank\Entitaeten\Rating;
+use App\datenbank\Repositories\RatingRepository;
+use Test\DatenbankTest;
 
 class RatingRepositoryTest extends DatenbankTest
 {

@@ -1,6 +1,8 @@
 <?php
 
-use datenbank\EntityManagerFactory;
+namespace Test;
+
+use App\datenbank\EntityManagerFactory;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 

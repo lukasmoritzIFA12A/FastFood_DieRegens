@@ -1,9 +1,9 @@
 <?php
 
-namespace datenbank\Entitaeten;
+namespace App\datenbank\Entitaeten;
 
 use Doctrine\ORM\Mapping as ORM;
-use datenbank\Repositories\BestellstatusRepository;
+use App\datenbank\Repositories\BestellstatusRepository;
 
 #[ORM\Entity(repositoryClass: BestellstatusRepository::class)]
 #[ORM\Table(name: 'bestellstatus')]
