@@ -1,0 +1,15 @@
+<?php
+
+namespace App\datenbank\Repositories;
+
+use App\datenbank\Entitaeten\Adresse;
+use App\datenbank\RepositoryAccess;
+use Doctrine\ORM\EntityManager;
+
+class AdresseRepository extends RepositoryAccess
+{
+    public function __construct(EntityManager $entityManager)
+    {
+        parent::__construct($entityManager, Adresse::class);
+    }
+}
