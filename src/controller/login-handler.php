@@ -12,8 +12,8 @@ $loginLogic = new LoginLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
     if ($loginLogic->einloggen($username, $password)) {
         $_SESSION['user'] = $username;

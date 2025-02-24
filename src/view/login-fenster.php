@@ -43,7 +43,7 @@
     <p id="message" style="color:red;"></p>
 
     <p class="text-center mt-3">
-        Noch kein Mitglied? <a href="registrierung.html" class="text-decoration-none">Registrier dich jetzt!</a>
+        Noch kein Mitglied? <a href="register-fenster.html" class="text-decoration-none">Registrier dich jetzt!</a>
     </p>
 </div>
 </body>

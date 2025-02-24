@@ -10,8 +10,13 @@ class LoginLogic
 {
     public string $errorMessage = "";
 
-    public function einloggen(string $username, string $password): bool
+    public function einloggen(?string $username, ?string $password): bool
     {
+        if (!$username || !$password) {
+            $this->errorMessage = "Unerwarteter Fehler: Nutzername und/oder Passwort fehlt!";
+            return false;
+        }
+
         $entityManager = EntityManagerFactory::createEntityManager();
         $loginRepository = new LoginRepository($entityManager);
         $userGefunden = $loginRepository->findByUsername($username);
