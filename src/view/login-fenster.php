@@ -33,7 +33,8 @@
                     <i id="passwordIcon" class="bi bi-eye-slash" style="color: black"></i>
                 </button>
             </div>
-            <a href="#" class="text-decoration-none small d-block mt-1 text-end">Passwort vergessen</a>
+            <!--UM SIMPEL ZU BLEIBEN, ERSTMAL AUSGEBLENDET-->
+            <!--<a href="#" class="text-decoration-none small d-block mt-1 text-end">Passwort vergessen</a>-->
         </div>
         <div class="d-grid">
             <button type="submit" class="btn btn-primary">Login</button>
