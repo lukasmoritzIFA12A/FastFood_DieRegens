@@ -10,12 +10,13 @@ Dies ist notwendig da Bilder, die über eine Kamera erstellt wurden, im Durchsch
 Gehe dazu unter `xampp/mysql/bin/my.ini`. Dort einfach den Wert von `max_allowed_packet` auf `10M` erhöhen.
 
 Composer Install muss in diesem Projekt ausgeführt werden, um alle Abhängigkeiten zu installieren.
+Außerdem muss `composer dump-autoload` am Anfang einmal ausgeführt werden in der Konsole.
 
 ## Datenbankschema
 
 Um das Datenbankschema aufzubauen, einfach folgenden Befehl im Projekt ausführen:
 `php .\createSQLDump.php`
-Dies erstellt zwei SQL Schema Dateien für die beiden Datenbanken: `fastfood` & `fastfoodtest`. 
+Dies erstellt zwei SQL Schema Dateien für die beiden Datenbanken: `fastfood` & `fastfoodtest`.
 Die Testdatenbank wird für die SQL Unit-Tests genutzt.
 
 Um die SQL Schemas auszuführen, einfach in der MySQL Konsole folgendes ausführen:
@@ -24,6 +25,7 @@ Um die SQL Schemas auszuführen, einfach in der MySQL Konsole folgendes ausführ
 ## Datenbank Zugriff
 
 Um im Projekt auf die Datenbank zuzugreifen, muss folgendes gemacht werden:
+
 ```php
 /**
 * Beispiel für die Tabelle `Adresse`
