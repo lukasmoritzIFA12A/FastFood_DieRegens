@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MacAPPLE - Startseite</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../../css/startseite.css" rel="stylesheet">
+  <link href="startseite.css" rel="stylesheet">
   <!-- Bootstrap JS und jQuery -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -14,45 +14,10 @@
 
 </head>
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">MacAPPLE</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="menusDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menüs</a>
-          <ul class="dropdown-menu" aria-labelledby="menusDropdown">
-            <li><a class="dropdown-item" href="#">Menü 1</a></li>
-            <li><a class="dropdown-item" href="#">Menü 2</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="burgerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Burger</a>
-          <ul class="dropdown-menu" aria-labelledby="burgerDropdown">
-            <li><a class="dropdown-item" href="#">Burger 1</a></li>
-            <li><a class="dropdown-item" href="#">Burger 2</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="funny-dinner-startseite.html">Funny-Dinner-Contest</a></li>
-        <li class="nav-item"><a class="nav-link" href="kontaktformular.html">Kontakt</a></li>
-      </ul>
-      <!-- Warenkorb-->
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="warenkorb.html">
-            <img src="../../icons/Warenkorb.png" alt="Warenkorb" style="width: 40px; height: 40px;">
-          </a>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
+<?php
+$pageTitle = "Startseite - MacAPPLE"; // Seitentitel individuell setzen
+include '../header/header.php'; // Header einfügen
+?>
 <!-- Main Content -->
 <div class="container mt-4">
   <div class="text-center mb-4">
@@ -64,11 +29,11 @@
   <div class="text-center mb-4">
     <div class="d-inline-flex align-items-center gap-3">
       <div>
-        <img src="../../icons/Burger_Icon.png" alt="Burger" style="width: 50px;">
+        <img src="../../../img/icons/Burger_Icon.png" alt="Burger" style="width: 50px;">
         <p>Burger</p>
       </div>
       <div>
-        <img src="../../icons/Menu_Icon.png" alt="Menü" style="width: 50px;">
+        <img src="../../../img/icons/Menu_Icon.png" alt="Menü" style="width: 50px;">
         <p>Menü</p>
       </div>
     </div>

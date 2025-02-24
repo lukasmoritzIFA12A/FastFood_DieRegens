@@ -21,9 +21,11 @@
     </style>
 </head>
 <body>
-<header class="d-flex justify-content-between align-items-center p-3 bg-light shadow-sm">
-    <a href="startseite.html" class="fs-4 fw-bold text-dark text-decoration-none">MacApple</a>
-</header>
+<?php
+$pageTitle = "Funny Dinner Contest - MacAPPLE";
+include '../../header/header.php';
+?>
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Funny-Dinner-Contest - Galerie</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -171,9 +173,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../js/funny-dinner-galerie.js"></script>
+<script src="galerie.js"></script>
 <div class="fixed-bottom text-center mb-3">
-    <a href="startseite.html" class="btn btn-secondary">Zurück zur Startseite</a>
+    <a href="../../startseite/startseite.php" class="btn btn-secondary">Zurück zur Startseite</a>
 </div>
 </body>
 </html>

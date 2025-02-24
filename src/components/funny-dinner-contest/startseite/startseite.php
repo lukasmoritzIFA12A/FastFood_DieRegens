@@ -6,9 +6,14 @@
     <title>Funny-Dinner-Contest</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../../css/funny-dinner-startseite.css" rel="stylesheet">
+    <link href="startseite.css" rel="stylesheet">
 </head>
 <body>
+<?php
+$pageTitle = "Funny Dinner Contest - MacAPPLE";
+include '../../header/header.php';
+?>
+
 <div class="container">
     <div class="row funny-dinner-container">
         <div class="col-md-6 instructions">
@@ -27,18 +32,18 @@
             </ul>
         </div>
         <div class="col-md-6 text-center">
-            <img src="../../icons/funny-dinner-Burger.png" alt="Funny Dinner Image" class="img-fluid">
+            <img src="../../../../img/icons/funny-dinner-Burger.png" alt="Funny Dinner Image" class="img-fluid">
         </div>
     </div>
     <div class="text-center mt-4">
         <!-- Beide Buttons sind gleich gestylt -->
-        <a href="funny-dinner-galerie.html" class="btn btn-primary btn-lg">Einfach schauen</a>
+        <a href="../galerie/galerie.php" class="btn btn-primary btn-lg">Einfach schauen</a>
         <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#uploadModal">Bild Hochladen</button>
     </div>
 
     <!-- Zur Startseite Button -->
     <div class="text-center mt-3">
-        <a href="startseite.html" class="btn btn-info btn-lg">Zur Startseite</a> <!-- Button führt zurück zur Startseite -->
+        <a href="../../startseite/startseite.php" class="btn btn-info btn-lg">Zur Startseite</a> <!-- Button führt zurück zur Startseite -->
     </div>
 </div>
 

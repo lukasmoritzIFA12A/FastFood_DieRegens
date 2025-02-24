@@ -8,6 +8,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+<?php
+$pageTitle = "Funny Dinner Contest - MacAPPLE"; // Seitentitel individuell setzen
+$showMenu = false;
+$showCart = false;
+include '../header/header.php'; // Header einfügen
+?>
+
 <div class="container mt-5">
   <!-- Header mit App-Name -->
   <h1 class="text-center mb-4">MacAPPLE</h1>

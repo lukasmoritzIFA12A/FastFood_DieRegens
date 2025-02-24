@@ -1,4 +1,7 @@
 <?php
+
+use Src\Utils\Router;
+require_once __DIR__ . '/../../../utils/router.php';
 // Hier wird überprüft, ob das Formular abgesendet wurde
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Formular-Daten erhalten
@@ -15,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Erfolgreich eingeloggt!";
 
         // Weiterleitung zur Startseite
-        header('Location: ../view/startseite.html');
+        header(Router::url('/components/startseite/startseite.php'));
         exit;
     /*} else {
         // Fehlerhafte Login-Daten

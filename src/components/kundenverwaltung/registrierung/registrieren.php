@@ -17,7 +17,7 @@
     echo "Account erfolgreich erstellt!";
 
     // Weiterleitung zur Startseite
-    header('Location: ../view/startseite.html');
+    header('Location: ../view/startseite.php');
     exit;
 /*} else {
     // Falls die Seite direkt aufgerufen wird (ohne das Formular abzusenden)

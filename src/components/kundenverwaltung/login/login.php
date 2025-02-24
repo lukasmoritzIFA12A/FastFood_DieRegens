@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +8,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+<?php
+$pageTitle = "Account - MacAPPLE";
+$showCart = false;
+$showLogin = false;
+$showMenu = false;
+include '../../header/header.php';
+
+use Src\Utils\Router;
+require_once __DIR__ . '/../../../utils/router.php';
+?>
 <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
     <h2 class="text-center">Login</h2>
     <p class="text-center text-muted">Gib dein Login und Passwort ein</p>
-    <form action="../controller/login.php" method="POST">
+    <form action="loginlog.php" method="POST">
         <div class="mb-3">
             <label for="username" class="form-label">Nutzername</label>
             <div class="input-group">
@@ -32,7 +43,7 @@
         </div>
     </form>
     <p class="text-center mt-3">
-        Noch kein Mitglied? <a href="registrierung.html" class="text-decoration-none">Registrier dich jetzt!</a>
+        Noch kein Mitglied? <a href="<?= Router::url('/components/kundenverwaltung/registrierung/registrierung.php') ?>" class="text-decoration-none">Registrier dich jetzt!</a>
     </p>
 </div>
 
