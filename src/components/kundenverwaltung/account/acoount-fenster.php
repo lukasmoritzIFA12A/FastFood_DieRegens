@@ -7,8 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<a href="startseite.html" class="btn btn-secondary m-3">Zurück zur Startseite</a>
-
+<?php
+$pageTitle = "Account - MacAPPLE"; // Seitentitel individuell setzen
+$showCart = false;
+$showLogin = false;
+$showMenu = false;
+include '../../header/header.php'; // Header einfügen
+?>
 <div class="container mt-5">
     <h2 class="text-center">Account verwalten</h2>
     <div class="card p-4">
@@ -175,8 +180,6 @@
         </div>
     </div>
 </div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

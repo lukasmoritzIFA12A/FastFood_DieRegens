@@ -3,11 +3,9 @@ session_start();
 
 header("Content-Type: application/json"); // Sagen, dass wir JSON zurückgeben
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
-use App\controller\RegisterLogic;
-use App\datenbank\Entitaeten\Adresse;
-use App\datenbank\Entitaeten\Kunde;
+use App\components\kundenverwaltung\registrierung\RegisterLogic;
 
 // Register-Logik
 $registerLogic = new RegisterLogic();

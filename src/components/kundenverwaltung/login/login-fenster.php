@@ -6,15 +6,24 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/FastFood/assets/js/login.js" defer></script>
+    <script src="login.js" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="/FastFood/assets/css/login.css" rel="stylesheet">
+    <link href="login.css" rel="stylesheet">
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100 bg-light">
+<?php
+$pageTitle = "Account - MacAPPLE";
+$showCart = false;
+$showLogin = false;
+$showMenu = false;
+include '../../header/header.php';
+
+use App\utils\router;
+require_once __DIR__ . '/../../../utils/router.php';
+?>
 <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
     <h2 class="text-center">Login</h2>
     <p class="text-center text-muted">Gib dein Nutzername und Passwort ein</p>
-
     <form id="loginForm" action="#" method="POST">
         <div class="mb-3">
             <label for="username" class="form-label">Nutzername</label>
@@ -44,7 +53,7 @@
     <p id="message" style="color:red;"></p>
 
     <p class="text-center mt-3">
-        Noch kein Mitglied? <a href="register-fenster.html" class="text-decoration-none">Registrier dich jetzt!</a>
+      Noch kein Mitglied? <a href="<?= router::url('/components/kundenverwaltung/registrierung/register-fenster.php') ?>" class="text-decoration-none">Registrier dich jetzt!</a>
     </p>
 </div>
 </body>

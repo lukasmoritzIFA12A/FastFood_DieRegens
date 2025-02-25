@@ -3,9 +3,9 @@ session_start();
 
 header("Content-Type: application/json"); // Sagen, dass wir JSON zurückgeben
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
-use App\controller\LoginLogic;
+use App\components\kundenverwaltung\login\LoginLogic;
 
 // Login-Logik
 $loginLogic = new LoginLogic();

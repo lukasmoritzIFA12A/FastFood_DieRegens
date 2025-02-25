@@ -6,25 +6,14 @@
     <title>Funny-Dinner-Contest - Galerie & Bewertung</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="/assets/css/funny-dinner.css" rel="stylesheet">
-    <style>
-        .rating .fa-star {
-            font-size: 1.5rem;
-            color: #ccc;
-            cursor: pointer;
-        }
-
-        .rating .fa-star.selected,
-        .rating .fa-star:hover,
-        .rating .fa-star:hover ~ .fa-star {
-            color: #ffcc00;
-        }
-    </style>
+    <link href="galerie.css" rel="stylesheet">
 </head>
 <body>
-<header class="d-flex justify-content-between align-items-center p-3 bg-light shadow-sm">
-    <a href="startseite.html" class="fs-4 fw-bold text-dark text-decoration-none">MacApple</a>
-</header>
+<?php
+$pageTitle = "Funny Dinner Contest - MacAPPLE";
+include '../../header/header.php';
+?>
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">Funny-Dinner-Contest - Galerie</h1>
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -200,9 +189,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/funny-dinner-galerie.js"></script>
-<div class="fixed-bottom text-center mb-3">
-    <a href="startseite.html" class="btn btn-secondary">Zurück zur Startseite</a>
-</div>
+<script src="galerie.js"></script>
 </body>
 </html>

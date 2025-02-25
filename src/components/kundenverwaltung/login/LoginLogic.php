@@ -1,6 +1,6 @@
 <?php
 
-namespace App\controller;
+namespace App\components\kundenverwaltung\login;
 
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\LoginRepository;

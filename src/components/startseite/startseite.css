@@ -6,12 +6,6 @@ body {
     max-width: 100%; /* Prevent overflow */
 }
 
-.navbar-nav {
-    text-align: center;
-    margin-left: auto;
-;
-}
-
 /* Sicherstellen, dass das Modal immer zentriert ist */
 .modal-dialog {
     max-width: 500px;

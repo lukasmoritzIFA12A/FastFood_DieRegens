@@ -1,6 +1,6 @@
 <?php
 
-namespace App\controller;
+namespace App\components\kundenverwaltung\registrierung;
 
 use App\datenbank\Entitaeten\Adresse;
 use App\datenbank\Entitaeten\Kunde;
@@ -8,7 +8,7 @@ use App\datenbank\Entitaeten\Login;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\KundeRepository;
 use App\datenbank\Repositories\LoginRepository;
-use App\util\BundeslandFetcher;
+use App\utils\BundeslandFetcher;
 use App\validation\PasswortHash;
 use DateMalformedStringException;
 use DateTime;

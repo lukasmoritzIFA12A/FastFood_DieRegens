@@ -1,6 +1,6 @@
 <?php
 
-namespace App\util;
+namespace App\utils;
 
 class BundeslandFetcher
 {
