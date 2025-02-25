@@ -10,10 +10,11 @@
 </head>
 <body>
 <?php
-$pageTitle = "Funny Dinner Contest - MacAPPLE";
-include '../../header/header.php';
+$pageTitle = "Startseite - MacAPPLE"; // Seitentitel individuell setzen
+include '../../header/header.php'; // Header einfügen
+use App\utils\router;
+require_once __DIR__ . '/../../../utils/router.php';
 ?>
-
 <div class="container">
     <div class="row funny-dinner-container">
         <div class="col-md-6 instructions">
@@ -21,8 +22,10 @@ include '../../header/header.php';
             <p>Hast du schon mal eine Bestellung bekommen, die einfach zu lustig aussah?</p>
             <p>Oder ein Menü, das so kreativ angerichtet war, dass es ein Foto wert ist?</p>
             <p>Dann mach mit beim Funny-Dinner-Contest!</p>
-            <p>Lade ein Bild deiner Bestellung hoch, sammle Likes von anderen Usern und gewinne einen 50% Gutschein für deine nächste Bestellung!</p>
-            <p>Egal, ob kurios angerichtet, überraschend serviert oder einfach nur zum Schmunzeln – hier zählt der Spaßfaktor.</p>
+            <p>Lade ein Bild deiner Bestellung hoch, sammle Likes von anderen Usern und gewinne einen 50% Gutschein für
+                deine nächste Bestellung!</p>
+            <p>Egal, ob kurios angerichtet, überraschend serviert oder einfach nur zum Schmunzeln – hier zählt der
+                Spaßfaktor.</p>
             <h2>So geht’s:</h2>
             <ul class="steps">
                 <li><i class="fas fa-camera"></i> 📸 Bestellung fotografieren</li>
@@ -32,7 +35,7 @@ include '../../header/header.php';
             </ul>
         </div>
         <div class="col-md-6 text-center">
-            <img src="../../../../img/icons/funny-dinner-Burger.png" alt="Funny Dinner Image" class="img-fluid">
+            <img src="<?= router::url('/../assets/icons/funny-dinner-Burger.png') ?>" alt="Funny Dinner Image" class="img-fluid">
         </div>
     </div>
     <div class="text-center mt-4">

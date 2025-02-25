@@ -6,19 +6,7 @@
     <title>Funny-Dinner-Contest - Galerie & Bewertung</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../../css/funny-dinner.css" rel="stylesheet">
-    <style>
-        .rating .fa-star {
-            font-size: 1.5rem;
-            color: #ccc;
-            cursor: pointer;
-        }
-        .rating .fa-star.selected,
-        .rating .fa-star:hover,
-        .rating .fa-star:hover ~ .fa-star {
-            color: #ffcc00;
-        }
-    </style>
+    <link href="galerie.css" rel="stylesheet">
 </head>
 <body>
 <?php
@@ -38,8 +26,12 @@ include '../../header/header.php';
                     <p class="card-text">Burger, Cola...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Burger, Cola...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Burger, Cola...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -52,8 +44,12 @@ include '../../header/header.php';
                     <p class="card-text">Pizza, Fanta...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Pizza, Fanta...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Pizza, Fanta...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -65,8 +61,12 @@ include '../../header/header.php';
                     <p class="card-text">Pommes, Sprite...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Pommes, Sprite...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Pommes, Sprite...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -78,8 +78,12 @@ include '../../header/header.php';
                     <p class="card-text">Döner, Ayran...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Döner, Ayran...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Döner, Ayran...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -91,8 +95,12 @@ include '../../header/header.php';
                     <p class="card-text">Sushi, Grüner Tee...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Sushi, Grüner Tee...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Sushi, Grüner Tee...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -104,8 +112,12 @@ include '../../header/header.php';
                     <p class="card-text">Taco, Margarita...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Taco, Margarita...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Taco, Margarita...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -118,8 +130,12 @@ include '../../header/header.php';
                     <p class="card-text">Burger, Cola...</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">Bewerten</button>
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal" onclick="setOrderDetails('Burger, Cola...')">Bestellen</button>
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rateModal">
+                        Bewerten
+                    </button>
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#orderModal"
+                            onclick="setOrderDetails('Burger, Cola...')">Bestellen
+                    </button>
                 </div>
             </div>
         </div>
@@ -174,8 +190,5 @@ include '../../header/header.php';
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="galerie.js"></script>
-<div class="fixed-bottom text-center mb-3">
-    <a href="../../startseite/startseite.php" class="btn btn-secondary">Zurück zur Startseite</a>
-</div>
 </body>
 </html>

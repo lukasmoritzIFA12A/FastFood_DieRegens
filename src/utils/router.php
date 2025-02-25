@@ -1,10 +1,11 @@
 <?php
-namespace Src\Utils;
+namespace App\utils;
 
-class Router {
-    private static $basePath = "/FastFood_DieRegens/src"; // Passe den Basis-Pfad an falls nötig
+class router {
+    private static string $basePath = "/FastFood/src"; // Passe den Basis-Pfad an falls nötig
 
-    public static function url($path) {
+    public static function url($path): string
+    {
         return self::$basePath . $path;
     }
 }

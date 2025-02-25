@@ -17,6 +17,8 @@
 <?php
 $pageTitle = "Startseite - MacAPPLE"; // Seitentitel individuell setzen
 include '../header/header.php'; // Header einfügen
+use App\utils\router;
+require_once __DIR__ . '/../../utils/router.php';
 ?>
 <!-- Main Content -->
 <div class="container mt-4">
@@ -25,19 +27,19 @@ include '../header/header.php'; // Header einfügen
     <button class="btn btn-primary">Jetzt bestellen</button>
   </div>
 
-  <!-- Categories Section -->
-  <div class="text-center mb-4">
-    <div class="d-inline-flex align-items-center gap-3">
-      <div>
-        <img src="../../../img/icons/Burger_Icon.png" alt="Burger" style="width: 50px;">
-        <p>Burger</p>
-      </div>
-      <div>
-        <img src="../../../img/icons/Menu_Icon.png" alt="Menü" style="width: 50px;">
-        <p>Menü</p>
-      </div>
+    <!-- Categories Section -->
+    <div class="text-center mb-4">
+        <div class="d-inline-flex align-items-center gap-3">
+            <div>
+                <img src="<?= router::url('/../assets/icons/Burger_Icon.png') ?>" alt="Burger" style="width: 50px;">
+                <p>Burger</p>
+            </div>
+            <div>
+                <img src="<?= router::url('/../assets/icons/Menu_Icon.png') ?>" alt="Menü" style="width: 50px;">
+                <p>Menü</p>
+            </div>
+        </div>
     </div>
-  </div>
 
   <!-- Product Grid with Scroll -->
   <div class="product-scroll">

@@ -99,8 +99,8 @@ $welcomeMessage = "Willkommen auf meiner PHP-Seite!";
     <p>Das Logo bleibt jetzt fixiert und verändert seine Größe nicht mehr.</p>
 
     <!-- Logos -->
-    <img src="img/LogoTop.png" alt="Logo Top" class="logo-top">
-    <img src="img/LogoBottom.png" alt="Logo Bottom" class="logo-bottom">
+    <img src="assets/img/LogoTop.png" alt="Logo Top" class="logo-top">
+    <img src="assets/img/LogoBottom.png" alt="Logo Bottom" class="logo-bottom">
 
     <button class="btn-custom">Klick mich!</button>
 </div>

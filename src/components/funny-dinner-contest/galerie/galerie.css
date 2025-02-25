@@ -4,7 +4,7 @@ body {
 }
 .card {
     border-radius: 15px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 .card-img-top {
     border-radius: 15px;
@@ -24,5 +24,15 @@ body {
 }
 .rating:hover,
 .rating:hover ~ .rating {
+    color: #ffcc00;
+}
+.rating .fa-star {
+    font-size: 1.5rem;
+    color: #ccc;
+    cursor: pointer;
+}
+.rating .fa-star.selected,
+.rating .fa-star:hover,
+.rating .fa-star:hover ~ .fa-star {
     color: #ffcc00;
 }
