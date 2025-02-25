@@ -1,21 +1,21 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 header("Content-Type: application/json"); // Sagen, dass wir JSON zurückgeben
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
-use App\components\kundenverwaltung\login\LoginLogic;
+use App\components\kundenverwaltung\account\AccountLogic;
 
-// Login-Logik
-$loginLogic = new LoginLogic();
+// Account-Logik
+$accountLogik = new AccountLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $newBenutzername = $_POST['newBenutzername'];
 
     if ($loginLogic->einloggen($username, $password)) {
         $_SESSION['user'] = $username;
@@ -24,5 +24,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode(["success" => false, "message" => $loginLogic->errorMessage]);
     }
 }
-
-exit;

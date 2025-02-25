@@ -4,7 +4,7 @@ namespace App\utils;
 
 class BundeslandFetcher
 {
-    public static function getBundesland($plz): string
+    public static function getBundesland($plz): bool|string
     {
         try {
             //cURL initialisieren

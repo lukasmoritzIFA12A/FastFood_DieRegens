@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MacAPPLE - Startseite</title>
+  <title>Startseite - MacAPPLE</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="startseite.css" rel="stylesheet">
   <!-- Bootstrap JS und jQuery -->
@@ -11,13 +11,18 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <?php
-$pageTitle = "Startseite - MacAPPLE"; // Seitentitel individuell setzen
-include '../header/header.php'; // Header einfügen
+require_once __DIR__ . '/../../../vendor/autoload.php';
+use App\components\startseite\StartseiteLogic;
 use App\utils\router;
+
+$startSeiteLogik = new StartseiteLogic();
+$produktList = $startSeiteLogik->getProduktList();
+$menueList = $startSeiteLogik->getMenueList();
+
+include '../header/header.php'; // Header einfügen
 require_once __DIR__ . '/../../utils/router.php';
 ?>
 <!-- Main Content -->

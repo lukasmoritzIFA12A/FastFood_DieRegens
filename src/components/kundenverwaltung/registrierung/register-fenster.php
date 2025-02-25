@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account erstellen</title>
+    <title>Registierung - MacAPPLE</title>
     <!-- Einbindung von Bootstrap für schnelle und einfache Gestaltung -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="register.js" defer></script>
 </head>
 <body>
     <?php
-    $pageTitle = "Account - MacAPPLE";
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (isset($_SESSION['user'])) {
+        header('Location: ../account/account-fenster.php');
+        exit();
+    }
+
     $showCart = false;
     $showLogin = false;
     $showMenu = false;
@@ -18,7 +25,7 @@
     use App\utils\router;
     require_once __DIR__ . '/../../../utils/router.php';
     ?>
-    <div class="container mt-5">
+    <div class="container mt-5 flex-grow-1 d-flex flex-column">
         <!-- Hauptüberschrift der Seite -->
         <h1 class="text-center mb-4">Account erstellen</h1>
 
@@ -58,7 +65,7 @@
             <!-- Eingabefelder für Telefonnummer, PLZ und Stadt -->
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="telefon-nummer" class="form-label">Tel. Nummer</label>
+                    <label for="telefon-nummer" class="form-label">Tel. Nummer (Optional)</label>
                     <input type="text" id="telefon-nummer" name="telefon_nummer" class="form-control" placeholder="Tel. Nummer">
                 </div>
                 <div class="col-md-4">
@@ -82,7 +89,7 @@
                     <input type="text" id="house-number" name="house_number" class="form-control" placeholder="Haus-Nr." required>
                 </div>
                 <div class="col-md-2">
-                    <label for="zusatz" class="form-label">Zusatz</label>
+                    <label for="zusatz" class="form-label">Zusatz (Optional)</label>
                     <input type="text" id="zusatz" name="zusatz" class="form-control" placeholder="Zusatz">
                 </div>
             </div>
@@ -97,4 +104,5 @@
         </form>
     </div>
 </body>
+<script src="register.js" defer></script>
 </html>

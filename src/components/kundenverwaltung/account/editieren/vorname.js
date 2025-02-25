@@ -1,9 +1,9 @@
-document.getElementById("registerForm").addEventListener("submit", function (event) {
+document.getElementById("vornameForm").addEventListener("submit", function (event) {
     event.preventDefault(); // Verhindert Standard-Weiterleitung
 
     let formData = new FormData(this);
 
-    fetch("/FastFood/src/components/kundenverwaltung/registrierung/register-handler.php", {
+    fetch("/FastFood/src/components/kundenverwaltung/account/editieren/vorname-handler.php", {
         method: "POST",
         body: formData
     })
@@ -15,12 +15,12 @@ document.getElementById("registerForm").addEventListener("submit", function (eve
         }) // Antwort als JSON
         .then(data => {
             if (data.success) {
-                window.location.href = "../../startseite/startseite.php"; // Weiterleiten
+                window.location.href = "../../kundenverwaltung/account/account-fenster.php"; // Weiterleiten
             } else {
                 if (data.message) {
-                    document.getElementById("message").innerText = data.message;
+                    alert (data.message);
                 } else {
-                    document.getElementById("message").innerText = "Etwas ist schiefgelaufen!";
+                    alert ("Etwas ist schiefgelaufen!");
                 }
             }
         })

@@ -92,4 +92,9 @@ class RepositoryAccess extends EntityRepository
     {
         $this->getEntityManager()->createQuery("DELETE FROM ".$this->getEntityName())->execute();
     }
+
+    function getEntityManager(): EntityManager
+    {
+        return $this->entityManager;
+    }
 }
