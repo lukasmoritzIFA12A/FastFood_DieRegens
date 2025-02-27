@@ -69,4 +69,15 @@ class Menue
     {
         $this->produkte = $produkte;
     }
+
+    public function getPreis(): string
+    {
+        $summe = "0.00";
+
+        foreach ($this->produkte as $produkt) {
+            $summe = bcadd($summe, $produkt->getPreis(), 2);
+        }
+
+        return $summe;
+    }
 }

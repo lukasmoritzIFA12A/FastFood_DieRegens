@@ -10,7 +10,8 @@
         "symfony/yaml": "*",
         "ext-mysqli": "*",
         "ext-pdo": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-bcmath": "*"
     },
 
     "autoload": {

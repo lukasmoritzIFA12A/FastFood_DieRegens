@@ -26,3 +26,7 @@ document.getElementById("vornameForm").addEventListener("submit", function (even
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 });
+
+function setVorname() {
+    document.getElementById("newVorname").value = document.getElementById("vorname").textContent.trim();
+}

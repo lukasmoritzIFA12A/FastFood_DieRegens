@@ -20,16 +20,6 @@ use App\utils\router;
 require_once __DIR__ . '/../../utils/router.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <title>Header</title>
-</head>
-<body>
-
 <header class="navbar navbar-expand-lg navbar-light bg-light px-3 border-bottom">
     <a class="navbar-brand fs-4" href="<?= router::url('/components/startseite/startseite.php') ?>">MacAPPLE</a>
 

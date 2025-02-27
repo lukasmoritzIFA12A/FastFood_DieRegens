@@ -26,3 +26,11 @@ document.getElementById("adresseForm").addEventListener("submit", function (even
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 });
+
+function setAdresse(strassenname, hausnummer, plz, stadt, zusatz) {
+    document.getElementById("newStreet").value = strassenname;
+    document.getElementById("newNumber").value = hausnummer;
+    document.getElementById("newPostalCode").value = plz;
+    document.getElementById("newCity").value = stadt;
+    document.getElementById("newZusatz").value = zusatz;
+}

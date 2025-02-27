@@ -26,3 +26,7 @@ document.getElementById("benutzernameForm").addEventListener("submit", function 
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 });
+
+function setBenutzername() {
+    document.getElementById("newBenutzername").value = document.getElementById("benutzername").textContent.trim();
+}

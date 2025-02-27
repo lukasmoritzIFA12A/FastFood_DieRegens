@@ -15,14 +15,15 @@ $accountLogic = new AccountLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $newNachname = $_POST['newNachname'];
+    $altesPasswort = $_POST['oldPassword'];
+    $neuesPasswort = $_POST['newPassword'];
 
     if (!isset($_SESSION['user'])) {
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Nutzer nicht eingeloggt!"]);
         exit;
     }
 
-    if ($accountLogic->updateNachname($_SESSION['user'], $newNachname)) {
+    if ($accountLogic->updatePasswort($_SESSION['user'], $altesPasswort, $neuesPasswort)) {
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => $accountLogic->errorMessage]);

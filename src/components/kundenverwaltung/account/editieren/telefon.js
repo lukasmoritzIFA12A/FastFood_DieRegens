@@ -26,3 +26,7 @@ document.getElementById("telefonForm").addEventListener("submit", function (even
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 });
+
+function setTelefon() {
+    document.getElementById("newTelefon").value = document.getElementById("telefon").textContent.trim();
+}

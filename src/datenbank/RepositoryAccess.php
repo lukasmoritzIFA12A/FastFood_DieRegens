@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Exception;
+use mysqli_sql_exception;
 
 /**
  * @template T
@@ -17,8 +18,18 @@ class RepositoryAccess extends EntityRepository
 
     function __construct(EntityManager $entityManager, string $entitaetsKlasse)
     {
-        parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
         $this->entityManager = $entityManager;
+        try {
+            parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
+        } catch (Exception $e) {
+            error_log("Mysql Verbindung fehlgeschlagen: ".$e->getMessage());
+
+            header('Content-Type: text/html; charset=utf-8');
+            $htmlContent = file_get_contents('../../components/error/error-datenbank.html');
+            echo $htmlContent;
+
+            die;
+        }
     }
 
     function getById(int $id): ?object

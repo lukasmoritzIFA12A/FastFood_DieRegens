@@ -1,0 +1,4 @@
+.bestellhistorie {
+    max-height: 400px; /* Maximalhöhe anpassen */
+    overflow-y: auto;  /* Scrollen aktivieren */
+}
