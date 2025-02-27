@@ -19,17 +19,7 @@ class RepositoryAccess extends EntityRepository
     function __construct(EntityManager $entityManager, string $entitaetsKlasse)
     {
         $this->entityManager = $entityManager;
-        try {
-            parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
-        } catch (Exception $e) {
-            error_log("Mysql Verbindung fehlgeschlagen: ".$e->getMessage());
-
-            header('Content-Type: text/html; charset=utf-8');
-            $htmlContent = file_get_contents('../../components/error/error-datenbank.html');
-            echo $htmlContent;
-
-            die;
-        }
+        parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
     }
 
     function getById(int $id): ?object

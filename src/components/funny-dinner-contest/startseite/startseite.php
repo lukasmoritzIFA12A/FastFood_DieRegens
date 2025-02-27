@@ -10,7 +10,8 @@
 </head>
 <body>
 <?php
-$pageTitle = "Startseite - MacAPPLE"; // Seitentitel individuell setzen
+require_once __DIR__ . '/../../error/error-handler.php';
+
 include '../../header/header.php'; // Header einfügen
 use App\utils\router;
 require_once __DIR__ . '/../../../utils/router.php';

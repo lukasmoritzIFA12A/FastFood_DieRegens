@@ -8,7 +8,7 @@
 </head>
 <body>
 <?php
-$pageTitle = "Kontaktformular - MacAPPLE";
+require_once __DIR__ . '/../error/error-handler.php';
 include '../header/header.php';
 ?>
 

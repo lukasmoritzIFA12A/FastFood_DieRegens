@@ -14,8 +14,9 @@ class Contest
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\Column(type: 'blob')]
-    private string $bild;
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
+    private Bild $bild;
 
     #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id")]
@@ -44,12 +45,12 @@ class Contest
         $this->bestellung = $bestellung;
     }
 
-    public function getBild(): string
+    public function getBild(): Bild
     {
         return $this->bild;
     }
 
-    public function setBild(string $bild): void
+    public function setBild(Bild $bild): void
     {
         $this->bild = $bild;
     }

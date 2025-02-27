@@ -16,6 +16,10 @@ class Menue
     #[ORM\GeneratedValue]
     private int $id;
 
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
+    private Bild $bild;
+
     #[ORM\Column(type: 'string', length: 255)]
     private string $Titel;
 
@@ -38,6 +42,16 @@ class Menue
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getBild(): Bild
+    {
+        return $this->bild;
+    }
+
+    public function setBild(Bild $bild): void
+    {
+        $this->bild = $bild;
     }
 
     public function getBeschreibung(): ?string

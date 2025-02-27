@@ -26,6 +26,7 @@ class BestellstatusRepositoryTest extends DatenbankTest
     {
         $bestellstatus = new Bestellstatus();
         $bestellstatus->setStatus("Offen");
+        $bestellstatus->setFarbe("#FF0000");
         return $bestellstatus;
     }
 
