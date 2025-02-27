@@ -26,7 +26,7 @@ class Kunde
     private string $Nachname;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $Telefonnummer;
+    private ?string $Telefonnummer;
 
     #[ORM\Column(type: 'datetime')]
     private DateTime $Registrierungsdatum;

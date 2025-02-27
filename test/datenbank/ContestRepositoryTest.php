@@ -25,9 +25,10 @@ class ContestRepositoryTest extends DatenbankTest
     public static function createContest(string $loginName): Contest
     {
         $bestellung = BestellungRepositoryTest::createBestellung($loginName);
+        $bild = BildRepositoryTest::createBild();
 
         $contest = new Contest();
-        $contest->setBild("bild/zum/huhn.png");
+        $contest->setBild($bild);
         $contest->setBestellung($bestellung);
         $contest->setFreigeschalten(false);
         return $contest;
@@ -54,13 +55,13 @@ class ContestRepositoryTest extends DatenbankTest
         self::$contestRepository->save($contest);
 
     //when
-        $contest->setBild("pfad/wo/anders/hin.jpg");
+        $contest->getBild()->setBild("ANDERER_BLOB");
         self::$contestRepository->save($contest);
 
         $updatedContest = self::$contestRepository->getById($contest->getId());
 
     //then
-        $this->assertEquals($contest->getBild(), $updatedContest->getBild());
+        $this->assertEquals($contest->getBild()->getBild(), $updatedContest->getBild()->getBild());
     }
 
     public function testGetAll(): void

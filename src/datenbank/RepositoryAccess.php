@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Exception;
+use mysqli_sql_exception;
 
 /**
  * @template T
@@ -17,8 +18,8 @@ class RepositoryAccess extends EntityRepository
 
     function __construct(EntityManager $entityManager, string $entitaetsKlasse)
     {
-        parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
         $this->entityManager = $entityManager;
+        parent::__construct($entityManager, $entityManager->getClassMetadata($entitaetsKlasse));
     }
 
     function getById(int $id): ?object
@@ -91,5 +92,10 @@ class RepositoryAccess extends EntityRepository
     function deleteAll(): void
     {
         $this->getEntityManager()->createQuery("DELETE FROM ".$this->getEntityName())->execute();
+    }
+
+    function getEntityManager(): EntityManager
+    {
+        return $this->entityManager;
     }
 }

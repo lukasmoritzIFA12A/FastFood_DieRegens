@@ -17,6 +17,9 @@ class Bestellstatus
     #[ORM\Column(type: 'string', length: 255)]
     private string $status;
 
+    #[ORM\Column(type: 'string', length: 7)]
+    private string $farbe;
+
     public function getId(): int
     {
         return $this->id;
@@ -35,5 +38,15 @@ class Bestellstatus
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getFarbe(): string
+    {
+        return $this->farbe;
+    }
+
+    public function setFarbe(string $farbe): void
+    {
+        $this->farbe = $farbe;
     }
 }

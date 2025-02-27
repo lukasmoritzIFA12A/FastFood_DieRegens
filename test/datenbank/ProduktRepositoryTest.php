@@ -24,13 +24,13 @@ class ProduktRepositoryTest extends DatenbankTest
 
     public static function createProdukt(): Produkt
     {
-        $icon = IconRepositoryTest::createIcon();
+        $bild = BildRepositoryTest::createBild();
 
         $produkt = new Produkt();
         $produkt->setTitel("Coca-Cola");
         $produkt->setPreis(1.5);
         $produkt->setLagerbestand(10);
-        $produkt->setIcon($icon);
+        $produkt->setBild($bild);
         return $produkt;
     }
 

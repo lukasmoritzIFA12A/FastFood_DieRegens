@@ -31,10 +31,13 @@ class EntityManagerFactory
 
     private static function getMetadataConfiguration(bool $isTestMode = false): Configuration
     {
-        return ORMSetup::createAttributeMetadataConfiguration(
+        $config = ORMSetup::createAttributeMetadataConfiguration(
             paths: [dirname(__DIR__, 2) . '/src/datenbank/Entitaeten'],
             isDevMode: $isTestMode,
         );
+
+        $config->setAutoGenerateProxyClasses(true);
+        return $config;
     }
 
     private static function getConnectionParams(bool $isTestMode = false): array

@@ -16,24 +16,21 @@ class Produkt
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Icon::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Icon_id", referencedColumnName: "id")]
-    private Icon $icon;
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
+    private Bild $bild;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $Titel;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $Beschreibung;
+    private ?string $Beschreibung;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
     private string $Preis;
 
     #[ORM\Column(type: "integer")]
     private int $Lagerbestand;
-
-    #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Rabatt;
 
     #[ORM\ManyToMany(targetEntity: Zutat::class, cascade: ["persist"])]
     private Collection $zutat;
@@ -83,14 +80,14 @@ class Produkt
         $this->Beschreibung = $Beschreibung;
     }
 
-    public function getIcon(): Icon
+    public function getBild(): Bild
     {
-        return $this->icon;
+        return $this->bild;
     }
 
-    public function setIcon(Icon $icon): void
+    public function setBild(Bild $bild): void
     {
-        $this->icon = $icon;
+        $this->bild = $bild;
     }
 
     public function getTitel(): string
@@ -101,16 +98,6 @@ class Produkt
     public function setTitel(string $Titel): void
     {
         $this->Titel = $Titel;
-    }
-
-    public function getRabatt(): ?string
-    {
-        return $this->Rabatt;
-    }
-
-    public function setRabatt(?string $Rabatt): void
-    {
-        $this->Rabatt = $Rabatt;
     }
 
     public function getZutat(): Collection
