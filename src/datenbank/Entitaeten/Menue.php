@@ -20,7 +20,7 @@ class Menue
     private string $Titel;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $Beschreibung;
+    private ?string $Beschreibung;
 
     #[ORM\ManyToMany(targetEntity: Produkt::class, cascade: ["persist"])]
     private Collection $produkte;

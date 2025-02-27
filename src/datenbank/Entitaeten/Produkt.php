@@ -24,16 +24,13 @@ class Produkt
     private string $Titel;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private string $Beschreibung;
+    private ?string $Beschreibung;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
     private string $Preis;
 
     #[ORM\Column(type: "integer")]
     private int $Lagerbestand;
-
-    #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
-    private string $Rabatt;
 
     #[ORM\ManyToMany(targetEntity: Zutat::class, cascade: ["persist"])]
     private Collection $zutat;
@@ -101,16 +98,6 @@ class Produkt
     public function setTitel(string $Titel): void
     {
         $this->Titel = $Titel;
-    }
-
-    public function getRabatt(): ?string
-    {
-        return $this->Rabatt;
-    }
-
-    public function setRabatt(?string $Rabatt): void
-    {
-        $this->Rabatt = $Rabatt;
     }
 
     public function getZutat(): Collection
