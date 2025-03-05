@@ -1,19 +1,23 @@
 <?php
 
-function customErrorHandler($errno, $errstr, $errfile, $errline): void
+use JetBrains\PhpStorm\NoReturn;
+
+#[NoReturn] function customErrorHandler($errno, $errstr, $errfile, $errline): void
 {
     error_log($errstr);
 
     $details = $errno.":\n"."Fehler in $errfile auf Zeile $errline: $errstr";
     include 'error-fenster.php';
+    die;
 }
 
-function customExceptionHandler($exception): void
+#[NoReturn] function customExceptionHandler($exception): void
 {
     error_log($exception);
 
     $details = $exception->getMessage();
     include 'error-fenster.php';
+    die;
 }
 
 // Setze die Fehler- und Ausnahmehandler
