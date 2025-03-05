@@ -19,7 +19,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
     let formData = new FormData(this);
 
-    fetch("/FastFood/src/controller/login-handler.php", {
+    fetch("/FastFood/src/components/kundenverwaltung/login/login-handler.php", {
         method: "POST",
         body: formData
     })
@@ -31,7 +31,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
         }) // Antwort als JSON
         .then(data => {
             if (data.success) {
-                window.location.href = "dashboard.php"; // Weiterleiten
+                window.location.href = "../../startseite/startseite.php"; // Weiterleiten
             } else {
                 if (data.message) {
                     document.getElementById("message").innerText = data.message;

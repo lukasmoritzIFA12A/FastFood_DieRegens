@@ -10,7 +10,7 @@
 <body>
 
 <?php
-$pageTitle = "Funny Dinner Contest - MacAPPLE"; // Seitentitel individuell setzen
+require_once __DIR__ . '/../error/error-handler.php';
 $showMenu = false;
 $showCart = false;
 include '../header/header.php'; // Header einfügen

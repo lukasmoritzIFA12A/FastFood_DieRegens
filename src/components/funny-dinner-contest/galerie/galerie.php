@@ -10,7 +10,8 @@
 </head>
 <body>
 <?php
-$pageTitle = "Funny Dinner Contest - MacAPPLE";
+require_once __DIR__ . '/../../error/error-handler.php';
+
 include '../../header/header.php';
 ?>
 
