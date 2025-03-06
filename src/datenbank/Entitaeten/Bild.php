@@ -15,7 +15,7 @@ class Bild
     private int $id;
 
     #[ORM\Column(type: 'blob')]
-    private string $bild;
+    private $bild;
 
     public function getId(): int
     {
@@ -27,12 +27,15 @@ class Bild
         $this->id = $id;
     }
 
-    public function getBild(): string
+    public function getBild(): false|string
     {
+        if (is_resource($this->bild)) {
+            return stream_get_contents($this->bild);
+        }
         return $this->bild;
     }
 
-    public function setBild(string $bild): void
+    public function setBild($bild): void
     {
         $this->bild = $bild;
     }

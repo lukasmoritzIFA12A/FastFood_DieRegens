@@ -5,6 +5,7 @@ namespace App\components\startseite;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
+use App\utils\ImageLoader;
 use Doctrine\ORM\EntityManager;
 
 class StartseiteLogic

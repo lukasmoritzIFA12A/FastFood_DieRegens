@@ -11,7 +11,8 @@
         "ext-mysqli": "*",
         "ext-pdo": "*",
         "ext-curl": "*",
-        "ext-bcmath": "*"
+        "ext-bcmath": "*",
+        "ext-fileinfo": "*"
     },
 
     "autoload": {
