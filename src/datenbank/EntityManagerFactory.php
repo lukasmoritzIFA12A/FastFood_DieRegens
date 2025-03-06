@@ -110,6 +110,13 @@ class EntityManagerFactory
     }
 
     private static function isValidDatabaseConfig(array $config): bool {
-        return array_all(static::$CONFIG_SCHLUESSEL, fn($key) => isset($config[$key]));
+        foreach (static::$CONFIG_SCHLUESSEL as $key)
+        {
+            if (!isset($config[$key]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
