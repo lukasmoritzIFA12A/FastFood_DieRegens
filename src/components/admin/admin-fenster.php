@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Panel</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Optional: Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -29,6 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $adminLogic = new AdminLogic();
 $zutaten = $adminLogic->getAllZutaten();
+$produkte = $adminLogic->getAllProdukte();
 
 $showCart = false;
 $showLogin = false;
@@ -140,6 +139,8 @@ include '../header/header.php'; // Header einfügen
                             </tbody>
                         </table>
                     </div>
+
+                    <input type="hidden" name="produkte" id="produkteInput">
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Menü hinzufügen</button>
             </form>
@@ -218,26 +219,20 @@ include '../header/header.php'; // Header einfügen
                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-hover" id="productListTable">
                         <tbody id="productList">
-                        <!-- Beispielprodukte; in der Praxis dynamisch laden -->
-                        <tr>
-                            <td class="product-name">Hamburger</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-success btn-sm" onclick="addProductToMenu('Hamburger')">Hinzufügen</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="product-name">Pommes</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-success btn-sm" onclick="addProductToMenu('Pommes')">Hinzufügen</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="product-name">Salat</td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-success btn-sm" onclick="addProductToMenu('Salat')">Hinzufügen</button>
-                            </td>
-                        </tr>
-                        <!-- Weitere Produkte -->
+                            <?php if (empty($produkte)): ?>
+                                <tr>
+                                    <td class="text-center text-muted">Es wurden keine Produkte gefunden.</td>
+                                </tr>
+                            <?php endif;?>
+
+                            <?php foreach ($produkte as $produkt): ?>
+                                <tr>
+                                    <td class="product-name"><?=$produkt->getTitel()?></td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-success btn-sm" onclick="addProductToMenu('<?=$produkt->getTitel()?>', '<?=$produkt->getId()?>')">Hinzufügen</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
                         </tbody>
                     </table>
                 </div>
@@ -264,21 +259,20 @@ include '../header/header.php'; // Header einfügen
                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-hover" id="zutatListTable">
                         <tbody id="zutatList">
+                            <?php if (empty($zutaten)): ?>
+                                <tr>
+                                    <td class="text-center text-muted">Es wurden keine Zutaten gefunden.</td>
+                                </tr>
+                            <?php endif;?>
 
-                        <?php if (empty($zutaten)): ?>
-                            <tr>
-                                <td class="text-center text-muted">Es wurden keine Zutaten gefunden.</td>
-                            </tr>
-                        <?php endif;?>
-
-                        <?php foreach ($zutaten as $zutat): ?>
-                            <tr>
-                                <td class="zutat-name"><?=$zutat->getZutatName()?></td>
-                                <td class="text-end">
-                                    <button type="button" class="btn btn-success btn-sm" onclick="addZutatToProdukt('<?=$zutat->getZutatName()?>')">Hinzufügen</button>
-                                </td>
-                            </tr>
-                        <?php endforeach;?>
+                            <?php foreach ($zutaten as $zutat): ?>
+                                <tr>
+                                    <td class="zutat-name"><?=$zutat->getZutatName()?></td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-success btn-sm" onclick="addZutatToProdukt('<?=$zutat->getZutatName()?>', '<?=$zutat->getId()?>')">Hinzufügen</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
                         </tbody>
                     </table>
                 </div>
@@ -291,7 +285,7 @@ include '../header/header.php'; // Header einfügen
 </div>
 
 <!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="content/produkt.js"></script>
 <script src="content/menue.js"></script>
 <script src="content/bestellstatus.js"></script>

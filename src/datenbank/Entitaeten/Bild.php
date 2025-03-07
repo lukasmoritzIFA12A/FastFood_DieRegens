@@ -17,6 +17,8 @@ class Bild
     #[ORM\Column(type: 'blob')]
     private $bild;
 
+    private string|false|null $cachedBild = null;
+
     public function getId(): int
     {
         return $this->id;
@@ -29,10 +31,16 @@ class Bild
 
     public function getBild(): false|string
     {
-        if (is_resource($this->bild)) {
-            return stream_get_contents($this->bild);
+        if ($this->cachedBild !== null) {
+            return $this->cachedBild;
         }
-        return $this->bild;
+
+        if (is_resource($this->bild)) {
+            $this->cachedBild = stream_get_contents($this->bild);
+            return $this->cachedBild;
+        }
+
+        return $this->cachedBild = $this->bild;
     }
 
     public function setBild($bild): void

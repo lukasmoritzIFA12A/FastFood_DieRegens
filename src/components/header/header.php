@@ -34,13 +34,13 @@ require_once __DIR__ . '/../../utils/router.php';
             <ul class="navbar-nav mx-auto"> <!-- zentriert die ersten Elemente -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="menusDropdown" role="button" data-bs-toggle="dropdown">Menüs</a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
                         <?php if (empty($menueList)): ?>
-                            <li class="dropdown-item d-flex justify-content-center">-Keine Inhalte-</li>
+                            <li class="dropdown-item text-center">-Keine Inhalte-</li>
                         <?php else: ?>
                             <?php foreach ($menueList as $menue): ?>
-                                <li class="dropdown-item d-flex justify-content-center">
-                                    <a class="nav-link" href="#"><?= $menue->getTitel() ?></a>
+                                <li>
+                                    <a class="dropdown-item text-center" href="#"><?= htmlspecialchars($menue->getTitel()) ?></a>
                                 </li>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -49,13 +49,13 @@ require_once __DIR__ . '/../../utils/router.php';
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="burgerDropdown" role="button" data-bs-toggle="dropdown">Burger</a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
                         <?php if (empty($produktList)): ?>
-                            <li class="dropdown-item d-flex justify-content-center">-Keine Inhalte-</li>
+                            <li class="dropdown-item text-center">-Keine Inhalte-</li>
                         <?php else: ?>
                             <?php foreach ($produktList as $produkt): ?>
-                                <li class="dropdown-item d-flex justify-content-center">
-                                    <a class="nav-link" href="#"><?= $produkt->getTitel() ?></a>
+                                <li>
+                                    <a class="dropdown-item text-center" href="#"><?= htmlspecialchars($produkt->getTitel()) ?></a>
                                 </li>
                             <?php endforeach; ?>
                         <?php endif; ?>

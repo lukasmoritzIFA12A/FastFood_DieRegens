@@ -60,7 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $zutatenCollection = new ArrayCollection();
     foreach ($rawzutatenArray as $rawzutat) {
-        $zutatenCollection->add($rawzutat);
+        if (is_numeric($rawzutat)) {
+            $zutatenCollection->add(intval($rawzutat));
+        }
     }
 
     /* if (!isset($_SESSION['admin'])) {

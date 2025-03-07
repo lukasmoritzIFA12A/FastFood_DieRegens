@@ -53,27 +53,38 @@ class AdminLogic
         $zutaten = new ArrayCollection();
         $zutatRepository = new ZutatRepository($this->entityManager);
         foreach ($rawzutaten as $rawzutat) {
-            $zutat = $zutatRepository->findByZutatName($rawzutat);
-            if (!$zutat) {
-                $neueZutat = new Zutat();
-                $neueZutat->setZutatName($rawzutat);
-                $zutaten->add($neueZutat);
-            } else {
+            $zutat = $zutatRepository->getById($rawzutat);
+            if ($zutat) {
                 $zutaten->add($zutat);
             }
         }
+
         $produkt->setZutat($zutaten);
 
         $produktRepository = new ProduktRepository($this->entityManager);
         return $produktRepository->save($produkt);
     }
 
-    public function saveMenue($titel, $beschreibung, $bild, $produkte): bool
+    public function saveMenue($titel, $beschreibung, $tempPath, $rawProdukte): bool
     {
         $menue = new Menue();
         $menue->setTitel($titel);
         $menue->setBeschreibung($beschreibung);
+
+        $fileData = file_get_contents($tempPath);
+        $bild = new Bild();
+        $bild->setBild($fileData);
+
         $menue->setBild($bild);
+
+        $produkte = new ArrayCollection();
+        $produktRepository = new ProduktRepository($this->entityManager);
+        foreach ($rawProdukte as $rawProdukt) {
+            $produkt = $produktRepository->getById($rawProdukt);
+            if ($produkt) {
+                $produkte->add($produkt);
+            }
+        }
         $menue->setProdukte($produkte);
 
         $menueRepository = new MenueRepository($this->entityManager);
@@ -88,5 +99,15 @@ class AdminLogic
             return [];
         }
         return $zutaten;
+    }
+
+    public function getAllProdukte(): array
+    {
+        $produktRepository = new ProduktRepository($this->entityManager);
+        $produkte = $produktRepository->getAll();
+        if (!$produkte) {
+            return [];
+        }
+        return $produkte;
     }
 }

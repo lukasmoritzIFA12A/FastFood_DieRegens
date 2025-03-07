@@ -2,6 +2,7 @@
 
 namespace App\components\startseite;
 
+use App\datenbank\Entitaeten\Menue;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
@@ -28,5 +29,11 @@ class StartseiteLogic
     {
         $menueRepository = new MenueRepository($this->entityManager);
         return $menueRepository->getAll();
+    }
+
+    public function getTopMenue(): Menue|bool
+    {
+        $menueRepository = new MenueRepository($this->entityManager);
+        return $menueRepository->getTopMenue();
     }
 }

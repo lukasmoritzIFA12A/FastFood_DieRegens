@@ -1,5 +1,5 @@
 let zutaten = new Map();
-let counter = 0;
+let produkte = new Map();
 
 // Filterfunktion im Modal
 function filterProducts() {
@@ -13,35 +13,47 @@ function filterProducts() {
 }
 
 // Produkt zum Menü hinzufügen
-function addProductToMenu(productName) {
+function addProductToMenu(productName, productId) {
+    if (produkte.has(productId)) {
+        alert("Produkt schon zu Menü hinzugefügt!");
+        return;
+    }
+
     const addedProductsList = document.getElementById('addedProductsList');
-    // Entferne "Keine Produkte"-Nachricht, falls vorhanden
+
     const noProductsMessage = document.getElementById('noProductsMessage');
     if (noProductsMessage) {
-        noProductsMessage.remove();
+        noProductsMessage.style.display = 'none';
     }
+
+    const produkteInput = document.getElementById('produkteInput');
+    produkte.set(productId, productName);
+    produkteInput.value = Array.from(produkte.keys()).join(",");
+
     // Erstelle eine neue Zeile
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
-        <td class="d-flex justify-content-between align-items-center">
+        <td class="d-flex justify-content-between align-items-center addedProduct">
           <span class="product-name">${productName}</span>
-          <button type="button" class="btn btn-danger btn-sm" onclick="removeProductFromMenu(this)">Entfernen</button>
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeProductFromMenu(this, ${productId})">Entfernen</button>
         </td>
       `;
     addedProductsList.appendChild(newRow);
 }
 
 // Produkt aus der Menü-Liste entfernen
-function removeProductFromMenu(button) {
+function removeProductFromMenu(button, index) {
     const row = button.closest('tr');
     row.remove();
-    // Falls keine Zeilen mehr vorhanden, füge Platzhalter-Nachricht hinzu
-    const addedProductsList = document.getElementById('addedProductsList');
-    if (addedProductsList.children.length === 0) {
-        const messageRow = document.createElement('tr');
-        messageRow.id = 'noProductsMessage';
-        messageRow.innerHTML = `<td class="text-center text-muted">Es wurden noch keine Produkte hinzugefügt.</td>`;
-        addedProductsList.appendChild(messageRow);
+
+    produkte.delete(index);
+    const produkteInput = document.getElementById('produkteInput');
+    produkteInput.value = Array.from(produkte.keys()).join(",");
+
+    const neuProdukte = document.querySelectorAll('#addedProductsList .addedProduct');
+    if (neuProdukte.length === 0) {
+        const noProduktMessage = document.getElementById('noProductsMessage');
+        noProduktMessage.style.display = '';
     }
 }
 
@@ -64,7 +76,12 @@ function filterZutaten() {
 }
 
 // Zutat zum Produkt hinzufügen
-function addZutatToProdukt(zutatName) {
+function addZutatToProdukt(zutatName, zutatId) {
+    if (zutaten.has(zutatId)) {
+        alert("Zutat schon zu Produkt hinzugefügt!");
+        return;
+    }
+
     const addedZutatenList = document.getElementById('addedZutatenList');
 
     const noZutatMessage = document.getElementById('noZutatenMessage');
@@ -72,22 +89,19 @@ function addZutatToProdukt(zutatName) {
         noZutatMessage.style.display = 'none';
     }
 
-    let currentCounter = counter;
-
     const zutatenInput = document.getElementById('zutatenInput');
-    zutaten.set(currentCounter, zutatName);
-    zutatenInput.value = Array.from(zutaten.values()).join(",");
+    zutaten.set(zutatId, zutatName);
+    zutatenInput.value = Array.from(zutaten.keys()).join(",");
 
     // Erstelle eine neue Zeile
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td class="d-flex justify-content-between align-items-center addedZutat">
-          <span class="product-name">${zutatName}</span>
-          <button type="button" class="btn btn-danger btn-sm" onclick="removeZutatFromProdukt(this, ${currentCounter})">Entfernen</button>
+          <span class="zutat-name">${zutatName}</span>
+          <button type="button" class="btn btn-danger btn-sm" onclick="removeZutatFromProdukt(this, ${zutatId})">Entfernen</button>
         </td>
       `;
     addedZutatenList.appendChild(newRow);
-    counter++;
 }
 
 // Zutat aus der Produkt-Liste entfernen
@@ -97,7 +111,7 @@ function removeZutatFromProdukt(button, index) {
 
     zutaten.delete(index);
     const zutatenInput = document.getElementById('zutatenInput');
-    zutatenInput.value = Array.from(zutaten.values()).join(",");
+    zutatenInput.value = Array.from(zutaten.keys()).join(",");
 
     const neuZutaten = document.querySelectorAll('#addedZutatenList .addedZutat');
     if (neuZutaten.length === 0) {
