@@ -41,7 +41,7 @@ require_once __DIR__ . '/../../utils/router.php';
                       <img src="<?= ImageLoader::getImageHTMLSrc($topMenue->getBild()); ?>"
                            alt="Top Menü Bild"
                            class="img-fluid rounded-start"
-                           style="object-fit: cover; width: 100%; height: 100%;">
+                           style="object-fit: cover; width: 250px; height: 250px;">
                   </div>
 
                   <!-- Text-Seite -->
@@ -104,12 +104,22 @@ require_once __DIR__ . '/../../utils/router.php';
                                  style="width: 250px; height: 250px; object-fit: cover;">
                             <div class="card-body">
                                 <p class="text-center"><?= $produkt->getTitel() ?> - <?= $produkt->getPreis() ?> €</p>
+
+                                <?php
+                                $zutatenArray = $produkt->getZutat()
+                                    ? $produkt->getZutat()->map(fn($zutat) => $zutat->getZutatName())->toArray()
+                                    : [];
+                                $zutatenJson = json_encode($zutatenArray);
+                                ?>
+
                                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productModal"
                                         onclick="setProductDetails(
                                                 '<?= $produkt->getTitel() ?>',
-                                                '<?= $produkt->getPreis() ?>',
                                                 '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
-                                                '<?= $produkt->getBeschreibung() ?>')">
+                                                '<?= $produkt->getPreis() ?>',
+                                                '<?= $produkt->getBeschreibung() ?>',
+                                                '<?= $produkt->getLagerbestand() ?>',
+                                                '<?= htmlspecialchars($zutatenJson) ?>')">
                                     Jetzt bestellen
                                 </button>
                             </div>
@@ -142,10 +152,10 @@ require_once __DIR__ . '/../../utils/router.php';
                             <div class="card-body">
                                 <p class="text-center"><?= $menue->getTitel() ?> - <?= $menue->getPreis() ?> €</p>
                                 <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productModal"
-                                        onclick="setProductDetails(
+                                        onclick="setMenueDetails(
                                                 '<?= $menue->getTitel() ?>',
-                                                '<?= $menue->getPreis() ?>',
                                                 '<?= ImageLoader::getImageHTMLSrc($menue->getBild()) ?>',
+                                                '<?= $menue->getPreis() ?>',
                                                 '<?= $menue->getBeschreibung() ?>')">
                                     Jetzt bestellen
                                 </button>
@@ -158,33 +168,66 @@ require_once __DIR__ . '/../../utils/router.php';
     </div>
 
     <!-- Modal (Produkt Popup) -->
-    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="productModalLabel">Produkt Titel</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <img id="productImage" class="img-fluid" alt="Produkt Bild">
-              </div>
-              <div class="col-md-6">
-                <p><strong>Preis:</strong> <span id="productPrice"></span></p>
-                <p><strong>Produktbeschreibung:</strong></p>
-                <p id="productDescription"></p>
-              </div>
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Zentriert und größer -->
+            <div class="modal-content shadow-lg rounded-3">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="productModalLabel">Produkt Titel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center">
+                            <img id="productImage" class="img-fluid rounded shadow-sm" alt="Produkt Bild">
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw-bold fs-5">Preis: <span id="productPrice" class="text-success"></span></p>
+
+                            <p class="fw-semibold">Produktbeschreibung:</p>
+                            <p id="productDescription" class="text-muted"></p>
+
+                            <p class="fw-semibold">Lagerbestand:</p>
+                            <p id="productStock" class="text-warning fw-bold"></p> <!-- Lagerbestand -->
+
+                            <p class="fw-semibold">Zutaten:</p>
+                            <ul id="productIngredients" class="list-unstyled"></ul> <!-- Zutaten -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-success">In den Warenkorb</button>
+                </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
-            <button type="button" class="btn btn-primary">In den Warenkorb</button>
-          </div>
         </div>
-      </div>
+    </div>
+
+    <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg rounded-3">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="menuModalLabel">Menü Titel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center">
+                            <img id="menuImage" class="img-fluid rounded shadow-sm" alt="Menü Bild">
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw-bold fs-5">Preis: <span id="menuPrice" class="text-success"></span></p>
+
+                            <p class="fw-semibold">Menübeschreibung:</p>
+                            <p id="menuDescription" class="text-muted"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-success">In den Warenkorb</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

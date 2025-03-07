@@ -1,11 +1,3 @@
-// Funktion zum Setzen der Produktdetails im Popup
-function setProductDetails(title, price, imageSrc, description) {
-    document.getElementById('productModalLabel').innerText = title;
-    document.getElementById('productPrice').innerText = price;
-    document.getElementById('productImage').src = imageSrc;
-    document.getElementById('productDescription').innerText = description;
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     const burgerBtn = document.getElementById("burgerBtn");
     const menuBtn = document.getElementById("menuBtn");
@@ -44,4 +36,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 20); // Exakter Moment für Transition
 });
 
+function setProductDetails(title, image, price, description, stock, ingredients) {
+    document.getElementById('productModalLabel').innerText = title;
+    document.getElementById('productImage').src = image;
+    document.getElementById('productPrice').innerText = price + " €";
+    document.getElementById('productDescription').innerText = description;
 
+    // Lagerbestand prüfen
+    let stockElement = document.getElementById('productStock');
+    if (stock < 5) {
+        stockElement.innerText = "Nur noch wenige auf Lager!";
+        stockElement.classList.add("text-danger"); // Rot färben
+    } else {
+        stockElement.innerText = stock + " Stück verfügbar";
+        stockElement.classList.remove("text-danger");
+    }
+
+    if (ingredients != null) {
+        ingredients = JSON.parse(ingredients);
+
+        // Zutatenliste befüllen
+        let ingredientsList = document.getElementById('productIngredients');
+        ingredientsList.innerHTML = "";
+        ingredients.forEach(zutat => {
+            let li = document.createElement("li");
+            li.innerText = zutat;
+            ingredientsList.appendChild(li);
+        });
+    }
+
+    let modal = new bootstrap.Modal(document.getElementById('productModal'));
+    modal.show();
+}
+
+function setMenueDetails(title, image, price, description) {
+    document.getElementById('menuModalLabel').innerText = title;
+    document.getElementById('menuImage').src = image;
+    document.getElementById('menuPrice').innerText = price + " €";
+    document.getElementById('menuDescription').innerText = description;
+
+    let modal = new bootstrap.Modal(document.getElementById('menuModal'));
+    modal.show();
+}
