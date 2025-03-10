@@ -20,10 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    $orderStatus = $_POST['status'];
-    $orderStatusColor = $_POST['farbe'];
+    $produktId = $_POST['energiewertProdukte'];
+    $portionSize = $_POST['portionSize'];
+    $kalorien = $_POST['kalorien'];
+    $fett = $_POST['fett'];
+    $kohlenhydrate = $_POST['kohlenhydrate'];
+    $zucker = $_POST['zucker'];
+    $eiweiss = $_POST['eiweiss'];
 
-    if ($adminLogic->saveBestellstatus($orderStatus, $orderStatusColor)) {
+    if ($adminLogic->saveEnergieWerte($produktId, $portionSize, $kalorien, $fett, $kohlenhydrate, $zucker, $eiweiss)) {
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);

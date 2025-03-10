@@ -20,8 +20,14 @@ $startSeiteLogik = new StartseiteLogic();
 $produktList = $startSeiteLogik->getProduktList();
 $menueList = $startSeiteLogik->getMenueList();
 
+$showLogin = true;
+$showCart = true;
+$showMenu = true;
 include '../header/header.php'; // Header einfügen
 require_once __DIR__ . '/../../utils/router.php';
+
+include 'produktModal.php';
+include 'menuModal.php';
 ?>
 <!-- Main Content -->
 <div class="container mt-4">
@@ -41,7 +47,8 @@ require_once __DIR__ . '/../../utils/router.php';
                       <img src="<?= ImageLoader::getImageHTMLSrc($topMenue->getBild()); ?>"
                            alt="Top Menü Bild"
                            class="img-fluid rounded-start"
-                           style="object-fit: cover; width: 250px; height: 250px;">
+                           style="object-fit: cover; width: 250px; height: 250px;"
+                           onerror="this.src='../../../assets/img/noimage.jpg';">
                   </div>
 
                   <!-- Text-Seite -->
@@ -54,7 +61,16 @@ require_once __DIR__ . '/../../utils/router.php';
                                   <?= $topMenue->getPreis() ?> €
                               </strong>
                           </p>
-                          <button class="btn btn-primary btn-lg">Jetzt bestellen</button>
+                          <button class="btn btn-primary btn-lg"
+                                  style="width: 250px;"
+                                  data-bs-toggle="modal" data-bs-target="#menuModal"
+                                  onclick="setMenueDetails(
+                                  '<?= $topMenue->getTitel() ?>',
+                                  '<?= ImageLoader::getImageHTMLSrc($topMenue->getBild()) ?>',
+                                  '<?= $topMenue->getPreis() ?>',
+                                  '<?= $topMenue->getBeschreibung() ?>')">
+                              Jetzt bestellen
+                          </button>
                       </div>
                   </div>
               </div>
@@ -98,10 +114,11 @@ require_once __DIR__ . '/../../utils/router.php';
 
                 <?php foreach ($produktList as $produkt): ?>
                     <div class="col-md-2 mb-4">
-                        <div class="card">
+                        <div class="card align-items-center">
                             <img src="<?= ImageLoader::getImageHTMLSrc($produkt->getBild()); ?>"
                                  alt="Produkt Bild"
-                                 style="width: 250px; height: 250px; object-fit: cover;">
+                                 style="width: 250px; height: 250px; object-fit: cover;"
+                                 onerror="this.src='../../../assets/img/noimage.jpg';">
                             <div class="card-body">
                                 <p class="text-center"><?= $produkt->getTitel() ?> - <?= $produkt->getPreis() ?> €</p>
 
@@ -109,19 +126,43 @@ require_once __DIR__ . '/../../utils/router.php';
                                 $zutatenArray = $produkt->getZutat()
                                     ? $produkt->getZutat()->map(fn($zutat) => $zutat->getZutatName())->toArray()
                                     : [];
-                                $zutatenJson = json_encode($zutatenArray);
+
+                                $zutatenString = implode(', ', $zutatenArray);
                                 ?>
 
-                                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productModal"
-                                        onclick="setProductDetails(
-                                                '<?= $produkt->getTitel() ?>',
-                                                '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
-                                                '<?= $produkt->getPreis() ?>',
-                                                '<?= $produkt->getBeschreibung() ?>',
-                                                '<?= $produkt->getLagerbestand() ?>',
-                                                '<?= htmlspecialchars($zutatenJson) ?>')">
-                                    Jetzt bestellen
-                                </button>
+                                <?php if ($produkt->isAusverkauft()): ?>
+                                    <button id="orderButton" class="btn btn-secondary" style="width: 250px;" disabled>
+                                        AUSVERKAUFT!
+                                    </button>
+                                <?php else: ?>
+                                    <?php if ($produkt->getEnergiewert() !== null): ?>
+                                        <button id="orderButton" class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#productModal"
+                                                onclick="setProductDetails(
+                                                        '<?= $produkt->getTitel() ?>',
+                                                        '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
+                                                        '<?= $produkt->getPreis() ?>',
+                                                        '<?= $produkt->getBeschreibung() ?>',
+                                                        '<?= htmlspecialchars($zutatenString) ?>',
+                                                        '<?= $produkt->getEnergiewert()->getPortionSize() ?>',
+                                                        '<?= $produkt->getEnergiewert()->getKalorien() ?>',
+                                                        '<?= $produkt->getEnergiewert()->getFett() ?>',
+                                                        '<?= $produkt->getEnergiewert()->getKohlenhydrate() ?>',
+                                                        '<?= $produkt->getEnergiewert()->getZucker() ?>',
+                                                        '<?= $produkt->getEnergiewert()->getEiweiss() ?>')">
+                                            Jetzt bestellen
+                                        </button>
+                                    <?php else: ?>
+                                        <button id="orderButton" class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#productModal"
+                                                onclick="setProductDetailsWithoutEnergiewert(
+                                                        '<?= $produkt->getTitel() ?>',
+                                                        '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
+                                                        '<?= $produkt->getPreis() ?>',
+                                                        '<?= $produkt->getBeschreibung() ?>',
+                                                        '<?= htmlspecialchars($zutatenString) ?>')">
+                                            Jetzt bestellen
+                                        </button>
+                                    <?php endif; ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -145,13 +186,14 @@ require_once __DIR__ . '/../../utils/router.php';
 
                 <?php foreach ($menueList as $menue): ?>
                     <div class="col-md-2 mb-4">
-                        <div class="card">
+                        <div class="card align-items-center">
                             <img src="<?= ImageLoader::getImageHTMLSrc($menue->getBild()); ?>"
                                  alt="Menü Bild"
-                                 style="width: 250px; height: 250px; object-fit: cover;">
+                                 style="width: 250px; height: 250px; object-fit: cover;"
+                                 onerror="this.src='../../../assets/img/noimage.jpg';">
                             <div class="card-body">
                                 <p class="text-center"><?= $menue->getTitel() ?> - <?= $menue->getPreis() ?> €</p>
-                                <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#productModal"
+                                <button class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#menuModal"
                                         onclick="setMenueDetails(
                                                 '<?= $menue->getTitel() ?>',
                                                 '<?= ImageLoader::getImageHTMLSrc($menue->getBild()) ?>',
@@ -163,69 +205,6 @@ require_once __DIR__ . '/../../utils/router.php';
                         </div>
                     </div>
                 <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal (Produkt Popup) -->
-    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Zentriert und größer -->
-            <div class="modal-content shadow-lg rounded-3">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="productModalLabel">Produkt Titel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-6 text-center">
-                            <img id="productImage" class="img-fluid rounded shadow-sm" alt="Produkt Bild">
-                        </div>
-                        <div class="col-md-6">
-                            <p class="fw-bold fs-5">Preis: <span id="productPrice" class="text-success"></span></p>
-
-                            <p class="fw-semibold">Produktbeschreibung:</p>
-                            <p id="productDescription" class="text-muted"></p>
-
-                            <p class="fw-semibold">Lagerbestand:</p>
-                            <p id="productStock" class="text-warning fw-bold"></p> <!-- Lagerbestand -->
-
-                            <p class="fw-semibold">Zutaten:</p>
-                            <ul id="productIngredients" class="list-unstyled"></ul> <!-- Zutaten -->
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
-                    <button type="button" class="btn btn-success">In den Warenkorb</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content shadow-lg rounded-3">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="menuModalLabel">Menü Titel</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-6 text-center">
-                            <img id="menuImage" class="img-fluid rounded shadow-sm" alt="Menü Bild">
-                        </div>
-                        <div class="col-md-6">
-                            <p class="fw-bold fs-5">Preis: <span id="menuPrice" class="text-success"></span></p>
-
-                            <p class="fw-semibold">Menübeschreibung:</p>
-                            <p id="menuDescription" class="text-muted"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
-                    <button type="button" class="btn btn-success">In den Warenkorb</button>
-                </div>
             </div>
         </div>
     </div>

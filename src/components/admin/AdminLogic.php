@@ -4,11 +4,13 @@ namespace App\components\admin;
 
 use App\datenbank\Entitaeten\Bestellstatus;
 use App\datenbank\Entitaeten\Bild;
+use App\datenbank\Entitaeten\Energiewert;
 use App\datenbank\Entitaeten\Menue;
 use App\datenbank\Entitaeten\Produkt;
 use App\datenbank\Entitaeten\Zutat;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\BestellstatusRepository;
+use App\datenbank\Repositories\EnergiewertRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
 use App\datenbank\Repositories\ZutatRepository;
@@ -36,7 +38,7 @@ class AdminLogic
         return $bestellstatusRepository->save($bestellstatus);
     }
 
-    public function saveProdukt($titel, $beschreibung, $preis, $tempPath, $lagerbestand, $rawzutaten): bool
+    public function saveProdukt($titel, $beschreibung, $preis, $tempPath, $istAusverkauft, $rawzutaten): bool
     {
         $produkt = new Produkt();
         $produkt->setTitel($titel);
@@ -48,7 +50,7 @@ class AdminLogic
         $bild->setBild($fileData);
 
         $produkt->setBild($bild);
-        $produkt->setLagerbestand($lagerbestand);
+        $produkt->setAusverkauft($istAusverkauft);
 
         $zutaten = new ArrayCollection();
         $zutatRepository = new ZutatRepository($this->entityManager);
@@ -109,5 +111,41 @@ class AdminLogic
             return [];
         }
         return $produkte;
+    }
+
+    public function saveZutat(string $zutat): bool
+    {
+        $zutatObj = new Zutat();
+        $zutatObj->setZutatName($zutat);
+
+        $zutatRepository = new ZutatRepository($this->entityManager);
+        return $zutatRepository->save($zutatObj);
+    }
+
+    public function saveEnergieWerte(string $produktId, string $portionSize, string $kalorien, string $fett, string $kohlenhydrate, string $zucker, string $eiweiss): bool
+    {
+        $energiewert = new Energiewert();
+        $energiewert->setPortionSize($portionSize);
+        $energiewert->setKalorien($kalorien);
+        $energiewert->setFett($fett);
+        $energiewert->setKohlenhydrate($kohlenhydrate);
+        $energiewert->setZucker($zucker);
+        $energiewert->setEiweiss($eiweiss);
+
+        $energiewertRepository = new EnergiewertRepository($this->entityManager);
+        if (!$energiewertRepository->save($energiewert)) {
+            $this->errorMessage = "Energiewerte konnten nicht gespeichert werden!";
+            return false;
+        }
+
+        $produktRepository = new ProduktRepository($this->entityManager);
+        $produkt = $produktRepository->getById($produktId);
+        if (!$produkt) {
+            $this->errorMessage = "Produkt konnte nicht gefunden werden!";
+            return false;
+        }
+
+        $produkt->setEnergiewert($energiewert);
+        return $produktRepository->save($produkt);
     }
 }

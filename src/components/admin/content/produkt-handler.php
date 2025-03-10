@@ -9,8 +9,6 @@ header("Content-Type: application/json"); // Sagen, dass wir JSON zurückgeben
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use App\components\admin\AdminLogic;
-use App\datenbank\Entitaeten\Bild;
-use App\datenbank\Entitaeten\Zutat;
 use Doctrine\Common\Collections\ArrayCollection;
 
 // Admin-Logic
@@ -18,6 +16,11 @@ $adminLogic = new AdminLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!isset($_SESSION['admin'])) {
+        echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
+        exit;
+    }
+
     if (!isset($_FILES['bild'])) {
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Bild angegeben!"]);
         exit;
@@ -54,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $titel = $_POST['titel'];
     $beschreibung = $_POST['beschreibung'];
     $preis = $_POST['preis'];
-    $lagerbestand = $_POST['lagerbestand'];
+    $istAusverkauft = $_POST['ausverkauft'] ?? false;
     $rawzutaten = $_POST['zutaten'];
     $rawzutatenArray = explode(',', $rawzutaten);
 
@@ -65,12 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    /* if (!isset($_SESSION['admin'])) {
-         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
-         exit;
-     }*/
-
-    if ($adminLogic->saveProdukt($titel, $beschreibung, $preis, $tempPath, $lagerbestand, $zutatenCollection)) {
+    if ($adminLogic->saveProdukt($titel, $beschreibung, $preis, $tempPath, $istAusverkauft, $zutatenCollection)) {
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);

@@ -10,8 +10,10 @@
 
 <?php
 require_once __DIR__ . '/../error/error-handler.php';
-$showMenu = false;
+
+$showLogin = true;
 $showCart = false;
+$showMenu = false;
 include '../header/header.php'; // Header einfügen
 ?>
 

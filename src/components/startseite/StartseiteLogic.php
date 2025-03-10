@@ -2,8 +2,11 @@
 
 namespace App\components\startseite;
 
+use App\datenbank\Entitaeten\Energiewert;
 use App\datenbank\Entitaeten\Menue;
+use App\datenbank\Entitaeten\Produkt;
 use App\datenbank\EntityManagerFactory;
+use App\datenbank\Repositories\EnergiewertRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
 use App\utils\ImageLoader;

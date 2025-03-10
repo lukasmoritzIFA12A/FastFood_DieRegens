@@ -20,10 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
-    $orderStatus = $_POST['status'];
-    $orderStatusColor = $_POST['farbe'];
+    $zutat = $_POST['zutat'];
 
-    if ($adminLogic->saveBestellstatus($orderStatus, $orderStatusColor)) {
+    if ($adminLogic->saveZutat($zutat)) {
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);

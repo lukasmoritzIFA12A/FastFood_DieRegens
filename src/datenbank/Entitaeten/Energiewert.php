@@ -14,10 +14,6 @@ class Energiewert
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Produkt::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Produkt_id", referencedColumnName: "id")]
-    private Produkt $produkt;
-
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $PortionSize;
 
@@ -44,16 +40,6 @@ class Energiewert
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    public function getProdukt(): Produkt
-    {
-        return $this->produkt;
-    }
-
-    public function setProdukt(Produkt $produkt): void
-    {
-        $this->produkt = $produkt;
     }
 
     public function getPortionSize(): ?string

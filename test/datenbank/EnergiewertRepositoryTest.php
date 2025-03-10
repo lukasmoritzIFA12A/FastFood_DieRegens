@@ -24,10 +24,7 @@ class EnergiewertRepositoryTest extends DatenbankTest
 
     public static function createEnergiewert(): Energiewert
     {
-        $produkt = ProduktRepositoryTest::createProdukt();
-
         $energiewert = new Energiewert();
-        $energiewert->setProdukt($produkt);
         $energiewert->setPortionSize("1");
         $energiewert->setKalorien("500");
         $energiewert->setFett("20");

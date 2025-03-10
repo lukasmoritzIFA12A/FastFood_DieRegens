@@ -29,7 +29,7 @@ class ProduktRepositoryTest extends DatenbankTest
         $produkt = new Produkt();
         $produkt->setTitel("Coca-Cola");
         $produkt->setPreis(1.5);
-        $produkt->setLagerbestand(10);
+        $produkt->setAusverkauft(false);
         $produkt->setBild($bild);
         return $produkt;
     }
@@ -47,7 +47,7 @@ class ProduktRepositoryTest extends DatenbankTest
         $this->assertInstanceOf(Produkt::class, $savedProdukt);
         $this->assertEquals($produkt->getTitel(), $savedProdukt->getTitel());
         $this->assertEquals($produkt->getPreis(), $savedProdukt->getPreis());
-        $this->assertEquals($produkt->getLagerbestand(), $savedProdukt->getLagerbestand());
+        $this->assertEquals($produkt->isAusverkauft(), $savedProdukt->isAusverkauft());
     }
 
     public function testSaveByUpdate(): void
@@ -59,7 +59,7 @@ class ProduktRepositoryTest extends DatenbankTest
     //when
         $produkt->setTitel("Sprite Zero");
         $produkt->setPreis(1.6);
-        $produkt->setLagerbestand(25);
+        $produkt->setAusverkauft(true);
         self::$produktRepository->save($produkt);
         $updatedProdukt = self::$produktRepository->getById($produkt->getId());
 
@@ -67,7 +67,7 @@ class ProduktRepositoryTest extends DatenbankTest
         $this->assertInstanceOf(Produkt::class, $updatedProdukt);
         $this->assertEquals($produkt->getTitel(), $updatedProdukt->getTitel());
         $this->assertEquals($produkt->getPreis(), $updatedProdukt->getPreis());
-        $this->assertEquals($produkt->getLagerbestand(), $updatedProdukt->getLagerbestand());
+        $this->assertEquals($produkt->isAusverkauft(), $updatedProdukt->isAusverkauft());
     }
 
     public function testGetAll(): void

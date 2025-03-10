@@ -11,6 +11,9 @@
 <?php
 require_once __DIR__ . '/../../error/error-handler.php';
 
+$showLogin = true;
+$showCart = false;
+$showMenu = false;
 include '../../header/header.php';
 ?>
 

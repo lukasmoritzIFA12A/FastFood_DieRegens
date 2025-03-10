@@ -36,37 +36,59 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 20); // Exakter Moment für Transition
 });
 
-function setProductDetails(title, image, price, description, stock, ingredients) {
-    document.getElementById('productModalLabel').innerText = title;
-    document.getElementById('productImage').src = image;
-    document.getElementById('productPrice').innerText = price + " €";
-    document.getElementById('productDescription').innerText = description;
+function setEnergiewertDetails(portionSize, calories, fat, carbs, sugar, protein) {
+    document.getElementById('portionSize').textContent = portionSize;
+    document.getElementById('calories').textContent = calories;
+    document.getElementById('fat').textContent = fat;
+    document.getElementById('carbs').textContent = carbs;
+    document.getElementById('sugar').textContent = sugar;
+    document.getElementById('protein').textContent = protein;
+}
 
-    // Lagerbestand prüfen
-    let stockElement = document.getElementById('productStock');
-    if (stock < 5) {
-        stockElement.innerText = "Nur noch wenige auf Lager!";
-        stockElement.classList.add("text-danger"); // Rot färben
+function setProductDetailsWithoutEnergiewert(title, image, price, description, ingredients) {
+    document.getElementById('energyValuesBtn').style.display = "none";
+
+    const collapseElement = document.getElementById('energyValuesCollapse');
+    const collapseInstance = bootstrap.Collapse.getInstance(collapseElement);
+    if (collapseInstance) {
+        collapseInstance.hide();
+    }
+
+    if (!title || title.trim() === "") {
+        document.getElementById('productModalLabel').innerText = "Produkt";
     } else {
-        stockElement.innerText = stock + " Stück verfügbar";
-        stockElement.classList.remove("text-danger");
+        document.getElementById('productModalLabel').innerText = title;
     }
 
-    if (ingredients != null) {
-        ingredients = JSON.parse(ingredients);
+    document.getElementById('productImage').src = image;
 
-        // Zutatenliste befüllen
-        let ingredientsList = document.getElementById('productIngredients');
-        ingredientsList.innerHTML = "";
-        ingredients.forEach(zutat => {
-            let li = document.createElement("li");
-            li.innerText = zutat;
-            ingredientsList.appendChild(li);
-        });
+    if (!price || price.trim() === "") {
+        document.getElementById('productPrice').innerText = "--.--" + " €";
+    } else {
+        document.getElementById('productPrice').innerText = price + " €";
     }
 
-    let modal = new bootstrap.Modal(document.getElementById('productModal'));
-    modal.show();
+    if (!description || description.trim() === "") {
+        document.getElementById('productDescription').innerText = "-Keine Produktbeschreibung vorhanden-";
+    } else {
+        document.getElementById('productDescription').innerText = description;
+    }
+
+    if (!ingredients || ingredients.trim() === "") {
+        document.getElementById('productIngredients').innerText = "-Keine Zutaten gefunden-";
+    } else {
+        document.getElementById('productIngredients').innerText = ingredients;
+    }
+}
+
+function setProductDetails(title, image, price, description, ingredients, portionSize, calories, fat, carbs, sugar, protein) {
+    setProductDetailsWithoutEnergiewert(title, image, price, description, ingredients);
+
+    document.getElementById('energyValuesBtn').style.display = "";
+
+    document.getElementById("energyValuesBtn").addEventListener("click", function() {
+        setEnergiewertDetails(portionSize, calories, fat, carbs, sugar, protein);
+    });
 }
 
 function setMenueDetails(title, image, price, description) {
@@ -74,7 +96,4 @@ function setMenueDetails(title, image, price, description) {
     document.getElementById('menuImage').src = image;
     document.getElementById('menuPrice').innerText = price + " €";
     document.getElementById('menuDescription').innerText = description;
-
-    let modal = new bootstrap.Modal(document.getElementById('menuModal'));
-    modal.show();
 }

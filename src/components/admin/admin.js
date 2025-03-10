@@ -1,11 +1,40 @@
 let zutaten = new Map();
 let produkte = new Map();
 
-// Filterfunktion im Modal
 function filterProducts() {
     const searchInput = document.getElementById('productSearch');
     const filter = searchInput.value.toLowerCase().trim();
     const rows = document.querySelectorAll('#productListTable tbody tr');
+    rows.forEach(row => {
+        const productName = row.querySelector('.product-name').textContent.toLowerCase().trim();
+        row.style.display = productName.includes(filter) ? '' : 'none';
+    });
+}
+
+function clearEnergiewertProductSearchInput() {
+    const input = document.getElementById("energiewertProductSearch");
+    if (input) input.value = "";
+
+    filterEnergiewertProduct();
+}
+
+function addProductToEnergiewert(productName, productId) {
+    const addedProduct = document.getElementById('energiewertProduct');
+    const produkteInput = document.getElementById('energiewertProdukteInput');
+
+    if (produkteInput.value !== "") {
+        alert("Nur ein Produkt kann ausgewählt werden!");
+        return;
+    }
+
+    produkteInput.value = productId;
+    addedProduct.value = productName;
+}
+
+function filterEnergiewertProduct() {
+    const searchInput = document.getElementById('energiewertProductSearch');
+    const filter = searchInput.value.toLowerCase().trim();
+    const rows = document.querySelectorAll('#energiewertProductTable tbody tr');
     rows.forEach(row => {
         const productName = row.querySelector('.product-name').textContent.toLowerCase().trim();
         row.style.display = productName.includes(filter) ? '' : 'none';
@@ -26,9 +55,8 @@ function addProductToMenu(productName, productId) {
         noProductsMessage.style.display = 'none';
     }
 
-    const produkteInput = document.getElementById('produkteInput');
     produkte.set(productId, productName);
-    produkteInput.value = Array.from(produkte.keys()).join(",");
+    document.getElementById('produkteInput').value = Array.from(produkte.keys()).join(",");
 
     // Erstelle eine neue Zeile
     const newRow = document.createElement('tr');
@@ -89,9 +117,8 @@ function addZutatToProdukt(zutatName, zutatId) {
         noZutatMessage.style.display = 'none';
     }
 
-    const zutatenInput = document.getElementById('zutatenInput');
     zutaten.set(zutatId, zutatName);
-    zutatenInput.value = Array.from(zutaten.keys()).join(",");
+    document.getElementById('zutatenInput').value = Array.from(zutaten.keys()).join(",");
 
     // Erstelle eine neue Zeile
     const newRow = document.createElement('tr');

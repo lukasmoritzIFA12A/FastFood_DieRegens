@@ -16,6 +16,11 @@ $adminLogic = new AdminLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!isset($_SESSION['admin'])) {
+        echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
+        exit;
+    }
+
     if (!isset($_FILES['bild'])) {
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Bild angegeben!"]);
         exit;
@@ -59,11 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $produkteCollection->add(intval($rawprodukt));
         }
     }
-
-    /* if (!isset($_SESSION['admin'])) {
-         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
-         exit;
-     }*/
 
     if ($adminLogic->saveMenue($titel, $beschreibung, $tempPath, $produkteCollection)) {
         echo json_encode(["success" => true]);
