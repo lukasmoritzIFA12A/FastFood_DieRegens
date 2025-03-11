@@ -64,4 +64,13 @@ class Rating
     {
         $this->kunde = $kunde;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'kunde' => $this->kunde->jsonSerialize(),
+            'contest' => $this->contest->jsonSerialize(),
+            'Rating' => $this->Rating
+        ];
+    }
 }

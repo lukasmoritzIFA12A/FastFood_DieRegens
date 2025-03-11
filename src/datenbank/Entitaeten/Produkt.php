@@ -123,4 +123,17 @@ class Produkt
     {
         $this->zutat = $zutat;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'bild' => $this->bild->jsonSerialize(),
+            'Titel' => $this->Titel,
+            'Beschreibung' => $this->Beschreibung,
+            'Preis' => $this->Preis,
+            'ausverkauft' => $this->ausverkauft,
+            'energiewert' => $this->energiewert?->jsonSerialize(),
+            'zutat' => $this->zutat->map(fn($c) => $c->jsonSerialize())->toArray()
+        ];
+    }
 }

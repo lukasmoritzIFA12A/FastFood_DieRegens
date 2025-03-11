@@ -113,4 +113,16 @@ class Bestellung
     {
         $this->produkte = $produkte;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'BestellungDatum' => $this->BestellungDatum,
+            'kunde' => $this->kunde->jsonSerialize(),
+            'zahlungsart' => $this->zahlungsart->jsonSerialize(),
+            'bestellstatus' => $this->bestellstatus->jsonSerialize(),
+            'menues' => $this->menues->map(fn($c) => $c->jsonSerialize())->toArray(),
+            'produkte' => $this->produkte->map(fn($c) => $c->jsonSerialize())->toArray()
+        ];
+    }
 }

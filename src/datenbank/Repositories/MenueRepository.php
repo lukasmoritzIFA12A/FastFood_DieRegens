@@ -45,6 +45,9 @@ class MenueRepository extends RepositoryAccess
     public function getRandomMenue(): Menue|bool
     {
         $menues = $this->getEntityManager()->getRepository(Menue::class)->findAll();
-        return $menues ? $menues[array_rand($menues)] : false;
+        $availableMenues = array_filter($menues, function($menue) {
+            return !$menue->isAusverkauft();
+        });
+        return !empty($availableMenues) ? $availableMenues[array_rand($availableMenues)] : false;
     }
 }

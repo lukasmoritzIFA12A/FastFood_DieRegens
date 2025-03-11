@@ -13,6 +13,7 @@
 require_once __DIR__ . '/../error/error-handler.php';
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\components\startseite\StartseiteLogic;
+use App\utils\JSONParser;
 use App\utils\router;
 use App\utils\ImageLoader;
 
@@ -26,9 +27,10 @@ $showMenu = true;
 include '../header/header.php'; // Header einfügen
 require_once __DIR__ . '/../../utils/router.php';
 
-include 'produktModal.php';
 include 'menuModal.php';
+include 'produktModal.php';
 ?>
+
 <!-- Main Content -->
 <div class="container mt-4">
   <div class="text-center mb-4">
@@ -64,11 +66,7 @@ include 'menuModal.php';
                           <button class="btn btn-primary btn-lg"
                                   style="width: 250px;"
                                   data-bs-toggle="modal" data-bs-target="#menuModal"
-                                  onclick="setMenueDetails(
-                                  '<?= $topMenue->getTitel() ?>',
-                                  '<?= ImageLoader::getImageHTMLSrc($topMenue->getBild()) ?>',
-                                  '<?= $topMenue->getPreis() ?>',
-                                  '<?= $topMenue->getBeschreibung() ?>')">
+                                  onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($topMenue->jsonSerialize()) ?>')">
                               Jetzt bestellen
                           </button>
                       </div>
@@ -122,46 +120,15 @@ include 'menuModal.php';
                             <div class="card-body">
                                 <p class="text-center"><?= $produkt->getTitel() ?> - <?= $produkt->getPreis() ?> €</p>
 
-                                <?php
-                                $zutatenArray = $produkt->getZutat()
-                                    ? $produkt->getZutat()->map(fn($zutat) => $zutat->getZutatName())->toArray()
-                                    : [];
-
-                                $zutatenString = implode(', ', $zutatenArray);
-                                ?>
-
                                 <?php if ($produkt->isAusverkauft()): ?>
                                     <button id="orderButton" class="btn btn-secondary" style="width: 250px;" disabled>
                                         AUSVERKAUFT!
                                     </button>
                                 <?php else: ?>
-                                    <?php if ($produkt->getEnergiewert() !== null): ?>
-                                        <button id="orderButton" class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#productModal"
-                                                onclick="setProductDetails(
-                                                        '<?= $produkt->getTitel() ?>',
-                                                        '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
-                                                        '<?= $produkt->getPreis() ?>',
-                                                        '<?= $produkt->getBeschreibung() ?>',
-                                                        '<?= htmlspecialchars($zutatenString) ?>',
-                                                        '<?= $produkt->getEnergiewert()->getPortionSize() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getKalorien() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getFett() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getKohlenhydrate() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getZucker() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getEiweiss() ?>')">
-                                            Jetzt bestellen
-                                        </button>
-                                    <?php else: ?>
-                                        <button id="orderButton" class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#productModal"
-                                                onclick="setProductDetailsWithoutEnergiewert(
-                                                        '<?= $produkt->getTitel() ?>',
-                                                        '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
-                                                        '<?= $produkt->getPreis() ?>',
-                                                        '<?= $produkt->getBeschreibung() ?>',
-                                                        '<?= htmlspecialchars($zutatenString) ?>')">
-                                            Jetzt bestellen
-                                        </button>
-                                    <?php endif; ?>
+                                    <button id="orderButton" class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#productModal"
+                                            onclick="setProductDetails('<?= JSONParser::getJSONEncodedString($produkt->jsonSerialize()) ?>')">
+                                        Jetzt bestellen
+                                    </button>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -193,14 +160,17 @@ include 'menuModal.php';
                                  onerror="this.src='../../../assets/img/noimage.jpg';">
                             <div class="card-body">
                                 <p class="text-center"><?= $menue->getTitel() ?> - <?= $menue->getPreis() ?> €</p>
-                                <button class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#menuModal"
-                                        onclick="setMenueDetails(
-                                                '<?= $menue->getTitel() ?>',
-                                                '<?= ImageLoader::getImageHTMLSrc($menue->getBild()) ?>',
-                                                '<?= $menue->getPreis() ?>',
-                                                '<?= $menue->getBeschreibung() ?>')">
-                                    Jetzt bestellen
-                                </button>
+
+                                <?php if ($menue->isAusverkauft()): ?>
+                                    <button class="btn btn-secondary" style="width: 250px;" disabled>
+                                        AUSVERKAUFT!
+                                    </button>
+                                <?php else: ?>
+                                    <button class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                            onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($menue->jsonSerialize()) ?>')">
+                                        Jetzt bestellen
+                                    </button>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -211,5 +181,6 @@ include 'menuModal.php';
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="startseite.js"></script>
+<script src="../../utils/imageLoader.js"></script>
 </body>
 </html>

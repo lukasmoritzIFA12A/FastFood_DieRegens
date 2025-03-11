@@ -36,64 +36,124 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 20); // Exakter Moment für Transition
 });
 
-function setEnergiewertDetails(portionSize, calories, fat, carbs, sugar, protein) {
-    document.getElementById('portionSize').textContent = portionSize;
-    document.getElementById('calories').textContent = calories;
-    document.getElementById('fat').textContent = fat;
-    document.getElementById('carbs').textContent = carbs;
-    document.getElementById('sugar').textContent = sugar;
-    document.getElementById('protein').textContent = protein;
-}
-
-function setProductDetailsWithoutEnergiewert(title, image, price, description, ingredients) {
-    document.getElementById('energyValuesBtn').style.display = "none";
-
+function setProductDetails(jsonString) {
     const collapseElement = document.getElementById('energyValuesCollapse');
     const collapseInstance = bootstrap.Collapse.getInstance(collapseElement);
     if (collapseInstance) {
         collapseInstance.hide();
     }
 
-    if (!title || title.trim() === "") {
+//Falls der Parameter schon geparsed wurde, wird er direkt genutzt
+    const produkt = (typeof jsonString === 'string') ? JSON.parse(jsonString) : jsonString;
+
+    if (Object.keys(produkt.Titel).length === 0) {
         document.getElementById('productModalLabel').innerText = "Produkt";
     } else {
-        document.getElementById('productModalLabel').innerText = title;
+        document.getElementById('productModalLabel').innerText = produkt.Titel;
     }
 
-    document.getElementById('productImage').src = image;
+    document.getElementById('productImage').src = getImageHTMLSrc(produkt.bild.bild);
 
-    if (!price || price.trim() === "") {
+    if (Object.keys(produkt.Preis).length === 0) {
         document.getElementById('productPrice').innerText = "--.--" + " €";
     } else {
-        document.getElementById('productPrice').innerText = price + " €";
+        document.getElementById('productPrice').innerText = produkt.Preis + " €";
     }
 
-    if (!description || description.trim() === "") {
+    if (Object.keys(produkt.Beschreibung).length === 0) {
         document.getElementById('productDescription').innerText = "-Keine Produktbeschreibung vorhanden-";
     } else {
-        document.getElementById('productDescription').innerText = description;
+        document.getElementById('productDescription').innerText = produkt.Beschreibung;
     }
 
-    if (!ingredients || ingredients.trim() === "") {
+    if (Object.keys(produkt.zutat).length === 0) {
         document.getElementById('productIngredients').innerText = "-Keine Zutaten gefunden-";
     } else {
-        document.getElementById('productIngredients').innerText = ingredients;
+        document.getElementById('productIngredients').innerText = produkt.zutat.map(z => z.ZutatName).join(", ");
+    }
+
+    if (Object.keys(produkt.energiewert).length === 0) {
+        document.getElementById('energyValuesBtn').style.display = "none";
+    } else {
+        document.getElementById('energyValuesBtn').style.display = "";
+
+        document.getElementById("energyValuesBtn").addEventListener("click", function() {
+            setEnergiewertDetails(produkt.energiewert);
+        });
     }
 }
 
-function setProductDetails(title, image, price, description, ingredients, portionSize, calories, fat, carbs, sugar, protein) {
-    setProductDetailsWithoutEnergiewert(title, image, price, description, ingredients);
+function setEnergiewertDetails(energiewert) {
+    document.getElementById('portionSize').textContent = energiewert.PortionSize;
+    document.getElementById('calories').textContent = energiewert.Kalorien;
+    document.getElementById('fat').textContent = energiewert.Fett;
+    document.getElementById('carbs').textContent = energiewert.Kohlenhydrate;
+    document.getElementById('sugar').textContent = energiewert.Zucker;
+    document.getElementById('protein').textContent = energiewert.Eiweiss;
+}
 
-    document.getElementById('energyValuesBtn').style.display = "";
+function setMenueDetails(jsonString) {
+    const collapseElement = document.getElementById('menueProductListCollapse');
+    const collapseInstance = bootstrap.Collapse.getInstance(collapseElement);
+    if (collapseInstance) {
+        collapseInstance.hide();
+    }
 
-    document.getElementById("energyValuesBtn").addEventListener("click", function() {
-        setEnergiewertDetails(portionSize, calories, fat, carbs, sugar, protein);
+//Falls der Parameter schon geparsed wurde, wird er direkt genutzt
+    const menue = (typeof jsonString === 'string') ? JSON.parse(jsonString) : jsonString;
+
+    if (Object.keys(menue.Titel).length === 0) {
+        document.getElementById('menuModalLabel').innerText = "Menü";
+    } else {
+        document.getElementById('menuModalLabel').innerText = menue.Titel;
+    }
+
+    if (Object.keys(menue.Beschreibung).length === 0) {
+        document.getElementById('menuDescription').innerText = "-Keine Menübeschreibung vorhanden-";
+    } else {
+        document.getElementById('menuDescription').innerText = menue.Beschreibung;
+    }
+
+    document.getElementById('menuImage').src = getImageHTMLSrc(menue.bild.bild);
+
+    if (Object.keys(menue.Preis).length === 0) {
+        document.getElementById('menuPrice').innerText = "--.--" + " €";
+    } else {
+        document.getElementById('menuPrice').innerText = menue.Preis + " €";
+    }
+
+    loadProducts(menue);
+}
+
+function loadProducts(menue) {
+    if (Object.keys(menue.produkte).length === 0) {
+        document.getElementById('menueProductListBtn').style.display = "none";
+        return;
+    }
+
+    document.getElementById('menueProductListBtn').style.display = "";
+
+    const productList = document.getElementById('menueProductList');
+    productList.innerHTML = '';
+    menue.produkte.forEach(product => {
+        const li = document.createElement('li');
+        li.classList.add('list-group-item', 'list-group-item-action');
+        li.style.cursor = 'pointer';
+        li.innerHTML = `<strong>${product.Titel}</strong> - ${product.Preis}`;
+        li.onclick = () => openProductModal(product, menue);
+        li.setAttribute('data-bs-toggle', 'modal');
+        li.setAttribute('data-bs-target', '#productModal');
+        productList.appendChild(li);
     });
 }
 
-function setMenueDetails(title, image, price, description) {
-    document.getElementById('menuModalLabel').innerText = title;
-    document.getElementById('menuImage').src = image;
-    document.getElementById('menuPrice').innerText = price + " €";
-    document.getElementById('menuDescription').innerText = description;
+function openProductModal(product, menue) {
+    document.getElementById('productModal').addEventListener('hidden.bs.modal', function handleModalClose () {
+        document.getElementById('productModal').removeEventListener('hidden.bs.modal', handleModalClose);
+        setMenueDetails(menue);
+        const modal = new bootstrap.Modal(document.getElementById('menuModal'));
+        modal.show();
+    });
+
+    setProductDetails(product);
 }

@@ -36,15 +36,22 @@ class Bild
         }
 
         if (is_resource($this->bild)) {
-            $this->cachedBild = stream_get_contents($this->bild);
+            $this->cachedBild = base64_encode(stream_get_contents($this->bild));
             return $this->cachedBild;
         }
 
-        return $this->cachedBild = $this->bild;
+        return $this->cachedBild = base64_encode($this->bild);
     }
 
     public function setBild($bild): void
     {
         $this->bild = $bild;
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'bild' => $this->getBild()
+        ];
     }
 }

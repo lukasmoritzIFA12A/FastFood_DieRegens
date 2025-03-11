@@ -101,4 +101,16 @@ class Energiewert
     {
         $this->Eiweiss = $Eiweiss;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'PortionSize' => $this->PortionSize,
+            'Kalorien' => $this->Kalorien,
+            'Fett' => $this->Fett,
+            'Kohlenhydrate' => $this->Kohlenhydrate,
+            'Zucker' => $this->Zucker,
+            'Eiweiss' => $this->Eiweiss
+        ];
+    }
 }

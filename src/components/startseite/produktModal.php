@@ -22,7 +22,7 @@
                         <p id="productDescription" class="text-muted"></p>
 
                         <p class="fw-semibold">Zutaten:</p>
-                        <p id="productIngredients"></p>
+                        <p id="productIngredients" class="text-muted"></p>
                     </div>
                 </div>
 

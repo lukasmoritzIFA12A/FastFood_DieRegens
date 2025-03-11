@@ -36,4 +36,11 @@ class Ladesprueche
     {
         $this->spruch = $spruch;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'spruch' => $this->spruch
+        ];
+    }
 }

@@ -85,7 +85,7 @@ include '../header/header.php'; // Header einfügen
                 </div>
                 <div class="mb-3">
                     <label for="productPrice" class="form-label">Preis</label>
-                    <input type="number" step="0.01" class="form-control" id="productPrice" name="preis" required>
+                    <input type="number" step="0.01" min="0" class="form-control" id="productPrice" name="preis" required>
                 </div>
                 <div class="mb-3 form-check">
                     <input class="form-check-input" type="checkbox" value="false" id="productStock" name="ausverkauft">
@@ -194,27 +194,27 @@ include '../header/header.php'; // Header einfügen
 
                 <div class="mb-3">
                     <label for="nvPortionSize" class="form-label">Portionsgröße</label>
-                    <input type="text" class="form-control" id="nvPortionSize" name="portionSize">
+                    <input type="number" min="0" class="form-control" id="nvPortionSize" name="portionSize">
                 </div>
                 <div class="mb-3">
                     <label for="nvCalories" class="form-label">Kalorien</label>
-                    <input type="text" class="form-control" id="nvCalories" name="kalorien">
+                    <input type="number" step="0.01" min="0" class="form-control" id="nvCalories" name="kalorien">
                 </div>
                 <div class="mb-3">
                     <label for="nvFat" class="form-label">Fett</label>
-                    <input type="text" class="form-control" id="nvFat" name="fett">
+                    <input type="number" step="0.01" min="0" class="form-control" id="nvFat" name="fett">
                 </div>
                 <div class="mb-3">
                     <label for="nvCarbohydrates" class="form-label">Kohlenhydrate</label>
-                    <input type="text" class="form-control" id="nvCarbohydrates" name="kohlenhydrate">
+                    <input type="number" step="0.01" min="0" class="form-control" id="nvCarbohydrates" name="kohlenhydrate">
                 </div>
                 <div class="mb-3">
                     <label for="nvSugar" class="form-label">Zucker</label>
-                    <input type="text" class="form-control" id="nvSugar" name="zucker">
+                    <input type="number" step="0.01" min="0" class="form-control" id="nvSugar" name="zucker">
                 </div>
                 <div class="mb-3">
                     <label for="nvProtein" class="form-label">Eiweiß</label>
-                    <input type="text" class="form-control" id="nvProtein" name="eiweiss">
+                    <input type="number" step="0.01" min="0" class="form-control" id="nvProtein" name="eiweiss">
                 </div>
                 <button type="submit" class="btn btn-primary">Energiewerte hinzufügen</button>
             </form>

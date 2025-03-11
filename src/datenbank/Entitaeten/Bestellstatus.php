@@ -49,4 +49,12 @@ class Bestellstatus
     {
         $this->farbe = $farbe;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'status' => $this->status,
+            'farbe' => $this->farbe
+        ];
+    }
 }

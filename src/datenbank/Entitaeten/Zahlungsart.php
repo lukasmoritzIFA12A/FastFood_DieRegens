@@ -36,4 +36,11 @@ class Zahlungsart
     {
         $this->Art = $Art;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'Art' => $this->Art
+        ];
+    }
 }

@@ -36,4 +36,11 @@ class Zutat
     {
         $this->ZutatName = $ZutatName;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'ZutatName' => $this->ZutatName
+        ];
+    }
 }

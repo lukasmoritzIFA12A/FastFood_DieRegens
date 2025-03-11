@@ -19,6 +19,7 @@ if ($isLoggedIn) {
 $isAdmin = isset($_SESSION['admin']);
 
 use App\utils\ImageLoader;
+use App\utils\JSONParser;
 use App\utils\router;
 require_once __DIR__ . '/../../utils/router.php';
 
@@ -41,28 +42,6 @@ if ($showMenu) {
         <?php if ($showMenu): ?> <!-- Menü nur anzeigen, wenn $showMenu true ist -->
             <ul class="navbar-nav mx-auto"> <!-- zentriert die ersten Elemente -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="menusDropdown" role="button" data-bs-toggle="dropdown">Menüs</a>
-                    <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
-                        <?php if (empty($menueList)): ?>
-                            <li class="dropdown-item text-center">-Keine Inhalte-</li>
-                        <?php else: ?>
-                            <li>
-                                <?php foreach ($menueList as $menue): ?>
-                                    <a class="dropdown-item text-center" data-bs-toggle="modal" data-bs-target="#menuModal"
-                                       onclick="setMenueDetails(
-                                               '<?= $menue->getTitel() ?>',
-                                               '<?= ImageLoader::getImageHTMLSrc($menue->getBild()) ?>',
-                                               '<?= $menue->getPreis() ?>',
-                                               '<?= $menue->getBeschreibung() ?>')">
-                                        <?= $menue->getTitel() ?>
-                                    </a>
-                                <?php endforeach; ?>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="burgerDropdown" role="button" data-bs-toggle="dropdown">Burger</a>
                     <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
                         <?php if (empty($produktList)): ?>
@@ -70,39 +49,38 @@ if ($showMenu) {
                         <?php else: ?>
                             <li>
                                 <?php foreach ($produktList as $produkt): ?>
-                                    <?php
-                                    $zutatenArray = $produkt->getZutat()
-                                        ? $produkt->getZutat()->map(fn($zutat) => $zutat->getZutatName())->toArray()
-                                        : [];
-
-                                    $zutatenString = implode(', ', $zutatenArray);
-                                    ?>
-
-                                    <?php if ($produkt->getEnergiewert() !== null): ?>
-                                        <a class="dropdown-item text-center" data-bs-toggle="modal" data-bs-target="#productModal"
-                                                onclick="setProductDetails(
-                                                        '<?= $produkt->getTitel() ?>',
-                                                        '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
-                                                        '<?= $produkt->getPreis() ?>',
-                                                        '<?= $produkt->getBeschreibung() ?>',
-                                                        '<?= htmlspecialchars($zutatenString) ?>',
-                                                        '<?= $produkt->getEnergiewert()->getPortionSize() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getKalorien() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getFett() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getKohlenhydrate() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getZucker() ?>',
-                                                        '<?= $produkt->getEnergiewert()->getEiweiss() ?>')">
-                                            <?= $produkt->getTitel() ?>
+                                    <?php if ($produkt->isAusverkauft()): ?>
+                                        <a class="dropdown-item text-center">
+                                            <s><?= $produkt->getTitel() ?></s>
                                         </a>
                                     <?php else: ?>
                                         <a class="dropdown-item text-center" data-bs-toggle="modal" data-bs-target="#productModal"
-                                                onclick="setProductDetailsWithoutEnergiewert(
-                                                        '<?= $produkt->getTitel() ?>',
-                                                        '<?= ImageLoader::getImageHTMLSrc($produkt->getBild()) ?>',
-                                                        '<?= $produkt->getPreis() ?>',
-                                                        '<?= $produkt->getBeschreibung() ?>',
-                                                        '<?= htmlspecialchars($zutatenString) ?>')">
+                                                onclick="setProductDetails('<?= JSONParser::getJSONEncodedString($produkt->jsonSerialize()) ?>')">
                                             <?= $produkt->getTitel() ?>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="menusDropdown" role="button" data-bs-toggle="dropdown">Menüs</a>
+                    <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
+                        <?php if (empty($menueList)): ?>
+                            <li class="dropdown-item text-center">-Keine Inhalte-</li>
+                        <?php else: ?>
+                            <li>
+                                <?php foreach ($menueList as $menue): ?>
+                                    <?php if ($menue->isAusverkauft()): ?>
+                                        <a class="dropdown-item text-center">
+                                            <s><?= $menue->getTitel() ?></s>
+                                        </a>
+                                    <?php else: ?>
+                                        <a class="dropdown-item text-center" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                           onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($menue->jsonSerialize()) ?>')">
+                                            <?= $menue->getTitel() ?>
                                         </a>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
