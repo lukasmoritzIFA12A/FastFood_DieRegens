@@ -10,6 +10,7 @@
 </head>
 <body>
 <?php
+ob_start();
 require_once __DIR__ . '/../error/error-handler.php';
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\components\startseite\StartseiteLogic;
