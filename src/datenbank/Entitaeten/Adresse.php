@@ -100,4 +100,16 @@ class Adresse
     {
         $this->Bundesland = $Bundesland;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'Strassenname' => $this->Strassenname,
+            'Hausnummer' => $this->Hausnummer,
+            'Zusatz' => $this->Zusatz,
+            'PLZ' => $this->PLZ,
+            'Stadt' => $this->Stadt,
+            'Bundesland' => $this->Bundesland
+        ];
+    }
 }

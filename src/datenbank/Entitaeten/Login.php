@@ -49,4 +49,12 @@ class Login
     {
         $this->Passwort = $Passwort;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'Nutzername' => $this->Nutzername,
+            'Passwort' => $this->Passwort
+        ];
+    }
 }

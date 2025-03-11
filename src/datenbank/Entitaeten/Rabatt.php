@@ -49,4 +49,12 @@ class Rabatt
     {
         $this->code = $code;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'minderung' => $this->minderung
+        ];
+    }
 }

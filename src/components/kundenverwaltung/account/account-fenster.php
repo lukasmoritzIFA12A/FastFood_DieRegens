@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account - MacAPPLE</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="account.css">
 </head>
 <body>
@@ -42,27 +42,27 @@ include '../../header/header.php'; // Header einfügen
         <table class="table">
             <tr>
                 <th>Vorname:</th>
-                <td id="vorname"><?= htmlspecialchars($account->getVorname()) ?></td>
+                <td id="vorname"><?= $account->getVorname() ?></td>
                 <td class="d-flex justify-content-end"><button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editVorname" onclick="setVorname()">Bearbeiten</button></td>
             </tr>
             <tr>
                 <th>Nachname:</th>
-                <td id="nachname"><?= htmlspecialchars($account->getNachname()) ?></td>
+                <td id="nachname"><?= $account->getNachname() ?></td>
                 <td class="d-flex justify-content-end"><button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editNachname" onclick="setNachname()">Bearbeiten</button></td>
             </tr>
             <tr>
                 <th>Benutzername:</th>
-                <td id="benutzername"><?= htmlspecialchars($account->getLogin()->getNutzername()) ?></td>
+                <td id="benutzername"><?= $account->getLogin()->getNutzername() ?></td>
                 <td class="d-flex justify-content-end"><button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editBenutzername" onclick="setBenutzername()">Bearbeiten</button></td>
             </tr>
             <tr>
                 <th>Telefonnummer:</th>
-                <td id="telefon"><?= htmlspecialchars($account->getTelefonnummer()) ?></td>
+                <td id="telefon"><?= $account->getTelefonnummer() ?></td>
                 <td class="d-flex justify-content-end"><button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editTelefon" onclick="setTelefon()">Bearbeiten</button></td>
             </tr>
             <tr>
                 <th>Adresse:</th>
-                <td id="adresse"><?= htmlspecialchars($accountLogic->getFullAddress($account->getAdresse())) ?></td>
+                <td id="adresse"><?= $accountLogic->getFullAddress($account->getAdresse()) ?></td>
                 <td class="d-flex justify-content-end">
                     <button class="btn btn-secondary"
                             data-bs-toggle="modal"
@@ -301,7 +301,7 @@ include '../../header/header.php'; // Header einfügen
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="editieren/adresse.js"></script>
 <script src="editieren/benutzername.js"></script>
 <script src="editieren/nachname.js"></script>

@@ -23,4 +23,10 @@ class Admin
     {
         $this->login = $login;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'login' => $this->login->jsonSerialize()
+        ];
+    }
 }

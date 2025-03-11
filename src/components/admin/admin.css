@@ -1,0 +1,5 @@
+/* Für eine scrollbare Tabelle (maximale Höhe) */
+.scroll-table {
+    max-height: 200px;
+    overflow-y: auto;
+}

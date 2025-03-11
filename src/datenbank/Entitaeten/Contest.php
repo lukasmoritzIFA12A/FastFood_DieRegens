@@ -64,4 +64,13 @@ class Contest
     {
         $this->freigeschalten = $freigeschalten;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'bild' => $this->bild->jsonSerialize(),
+            'bestellung' => $this->bestellung->jsonSerialize(),
+            'freigeschalten' => $this->freigeschalten
+        ];
+    }
 }

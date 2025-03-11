@@ -17,8 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    if ($loginLogic->einloggen($username, $password)) {
+    $loginId = $loginLogic->einloggen($username, $password);
+    if ($loginId) {
         $_SESSION['user'] = $username;
+
+        if ($loginLogic->istAdmin($loginId)) {
+            $_SESSION['admin'] = true;
+        }
+
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => $loginLogic->errorMessage]);

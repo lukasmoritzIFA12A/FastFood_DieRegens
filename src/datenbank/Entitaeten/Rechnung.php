@@ -65,4 +65,13 @@ class Rechnung
     {
         $this->bestellung = $bestellung;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'bestellung' => $this->bestellung->jsonSerialize(),
+            'ZahlungsDatum' => $this->ZahlungsDatum,
+            'rabatt' => $this->rabatt->jsonSerialize()
+        ];
+    }
 }

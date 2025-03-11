@@ -2,9 +2,14 @@
 
 namespace App\components\startseite;
 
+use App\datenbank\Entitaeten\Energiewert;
+use App\datenbank\Entitaeten\Menue;
+use App\datenbank\Entitaeten\Produkt;
 use App\datenbank\EntityManagerFactory;
+use App\datenbank\Repositories\EnergiewertRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
+use App\utils\ImageLoader;
 use Doctrine\ORM\EntityManager;
 
 class StartseiteLogic
@@ -27,5 +32,11 @@ class StartseiteLogic
     {
         $menueRepository = new MenueRepository($this->entityManager);
         return $menueRepository->getAll();
+    }
+
+    public function getTopMenue(): Menue|bool
+    {
+        $menueRepository = new MenueRepository($this->entityManager);
+        return $menueRepository->getTopMenue();
     }
 }

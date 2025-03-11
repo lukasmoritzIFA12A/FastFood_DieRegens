@@ -94,4 +94,26 @@ class Menue
 
         return $summe;
     }
+
+    public function isAusverkauft(): bool
+    {
+        foreach ($this->produkte as $produkt) {
+            if ($produkt->isAusverkauft()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'bild' => $this->bild->jsonSerialize(),
+            'Titel' => $this->Titel,
+            'Beschreibung' => $this->Beschreibung,
+            'Preis' => $this->getPreis(),
+            'ausverkauft' => $this->isAusverkauft(),
+            'produkte' => $this->produkte->map(fn($c) => $c->jsonSerialize())->toArray()
+        ];
+    }
 }

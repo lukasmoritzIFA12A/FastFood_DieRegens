@@ -104,4 +104,16 @@ class Kunde
     {
         $this->login = $login;
     }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'adresse' => $this->adresse->jsonSerialize(),
+            'Vorname' => $this->Vorname,
+            'Nachname' => $this->Nachname,
+            'Telefonnummer' => $this->Telefonnummer,
+            'Registrierungsdatum' => $this->Registrierungsdatum,
+            'login' => $this->login->jsonSerialize()
+        ];
+    }
 }

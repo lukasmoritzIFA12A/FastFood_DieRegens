@@ -29,8 +29,12 @@ class Produkt
     #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
     private string $Preis;
 
-    #[ORM\Column(type: "integer")]
-    private int $Lagerbestand;
+    #[ORM\Column(type: 'boolean')]
+    private bool $ausverkauft;
+
+    #[ORM\ManyToOne(targetEntity: Energiewert::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "Energiewert_id", referencedColumnName: "id", nullable: true)]
+    private ?Energiewert $energiewert;
 
     #[ORM\ManyToMany(targetEntity: Zutat::class, cascade: ["persist"])]
     private Collection $zutat;
@@ -50,14 +54,14 @@ class Produkt
         $this->id = $id;
     }
 
-    public function getLagerbestand(): int
+    public function isAusverkauft(): bool
     {
-        return $this->Lagerbestand;
+        return $this->ausverkauft;
     }
 
-    public function setLagerbestand(int $Lagerbestand): void
+    public function setAusverkauft(bool $ausverkauft): void
     {
-        $this->Lagerbestand = $Lagerbestand;
+        $this->ausverkauft = $ausverkauft;
     }
 
     public function getPreis(): string
@@ -78,6 +82,16 @@ class Produkt
     public function setBeschreibung(?string $Beschreibung): void
     {
         $this->Beschreibung = $Beschreibung;
+    }
+
+    public function getEnergiewert(): ?Energiewert
+    {
+        return $this->energiewert;
+    }
+
+    public function setEnergiewert(?Energiewert $energiewert): void
+    {
+        $this->energiewert = $energiewert;
     }
 
     public function getBild(): Bild
@@ -108,5 +122,18 @@ class Produkt
     public function setZutat(Collection $zutat): void
     {
         $this->zutat = $zutat;
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'bild' => $this->bild->jsonSerialize(),
+            'Titel' => $this->Titel,
+            'Beschreibung' => $this->Beschreibung,
+            'Preis' => $this->Preis,
+            'ausverkauft' => $this->ausverkauft,
+            'energiewert' => $this->energiewert?->jsonSerialize(),
+            'zutat' => $this->zutat->map(fn($c) => $c->jsonSerialize())->toArray()
+        ];
     }
 }

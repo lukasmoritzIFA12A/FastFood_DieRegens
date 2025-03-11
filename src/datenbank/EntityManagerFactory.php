@@ -15,17 +15,17 @@ class EntityManagerFactory
 {
     private static array $CONFIG_SCHLUESSEL = ['servername', 'username', 'password', 'dbname', 'dbtestname'];
 
-    public static function createEntityManager(bool $isTestMode = false): EntityManager
+    public static function createEntityManager(bool $isTestMode = false, bool $connectToDatabase = true): EntityManager
     {
         $config = static::getMetadataConfiguration($isTestMode);
-        $connection = static::getDriverConnection($config, $isTestMode);
+        $connection = static::getDriverConnection($config, $isTestMode, $connectToDatabase);
 
         return new EntityManager($connection, $config);
     }
 
-    private static function getDriverConnection(Configuration $configuration, bool $isTestMode = false) : Connection
+    private static function getDriverConnection(Configuration $configuration, bool $isTestMode = false, bool $connectToDatabase = true) : Connection
     {
-        $connectionParams = static::getConnectionParams($isTestMode);
+        $connectionParams = static::getConnectionParams($isTestMode, $connectToDatabase);
         return DriverManager::getConnection($connectionParams, $configuration);
     }
 
@@ -40,7 +40,7 @@ class EntityManagerFactory
         return $config;
     }
 
-    private static function getConnectionParams(bool $isTestMode = false): array
+    private static function getConnectionParams(bool $isTestMode = false, bool $connectToDatabase = true): array
     {
         $datenbankConfig = include(dirname(__DIR__) . '/datenbank/Config.php');
         $host = $datenbankConfig['servername'];
@@ -48,7 +48,14 @@ class EntityManagerFactory
         $password = $datenbankConfig['password'];
         $dbname = static::getDatabaseName($isTestMode);
 
-        $dsn = "mysqli://$user:$password@$host/$dbname";
+        if ($connectToDatabase)
+        {
+            $dsn = "mysqli://$user:$password@$host/$dbname";
+        }
+        else
+        {
+            $dsn = "mysqli://$user:$password@$host";
+        }
 
         $dsnParser = new DsnParser();
         return $dsnParser->parse($dsn);
@@ -70,7 +77,7 @@ class EntityManagerFactory
 
     public static function dumpSchemaToSQL(bool $isTestMode = false): void
     {
-        $entityManager = static::createEntityManager($isTestMode);
+        $entityManager = static::createEntityManager($isTestMode, false);
         $schemaTool = new SchemaTool($entityManager);
         $classes = $entityManager->getMetadataFactory()->getAllMetadata();
 
