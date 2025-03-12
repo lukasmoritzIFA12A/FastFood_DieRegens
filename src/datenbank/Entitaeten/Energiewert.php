@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\EnergiewertRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EnergiewertRepository::class)]
 #[ORM\Table(name: 'energiewert')]
@@ -102,15 +102,16 @@ class Energiewert
         $this->Eiweiss = $Eiweiss;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'PortionSize' => $this->PortionSize,
-            'Kalorien' => $this->Kalorien,
-            'Fett' => $this->Fett,
-            'Kohlenhydrate' => $this->Kohlenhydrate,
-            'Zucker' => $this->Zucker,
-            'Eiweiss' => $this->Eiweiss
+            'id' => $this->getId(),
+            'PortionSize' => $this->getPortionSize(),
+            'Kalorien' => $this->getKalorien(),
+            'Fett' => $this->getFett(),
+            'Kohlenhydrate' => $this->getKohlenhydrate(),
+            'Zucker' => $this->getZucker(),
+            'Eiweiss' => $this->getEiweiss()
         ];
     }
 }

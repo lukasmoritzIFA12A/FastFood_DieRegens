@@ -1,8 +1,9 @@
 <?php
+
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\AdresseRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdresseRepository::class)]
 #[ORM\Table(name: 'adresse')]
@@ -101,15 +102,16 @@ class Adresse
         $this->Bundesland = $Bundesland;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'Strassenname' => $this->Strassenname,
-            'Hausnummer' => $this->Hausnummer,
-            'Zusatz' => $this->Zusatz,
-            'PLZ' => $this->PLZ,
-            'Stadt' => $this->Stadt,
-            'Bundesland' => $this->Bundesland
+            'id' => $this->getId(),
+            'Strassenname' => $this->getStrassenname(),
+            'Hausnummer' => $this->getHausnummer(),
+            'Zusatz' => $this->getZusatz(),
+            'PLZ' => $this->getPLZ(),
+            'Stadt' => $this->getStadt(),
+            'Bundesland' => $this->getBundesland()
         ];
     }
 }

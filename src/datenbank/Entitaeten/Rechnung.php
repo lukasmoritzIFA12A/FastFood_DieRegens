@@ -2,9 +2,9 @@
 
 namespace App\datenbank\Entitaeten;
 
+use App\datenbank\Repositories\RechnungRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use App\datenbank\Repositories\RechnungRepository;
 
 #[ORM\Entity(repositoryClass: RechnungRepository::class)]
 #[ORM\Table(name: 'rechnung')]
@@ -46,9 +46,9 @@ class Rechnung
         $this->rabatt = $rabatt;
     }
 
-    public function getZahlungsDatum(): DateTime
+    public function getZahlungsDatum(): string
     {
-        return $this->ZahlungsDatum;
+        return $this->ZahlungsDatum->format("d.m.Y - H:i");
     }
 
     public function setZahlungsDatum(DateTime $ZahlungsDatum): void
@@ -66,12 +66,13 @@ class Rechnung
         $this->bestellung = $bestellung;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'bestellung' => $this->bestellung->jsonSerialize(),
-            'ZahlungsDatum' => $this->ZahlungsDatum,
-            'rabatt' => $this->rabatt->jsonSerialize()
+            'id' => $this->getId(),
+            'bestellung' => $this->getBestellung()->jsonSerialize(),
+            'ZahlungsDatum' => $this->getZahlungsDatum(),
+            'rabatt' => $this->getRabatt()->jsonSerialize()
         ];
     }
 }

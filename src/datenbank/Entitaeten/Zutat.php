@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\ZutatRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ZutatRepository::class)]
 #[ORM\Table(name: 'zutat')]
@@ -37,10 +37,11 @@ class Zutat
         $this->ZutatName = $ZutatName;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'ZutatName' => $this->ZutatName
+            'id' => $this->getId(),
+            'ZutatName' => $this->getZutatName()
         ];
     }
 }

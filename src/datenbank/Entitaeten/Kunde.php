@@ -2,9 +2,9 @@
 
 namespace App\datenbank\Entitaeten;
 
+use App\datenbank\Repositories\KundeRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use App\datenbank\Repositories\KundeRepository;
 
 #[ORM\Entity(repositoryClass: KundeRepository::class)]
 #[ORM\Table(name: 'kunde')]
@@ -85,9 +85,9 @@ class Kunde
         $this->Telefonnummer = $Telefonnummer;
     }
 
-    public function getRegistrierungsdatum(): DateTime
+    public function getRegistrierungsdatum(): string
     {
-        return $this->Registrierungsdatum;
+        return $this->Registrierungsdatum->format("d.m.Y - H:i");
     }
 
     public function setRegistrierungsdatum(DateTime $Registrierungsdatum): void
@@ -105,15 +105,16 @@ class Kunde
         $this->login = $login;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'adresse' => $this->adresse->jsonSerialize(),
-            'Vorname' => $this->Vorname,
-            'Nachname' => $this->Nachname,
-            'Telefonnummer' => $this->Telefonnummer,
-            'Registrierungsdatum' => $this->Registrierungsdatum,
-            'login' => $this->login->jsonSerialize()
+            'id' => $this->getId(),
+            'adresse' => $this->getAdresse()->jsonSerialize(),
+            'Vorname' => $this->getVorname(),
+            'Nachname' => $this->getNachname(),
+            'Telefonnummer' => $this->getTelefonnummer(),
+            'Registrierungsdatum' => $this->getRegistrierungsdatum(),
+            'login' => $this->getLogin()->jsonSerialize()
         ];
     }
 }

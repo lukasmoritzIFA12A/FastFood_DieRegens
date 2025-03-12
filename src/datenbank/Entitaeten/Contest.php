@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\ContestRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContestRepository::class)]
 #[ORM\Table(name: 'contest')]
@@ -65,12 +65,13 @@ class Contest
         $this->freigeschalten = $freigeschalten;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'bild' => $this->bild->jsonSerialize(),
-            'bestellung' => $this->bestellung->jsonSerialize(),
-            'freigeschalten' => $this->freigeschalten
+            'id' => $this->getId(),
+            'bild' => $this->getBild()->jsonSerialize(),
+            'bestellung' => $this->getBestellung()->jsonSerialize(),
+            'freigeschalten' => $this->isFreigeschalten()
         ];
     }
 }

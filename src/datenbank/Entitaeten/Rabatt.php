@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\RabattRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RabattRepository::class)]
 #[ORM\Table(name: 'rabatt')]
@@ -50,11 +50,12 @@ class Rabatt
         $this->code = $code;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'code' => $this->code,
-            'minderung' => $this->minderung
+            'id' => $this->getId(),
+            'code' => $this->getCode(),
+            'minderung' => $this->getMinderung()
         ];
     }
 }

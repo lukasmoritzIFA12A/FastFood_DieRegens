@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\BestellstatusRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BestellstatusRepository::class)]
 #[ORM\Table(name: 'bestellstatus')]
@@ -50,11 +50,12 @@ class Bestellstatus
         $this->farbe = $farbe;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'status' => $this->status,
-            'farbe' => $this->farbe
+            'id' => $this->getId(),
+            'status' => $this->getStatus(),
+            'farbe' => $this->getFarbe()
         ];
     }
 }

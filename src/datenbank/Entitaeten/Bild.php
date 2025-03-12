@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\BildRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BildRepository::class)]
 #[ORM\Table(name: 'bild')]
@@ -48,9 +48,10 @@ class Bild
         $this->bild = $bild;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
+            'id' => $this->getId(),
             'bild' => $this->getBild()
         ];
     }

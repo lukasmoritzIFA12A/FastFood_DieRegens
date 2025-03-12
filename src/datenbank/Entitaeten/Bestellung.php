@@ -2,11 +2,11 @@
 
 namespace App\datenbank\Entitaeten;
 
+use App\datenbank\Repositories\BestellungRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\datenbank\Repositories\BestellungRepository;
 
 #[ORM\Entity(repositoryClass: BestellungRepository::class)]
 #[ORM\Table(name: 'bestellung')]
@@ -64,9 +64,9 @@ class Bestellung
         $this->kunde = $kunde;
     }
 
-    public function getBestellungDatum(): DateTime
+    public function getBestellungDatum(): string
     {
-        return $this->BestellungDatum;
+        return $this->BestellungDatum->format("d.m.Y - H:i");
     }
 
     public function setBestellungDatum(DateTime $BestellungDatum): void
@@ -114,15 +114,16 @@ class Bestellung
         $this->produkte = $produkte;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'BestellungDatum' => $this->BestellungDatum,
-            'kunde' => $this->kunde->jsonSerialize(),
-            'zahlungsart' => $this->zahlungsart->jsonSerialize(),
-            'bestellstatus' => $this->bestellstatus->jsonSerialize(),
-            'menues' => $this->menues->map(fn($c) => $c->jsonSerialize())->toArray(),
-            'produkte' => $this->produkte->map(fn($c) => $c->jsonSerialize())->toArray()
+            'id' => $this->getId(),
+            'BestellungDatum' => $this->getBestellungDatum(),
+            'kunde' => $this->getKunde()->jsonSerialize(),
+            'zahlungsart' => $this->getZahlungsart()->jsonSerialize(),
+            'bestellstatus' => $this->getBestellstatus()->jsonSerialize(),
+            'menues' => $this->getMenues()->map(fn($c) => $c->jsonSerialize())->toArray(),
+            'produkte' => $this->getProdukte()->map(fn($c) => $c->jsonSerialize())->toArray()
         ];
     }
 }
