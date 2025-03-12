@@ -178,17 +178,20 @@ include 'lieferadresse/lieferadresse-modal.php';
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Warenkorb</h5>
-                    <ul class="list-group list-group-flush mb-3">
-                        <?php foreach ($menues as $menue): ?>
-                            <li class="list-group-item"><?= $menue->getTitel() ?> <span
-                                        class="float-end"><?= $menue->getPreis() ?> €</span></li>
-                        <?php endforeach; ?>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush mb-3">
+                            <?php foreach ($menues as $menue): ?>
+                                <li class="list-group-item"><?= $menue->getTitel() ?> <span
+                                            class="float-end"><?= $menue->getPreis() ?> €</span></li>
+                            <?php endforeach; ?>
 
-                        <?php foreach ($produkte as $produkt): ?>
-                            <li class="list-group-item"><?= $produkt->getTitel() ?> <span
-                                        class="float-end"><?= $produkt->getPreis() ?> €</span></li>
-                        <?php endforeach; ?>
-                    </ul>
+                            <?php foreach ($produkte as $produkt): ?>
+                                <li class="list-group-item"><?= $produkt->getTitel() ?> <span
+                                            class="float-end"><?= $produkt->getPreis() ?> €</span></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+
                     <p>Rabatt: <span class="float-end" id="rabattEuro">-,-- €</span>
                     </p>
                     <p>Zwischensumme: <span class="float-end">-,-- €</span></p>
