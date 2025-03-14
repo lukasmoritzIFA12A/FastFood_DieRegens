@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $fileSize = $_FILES['bild']['size'];
     $fileType = mime_content_type($_FILES['bild']['tmp_name']);
-    $allowedTypes = ['image/jpeg', 'image/png']; // Beispiel für erlaubte Dateitypen
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']; // Beispiel für erlaubte Dateitypen
 
     if ($fileSize > 5000000) { // max. 5MB (du kannst den Wert nach Bedarf anpassen)
         echo json_encode(["success" => false, "message" => "Die Datei ist zu groß!"]);
