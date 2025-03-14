@@ -37,7 +37,7 @@ if ($bestellungen) {
                                               style="background-color: <?= $bestellungen[$i]->getBestellstatus()->getFarbe() ?>"><?= $bestellungen[$i]->getBestellstatus()->getStatus() ?></span>
                                     <?php else: ?>
                                         <span class="badge"
-                                              style="background-color: #B0B0B0">Unbekannt</span>
+                                              style="background-color: #B0B0B0">Bestellt</span>
                                     <?php endif; ?>
                                 </div>
                                 <div class="collapse" id=<?= "orderDetails$i" ?>>
