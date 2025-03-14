@@ -1,5 +1,5 @@
 <?php
-    $details = $details ?? "Keine Details";
+$details = $details ?? "Keine Details";
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +14,7 @@
             margin-top: 100px;
             text-align: center;
         }
+
         .error-box {
             max-height: 200px; /* Maximalhöhe für das Scrollen */
             overflow-y: auto; /* Scrollbar bei Überlauf */
@@ -41,5 +42,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../utils/session.js"></script>
 </body>
 </html>

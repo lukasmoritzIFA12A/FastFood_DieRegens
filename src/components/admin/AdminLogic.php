@@ -7,12 +7,14 @@ use App\datenbank\Entitaeten\Bild;
 use App\datenbank\Entitaeten\Energiewert;
 use App\datenbank\Entitaeten\Menue;
 use App\datenbank\Entitaeten\Produkt;
+use App\datenbank\Entitaeten\Zahlungsart;
 use App\datenbank\Entitaeten\Zutat;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\BestellstatusRepository;
 use App\datenbank\Repositories\EnergiewertRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
+use App\datenbank\Repositories\ZahlungsartRepository;
 use App\datenbank\Repositories\ZutatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -147,5 +149,25 @@ class AdminLogic
 
         $produkt->setEnergiewert($energiewert);
         return $produktRepository->save($produkt);
+    }
+
+    public function saveZahlungsart(string $art, string $tempPath): bool
+    {
+        $zahlungsart = new Zahlungsart();
+        $zahlungsart->setArt($art);
+
+        $fileData = file_get_contents($tempPath);
+        $bild = new Bild();
+        $bild->setBild($fileData);
+
+        $zahlungsart->setBild($bild);
+
+        $zahlungsartRepository = new ZahlungsartRepository($this->entityManager);
+        if (!$zahlungsartRepository->save($zahlungsart)) {
+            $this->errorMessage = "Zahlungsart konnte nicht gespeichert werden!";
+            return false;
+        }
+
+        return true;
     }
 }

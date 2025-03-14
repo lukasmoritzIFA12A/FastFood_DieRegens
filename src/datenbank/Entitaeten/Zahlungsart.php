@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\ZahlungsartRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ZahlungsartRepository::class)]
 #[ORM\Table(name: 'zahlungsart')]
@@ -16,6 +16,10 @@ class Zahlungsart
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $Art;
+
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
+    private Bild $bild;
 
     public function getId(): int
     {
@@ -37,10 +41,22 @@ class Zahlungsart
         $this->Art = $Art;
     }
 
-    public function jsonSerialize(): array {
+    public function getBild(): Bild
+    {
+        return $this->bild;
+    }
+
+    public function setBild(Bild $bild): void
+    {
+        $this->bild = $bild;
+    }
+
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'Art' => $this->Art
+            'id' => $this->getId(),
+            'Art' => $this->getArt(),
+            'bild' => $this->getBild()->jsonSerialize()
         ];
     }
 }

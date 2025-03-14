@@ -2,10 +2,11 @@
 
 namespace App\datenbank\Entitaeten;
 
+use App\datenbank\Repositories\MenueRepository;
+use App\utils\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\datenbank\Repositories\MenueRepository;
 
 #[ORM\Entity(repositoryClass: MenueRepository::class)]
 #[ORM\Table(name: 'menue')]
@@ -89,10 +90,11 @@ class Menue
         $summe = "0.00";
 
         foreach ($this->produkte as $produkt) {
-            $summe = bcadd($summe, $produkt->getPreis(), 2);
+            $produktPreis = Number::unformatPreis($produkt->getPreis());
+            $summe = Number::summePreis($summe, $produktPreis);
         }
 
-        return $summe;
+        return Number::reformatPreis($summe);
     }
 
     public function isAusverkauft(): bool
@@ -105,15 +107,16 @@ class Menue
         return false;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'bild' => $this->bild->jsonSerialize(),
-            'Titel' => $this->Titel,
-            'Beschreibung' => $this->Beschreibung,
+            'id' => $this->getId(),
+            'bild' => $this->getBild()->jsonSerialize(),
+            'Titel' => $this->getTitel(),
+            'Beschreibung' => $this->getBeschreibung(),
             'Preis' => $this->getPreis(),
             'ausverkauft' => $this->isAusverkauft(),
-            'produkte' => $this->produkte->map(fn($c) => $c->jsonSerialize())->toArray()
+            'produkte' => $this->getProdukte()->map(fn($c) => $c->jsonSerialize())->toArray()
         ];
     }
 }

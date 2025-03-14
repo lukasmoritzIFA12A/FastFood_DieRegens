@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\RabattRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RabattRepository::class)]
 #[ORM\Table(name: 'rabatt')]
@@ -14,10 +14,10 @@ class Rabatt
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: "string", length: 255, unique: true)]
     private string $code;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
+    #[ORM\Column(type: "integer")]
     private string $minderung;
 
     public function getId(): int
@@ -50,11 +50,12 @@ class Rabatt
         $this->code = $code;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'code' => $this->code,
-            'minderung' => $this->minderung
+            'id' => $this->getId(),
+            'code' => $this->getCode(),
+            'minderung' => $this->getMinderung()
         ];
     }
 }

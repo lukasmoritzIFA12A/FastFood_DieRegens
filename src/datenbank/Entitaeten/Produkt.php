@@ -2,10 +2,11 @@
 
 namespace App\datenbank\Entitaeten;
 
+use App\datenbank\Repositories\ProduktRepository;
+use App\utils\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\datenbank\Repositories\ProduktRepository;
 
 #[ORM\Entity(repositoryClass: ProduktRepository::class)]
 #[ORM\Table(name: 'produkt')]
@@ -66,7 +67,7 @@ class Produkt
 
     public function getPreis(): string
     {
-        return $this->Preis;
+        return Number::reformatPreis($this->Preis);
     }
 
     public function setPreis(string $Preis): void
@@ -124,16 +125,17 @@ class Produkt
         $this->zutat = $zutat;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'bild' => $this->bild->jsonSerialize(),
-            'Titel' => $this->Titel,
-            'Beschreibung' => $this->Beschreibung,
-            'Preis' => $this->Preis,
-            'ausverkauft' => $this->ausverkauft,
-            'energiewert' => $this->energiewert?->jsonSerialize(),
-            'zutat' => $this->zutat->map(fn($c) => $c->jsonSerialize())->toArray()
+            'id' => $this->getId(),
+            'bild' => $this->getBild()->jsonSerialize(),
+            'Titel' => $this->getTitel(),
+            'Beschreibung' => $this->getBeschreibung(),
+            'Preis' => $this->getPreis(),
+            'ausverkauft' => $this->isAusverkauft(),
+            'energiewert' => $this->getEnergiewert()?->jsonSerialize(),
+            'zutat' => $this->getZutat()->map(fn($c) => $c->jsonSerialize())->toArray()
         ];
     }
 }

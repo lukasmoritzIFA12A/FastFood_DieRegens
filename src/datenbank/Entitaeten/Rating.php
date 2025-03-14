@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\RatingRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
 #[ORM\Table(name: 'rating')]
@@ -65,12 +65,13 @@ class Rating
         $this->kunde = $kunde;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'kunde' => $this->kunde->jsonSerialize(),
-            'contest' => $this->contest->jsonSerialize(),
-            'Rating' => $this->Rating
+            'id' => $this->getId(),
+            'kunde' => $this->getKunde()->jsonSerialize(),
+            'contest' => $this->getContest()->jsonSerialize(),
+            'Rating' => $this->getRating()
         ];
     }
 }

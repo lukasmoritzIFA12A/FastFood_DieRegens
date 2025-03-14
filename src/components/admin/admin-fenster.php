@@ -49,19 +49,35 @@ include '../header/header.php'; // Header einfügen
     <!-- Navigation Tabs -->
     <ul class="nav nav-tabs" id="adminTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="product-tab" data-bs-toggle="tab" data-bs-target="#product" type="button" role="tab" aria-controls="product" aria-selected="true">Produkt hinzufügen</button>
+            <button class="nav-link active" id="product-tab" data-bs-toggle="tab" data-bs-target="#product"
+                    type="button" role="tab" aria-controls="product" aria-selected="true">Produkt hinzufügen
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab" aria-controls="menu" aria-selected="false">Menü hinzufügen</button>
+            <button class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab"
+                    aria-controls="menu" aria-selected="false">Menü hinzufügen
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="orderStatus-tab" data-bs-toggle="tab" data-bs-target="#orderStatus" type="button" role="tab" aria-controls="orderStatus" aria-selected="false">Bestellstatus hinzufügen</button>
+            <button class="nav-link" id="orderStatus-tab" data-bs-toggle="tab" data-bs-target="#orderStatus"
+                    type="button" role="tab" aria-controls="orderStatus" aria-selected="false">Bestellstatus hinzufügen
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="nutritionalValues-tab" data-bs-toggle="tab" data-bs-target="#nutritionalValues" type="button" role="tab" aria-controls="nutritionalValues" aria-selected="false">Energiewerte hinzufügen</button>
+            <button class="nav-link" id="nutritionalValues-tab" data-bs-toggle="tab" data-bs-target="#nutritionalValues"
+                    type="button" role="tab" aria-controls="nutritionalValues" aria-selected="false">Energiewerte
+                hinzufügen
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="zutat-tab" data-bs-toggle="tab" data-bs-target="#zutat" type="button" role="tab" aria-controls="zutat" aria-selected="false">Zutat hinzufügen</button>
+            <button class="nav-link" id="zutat-tab" data-bs-toggle="tab" data-bs-target="#zutat" type="button"
+                    role="tab" aria-controls="zutat" aria-selected="false">Zutat hinzufügen
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="zahlungsart-tab" data-bs-toggle="tab" data-bs-target="#zahlungsart"
+                    type="button" role="tab" aria-controls="zahlungsart" aria-selected="false">Zahlungsart hinzufügen
+            </button>
         </li>
     </ul>
 
@@ -85,7 +101,8 @@ include '../header/header.php'; // Header einfügen
                 </div>
                 <div class="mb-3">
                     <label for="productPrice" class="form-label">Preis</label>
-                    <input type="number" step="0.01" min="0" class="form-control" id="productPrice" name="preis" required>
+                    <input type="number" step="0.01" min="0" class="form-control" id="productPrice" name="preis"
+                           required>
                 </div>
                 <div class="mb-3 form-check">
                     <input class="form-check-input" type="checkbox" value="false" id="productStock" name="ausverkauft">
@@ -96,7 +113,8 @@ include '../header/header.php'; // Header einfügen
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <label class="form-label mb-0">Zutaten</label>
-                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addZutatModal" onclick="clearZutatSearchInput()">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#addZutatModal" onclick="clearZutatSearchInput()">
                             <i class="bi bi-plus-circle"></i> Hinzufügen
                         </button>
                     </div>
@@ -140,7 +158,8 @@ include '../header/header.php'; // Header einfügen
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <label class="form-label mb-0">Produkte</label>
-                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal" onclick="clearProductSearchInput()">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#addProductModal" onclick="clearProductSearchInput()">
                             <i class="bi bi-plus-circle"></i> Hinzufügen
                         </button>
                     </div>
@@ -183,12 +202,15 @@ include '../header/header.php'; // Header einfügen
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <label class="form-label mb-0" for="energiewertProduct">Produkt</label>
-                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEnergiewertProductModal" onclick="clearEnergiewertProductSearchInput()">
+                        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#addEnergiewertProductModal"
+                                onclick="clearEnergiewertProductSearchInput()">
                             <i class="bi bi-plus-circle"></i> Hinzufügen
                         </button>
                     </div>
 
-                    <input type="text" id="energiewertProduct" placeholder="Es wurde kein Produkt ausgewählt." class="form-control" readonly required>
+                    <input type="text" id="energiewertProduct" placeholder="Es wurde kein Produkt ausgewählt."
+                           class="form-control" readonly required>
                     <input type="hidden" name="energiewertProdukte" id="energiewertProdukteInput">
                 </div>
 
@@ -197,23 +219,24 @@ include '../header/header.php'; // Header einfügen
                     <input type="number" min="0" class="form-control" id="nvPortionSize" name="portionSize">
                 </div>
                 <div class="mb-3">
-                    <label for="nvCalories" class="form-label">Kalorien</label>
+                    <label for="nvCalories" class="form-label">Kalorien (kcal)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvCalories" name="kalorien">
                 </div>
                 <div class="mb-3">
-                    <label for="nvFat" class="form-label">Fett</label>
+                    <label for="nvFat" class="form-label">Fett (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvFat" name="fett">
                 </div>
                 <div class="mb-3">
-                    <label for="nvCarbohydrates" class="form-label">Kohlenhydrate</label>
-                    <input type="number" step="0.01" min="0" class="form-control" id="nvCarbohydrates" name="kohlenhydrate">
+                    <label for="nvCarbohydrates" class="form-label">Kohlenhydrate (g)</label>
+                    <input type="number" step="0.01" min="0" class="form-control" id="nvCarbohydrates"
+                           name="kohlenhydrate">
                 </div>
                 <div class="mb-3">
-                    <label for="nvSugar" class="form-label">Zucker</label>
+                    <label for="nvSugar" class="form-label">Zucker (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvSugar" name="zucker">
                 </div>
                 <div class="mb-3">
-                    <label for="nvProtein" class="form-label">Eiweiß</label>
+                    <label for="nvProtein" class="form-label">Eiweiß (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvProtein" name="eiweiss">
                 </div>
                 <button type="submit" class="btn btn-primary">Energiewerte hinzufügen</button>
@@ -232,6 +255,23 @@ include '../header/header.php'; // Header einfügen
                 <button type="submit" class="btn btn-primary">Zutat hinzufügen</button>
             </form>
         </div>
+
+        <!-- Zahlungsart hinzufügen -->
+        <div class="tab-pane fade" id="zahlungsart" role="tabpanel" aria-labelledby="zahlungsart-tab">
+            <h3 class="mb-3">Zahlungsart hinzufügen</h3>
+            <form action="#" id="zahlungsartForm" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="zahlungsartIcon" class="form-label">Zahlungsart Icon hochladen</label>
+                    <input type="file" class="form-control" id="zahlungsartIcon" name="bild" required>
+                </div>
+                <div class="mb-3">
+                    <label for="zahlungsartArt" class="form-label">Titel</label>
+                    <input type="text" class="form-control" id="zahlungsartArt" name="art" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Zahlungsart hinzufügen</button>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -245,25 +285,29 @@ include '../header/header.php'; // Header einfügen
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <input type="text" id="productSearch" class="form-control" placeholder="Produkt suchen..." oninput="filterProducts()">
+                    <input type="text" id="productSearch" class="form-control" placeholder="Produkt suchen..."
+                           oninput="filterProducts()">
                 </div>
                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-hover" id="productListTable">
                         <tbody id="productList">
-                            <?php if (empty($produkte)): ?>
-                                <tr>
-                                    <td class="text-center text-muted">Es wurden keine Produkte gefunden.</td>
-                                </tr>
-                            <?php endif;?>
+                        <?php if (empty($produkte)): ?>
+                            <tr>
+                                <td class="text-center text-muted">Es wurden keine Produkte gefunden.</td>
+                            </tr>
+                        <?php endif; ?>
 
-                            <?php foreach ($produkte as $produkt): ?>
-                                <tr>
-                                    <td class="product-name"><?=$produkt->getTitel()?></td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-success btn-sm" onclick="addProductToMenu('<?=$produkt->getTitel()?>', '<?=$produkt->getId()?>')">Hinzufügen</button>
-                                    </td>
-                                </tr>
-                            <?php endforeach;?>
+                        <?php foreach ($produkte as $produkt): ?>
+                            <tr>
+                                <td class="product-name"><?= $produkt->getTitel() ?></td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            onclick="addProductToMenu('<?= $produkt->getTitel() ?>', '<?= $produkt->getId() ?>')">
+                                        Hinzufügen
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -285,25 +329,29 @@ include '../header/header.php'; // Header einfügen
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <input type="text" id="zutatSearch" class="form-control" placeholder="Zutat suchen..." oninput="filterZutaten()">
+                    <input type="text" id="zutatSearch" class="form-control" placeholder="Zutat suchen..."
+                           oninput="filterZutaten()">
                 </div>
                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-hover" id="zutatListTable">
                         <tbody id="zutatList">
-                            <?php if (empty($zutaten)): ?>
-                                <tr>
-                                    <td class="text-center text-muted">Es wurden keine Zutaten gefunden.</td>
-                                </tr>
-                            <?php endif;?>
+                        <?php if (empty($zutaten)): ?>
+                            <tr>
+                                <td class="text-center text-muted">Es wurden keine Zutaten gefunden.</td>
+                            </tr>
+                        <?php endif; ?>
 
-                            <?php foreach ($zutaten as $zutat): ?>
-                                <tr>
-                                    <td class="zutat-name"><?=$zutat->getZutatName()?></td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-success btn-sm" onclick="addZutatToProdukt('<?=$zutat->getZutatName()?>', '<?=$zutat->getId()?>')">Hinzufügen</button>
-                                    </td>
-                                </tr>
-                            <?php endforeach;?>
+                        <?php foreach ($zutaten as $zutat): ?>
+                            <tr>
+                                <td class="zutat-name"><?= $zutat->getZutatName() ?></td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            onclick="addZutatToProdukt('<?= $zutat->getZutatName() ?>', '<?= $zutat->getId() ?>')">
+                                        Hinzufügen
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -316,7 +364,8 @@ include '../header/header.php'; // Header einfügen
 </div>
 
 <!-- Modal: Produktauswahl für Energiewert hinzufügen -->
-<div class="modal fade" id="addEnergiewertProductModal" tabindex="-1" aria-labelledby="addEnergiewertProductModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEnergiewertProductModal" tabindex="-1" aria-labelledby="addEnergiewertProductModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -325,7 +374,8 @@ include '../header/header.php'; // Header einfügen
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <input type="text" id="energiewertProductSearch" class="form-control" placeholder="Produkt suchen..." oninput="filterEnergiewertProduct()">
+                    <input type="text" id="energiewertProductSearch" class="form-control"
+                           placeholder="Produkt suchen..." oninput="filterEnergiewertProduct()">
                 </div>
                 <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-hover" id="energiewertProductTable">
@@ -334,16 +384,19 @@ include '../header/header.php'; // Header einfügen
                             <tr>
                                 <td class="text-center text-muted">Es wurden keine Produkte gefunden.</td>
                             </tr>
-                        <?php endif;?>
+                        <?php endif; ?>
 
                         <?php foreach ($produkte as $produkt): ?>
                             <tr>
-                                <td class="product-name"><?=$produkt->getTitel()?></td>
+                                <td class="product-name"><?= $produkt->getTitel() ?></td>
                                 <td class="text-end">
-                                    <button type="button" class="btn btn-success btn-sm" onclick="addProductToEnergiewert('<?=$produkt->getTitel()?>', '<?=$produkt->getId()?>')">Hinzufügen</button>
+                                    <button type="button" class="btn btn-success btn-sm"
+                                            onclick="addProductToEnergiewert('<?= $produkt->getTitel() ?>', '<?= $produkt->getId() ?>')">
+                                        Hinzufügen
+                                    </button>
                                 </td>
                             </tr>
-                        <?php endforeach;?>
+                        <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -357,11 +410,13 @@ include '../header/header.php'; // Header einfügen
 
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="content/produkt.js"></script>
-<script src="content/menue.js"></script>
-<script src="content/bestellstatus.js"></script>
-<script src="content/zutat.js"></script>
-<script src="content/energiewerte.js"></script>
+<script src="content/produkt/produkt.js"></script>
+<script src="content/menue/menue.js"></script>
+<script src="content/bestellstatus/bestellstatus.js"></script>
+<script src="content/zutat/zutat.js"></script>
+<script src="content/energiewerte/energiewerte.js"></script>
+<script src="content/zahlungsart/zahlungsart.js"></script>
 <script src="admin.js"></script>
+<script src="../../utils/session.js"></script>
 </body>
 </html>

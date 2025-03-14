@@ -2,8 +2,8 @@
 
 namespace App\datenbank\Entitaeten;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\datenbank\Repositories\LoginRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LoginRepository::class)]
 #[ORM\Table(name: 'login')]
@@ -50,11 +50,12 @@ class Login
         $this->Passwort = $Passwort;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'Nutzername' => $this->Nutzername,
-            'Passwort' => $this->Passwort
+            'id' => $this->getId(),
+            'Nutzername' => $this->getNutzername(),
+            'Passwort' => $this->getPasswort()
         ];
     }
 }

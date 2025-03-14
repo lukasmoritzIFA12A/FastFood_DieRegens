@@ -4,8 +4,8 @@ namespace Test\datenbank;
 
 use App\datenbank\Entitaeten\Rechnung;
 use App\datenbank\Repositories\RechnungRepository;
-use Test\DatenbankTest;
 use DateTime;
+use Test\DatenbankTest;
 
 class RechnungRepositoryTest extends DatenbankTest
 {
@@ -15,7 +15,7 @@ class RechnungRepositoryTest extends DatenbankTest
     {
         $entityManager = parent::createEntityManager();
 
-        self::$rechnungRepository =  new RechnungRepository($entityManager);
+        self::$rechnungRepository = new RechnungRepository($entityManager);
     }
 
     protected static function cleanup(): void
@@ -35,14 +35,14 @@ class RechnungRepositoryTest extends DatenbankTest
 
     public function testSaveByInsert(): void
     {
-    //given
+        //given
         $rechnung = self::createRechnung("UserInsert");
 
-    //when
+        //when
         self::$rechnungRepository->save($rechnung);
         $savedRechnung = self::$rechnungRepository->getById($rechnung->getId());
 
-    //then
+        //then
         $this->assertInstanceOf(Rechnung::class, $savedRechnung);
         $this->assertEquals($rechnung->getZahlungsDatum(), $savedRechnung->getZahlungsDatum());
         $this->assertEquals($rechnung->getBestellung()->getId(), $savedRechnung->getBestellung()->getId());
@@ -50,27 +50,24 @@ class RechnungRepositoryTest extends DatenbankTest
 
     public function testSaveByUpdate(): void
     {
-    //given
+        //given
         $rechnung = self::createRechnung("UserUpdate");
         self::$rechnungRepository->save($rechnung);
 
-    //when
-        $newRabatt = RabattRepositoryTest::createRabatt(); //Rabatt erstellen
-        $rechnung->setRabatt($newRabatt);
+        //when
         $rechnung->setZahlungsDatum(new DateTime("2023-01-02 12:00:00"));
 
         self::$rechnungRepository->save($rechnung);
         $updatedRechnung = self::$rechnungRepository->getById($rechnung->getId());
 
-    //then
+        //then
         $this->assertInstanceOf(Rechnung::class, $updatedRechnung);
         $this->assertEquals($rechnung->getZahlungsDatum(), $updatedRechnung->getZahlungsDatum());
-        $this->assertEquals($newRabatt->getId(), $updatedRechnung->getRabatt()->getId());
     }
 
     public function testGetAll(): void
     {
-    //given
+        //given
         $rechnung = self::createRechnung("UserGetAll1");
         self::$rechnungRepository->save($rechnung);
         $rechnung = self::createRechnung("UserGetAll2");
@@ -78,47 +75,47 @@ class RechnungRepositoryTest extends DatenbankTest
         $rechnung = self::createRechnung("UserGetAll3");
         self::$rechnungRepository->save($rechnung);
 
-    //when
+        //when
         $allRechnungen = self::$rechnungRepository->getAll();
 
-    //then
+        //then
         $this->assertCount(3, $allRechnungen);
     }
 
     public function testExists(): void
     {
-    //given
+        //given
         $rechnung = self::createRechnung("UserExists");
         self::$rechnungRepository->save($rechnung);
 
-    //when
+        //when
         $exists = self::$rechnungRepository->exists($rechnung->getId());
         $doesNotExist = self::$rechnungRepository->exists(-1);
 
-    //then
+        //then
         $this->assertTrue($exists);
         $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-    //given
+        //given
         $rechnung = self::createRechnung("UserDelete");
         self::$rechnungRepository->save($rechnung);
         $id = $rechnung->getId();
 
-    //when
+        //when
         $deleted = self::$rechnungRepository->deleteById($id);
         $stillExists = self::$rechnungRepository->exists($id);
 
-    //then
+        //then
         $this->assertTrue($deleted);
         $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-    //given
+        //given
         $rechnung = self::createRechnung("UserDeleteAll1");
         self::$rechnungRepository->save($rechnung);
         $rechnung = self::createRechnung("UserDeleteAll2");
@@ -126,10 +123,10 @@ class RechnungRepositoryTest extends DatenbankTest
         $rechnung = self::createRechnung("UserDeleteAll3");
         self::$rechnungRepository->save($rechnung);
 
-    //when
+        //when
         self::$rechnungRepository->deleteAll();
 
-    //then
+        //then
         $this->assertEmpty(self::$rechnungRepository->getAll());
     }
 }

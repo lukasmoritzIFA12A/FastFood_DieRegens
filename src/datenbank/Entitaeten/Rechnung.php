@@ -2,9 +2,9 @@
 
 namespace App\datenbank\Entitaeten;
 
+use App\datenbank\Repositories\RechnungRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use App\datenbank\Repositories\RechnungRepository;
 
 #[ORM\Entity(repositoryClass: RechnungRepository::class)]
 #[ORM\Table(name: 'rechnung')]
@@ -19,12 +19,8 @@ class Rechnung
     #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id")]
     private Bestellung $bestellung;
 
-    #[ORM\Column(type: 'datetime')]
-    private DateTime $ZahlungsDatum;
-
-    #[ORM\ManyToOne(targetEntity: Rabatt::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true)]
-    private Rabatt $rabatt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $ZahlungsDatum;
 
     public function getId(): int
     {
@@ -36,22 +32,12 @@ class Rechnung
         $this->id = $id;
     }
 
-    public function getRabatt(): ?Rabatt
+    public function getZahlungsDatum(): ?string
     {
-        return $this->rabatt;
+        return $this->ZahlungsDatum?->format("d.m.Y - H:i");
     }
 
-    public function setRabatt(?Rabatt $rabatt): void
-    {
-        $this->rabatt = $rabatt;
-    }
-
-    public function getZahlungsDatum(): DateTime
-    {
-        return $this->ZahlungsDatum;
-    }
-
-    public function setZahlungsDatum(DateTime $ZahlungsDatum): void
+    public function setZahlungsDatum(?DateTime $ZahlungsDatum): void
     {
         $this->ZahlungsDatum = $ZahlungsDatum;
     }
@@ -66,12 +52,12 @@ class Rechnung
         $this->bestellung = $bestellung;
     }
 
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
-            'id' => $this->id,
-            'bestellung' => $this->bestellung->jsonSerialize(),
-            'ZahlungsDatum' => $this->ZahlungsDatum,
-            'rabatt' => $this->rabatt->jsonSerialize()
+            'id' => $this->getId(),
+            'bestellung' => $this->getBestellung()->jsonSerialize(),
+            'ZahlungsDatum' => $this->getZahlungsDatum()
         ];
     }
 }

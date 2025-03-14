@@ -9,6 +9,7 @@ use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\BestellungRepository;
 use App\datenbank\Repositories\KundeRepository;
 use App\utils\BundeslandFetcher;
+use App\utils\Number;
 use App\validation\PasswortHash;
 use Doctrine\ORM\EntityManager;
 
@@ -26,12 +27,11 @@ class AccountLogic
     public function getFullAddress(Adresse $adresse): string
     {
         $zusatz = "";
-        if ($adresse->getZusatz() != null)
-        {
-            $zusatz = " (".$adresse->getZusatz().")";
+        if ($adresse->getZusatz() != null) {
+            $zusatz = " (" . $adresse->getZusatz() . ")";
         }
 
-        return $adresse->getStrassenname()." ".$adresse->getHausnummer().", ".$adresse->getPLZ()." ".$adresse->getStadt().$zusatz;
+        return $adresse->getStrassenname() . " " . $adresse->getHausnummer() . ", " . $adresse->getPLZ() . " " . $adresse->getStadt() . $zusatz;
     }
 
     public function getAccountByUsername(string $nutzername): Kunde|bool
@@ -159,16 +159,18 @@ class AccountLogic
     {
         $summe = "0.00";
 
-        foreach ($bestellung->getProdukte() as $produkt) {
-            $summe = bcadd($summe, $produkt->getPreis(), 2);
+        foreach ($bestellung->getBestellungprodukte() as $bestellungprodukte) {
+            $preis = Number::unformatPreis($bestellungprodukte->getProdukt()->getPreis());
+            $preis = Number::multiplierPreis($preis, $bestellungprodukte->getMenge());
+            $summe = Number::summePreis($summe, $preis);
         }
 
-        foreach ($bestellung->getMenues() as $menue) {
-            foreach ($menue->getProdukte() as $produkt) {
-                $summe = bcadd($summe, $produkt->getPreis(), 2);
-            }
+        foreach ($bestellung->getBestellungmenues() as $bestellungmenue) {
+            $preis = Number::unformatPreis($bestellungmenue->getMenue()->getPreis());
+            $preis = Number::multiplierPreis($preis, $bestellungmenue->getMenge());
+            $summe = Number::summePreis($summe, $preis);
         }
 
-        return $summe;
+        return Number::reformatPreis($summe);
     }
 }
