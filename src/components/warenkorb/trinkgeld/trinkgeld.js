@@ -23,6 +23,13 @@ document.querySelectorAll('input[name="betrag"]').forEach((radio) => {
     });
 });
 
+document.getElementById('andereBetragInput').addEventListener('keypress', function (event) {
+    const allowedChars = /[0-9,]/;
+    if (!allowedChars.test(event.key) && event.key !== 'Backspace' && event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+        event.preventDefault();
+    }
+});
+
 document.getElementById('andereBetragInput').addEventListener('change', function () {
     updateTrinkgeldWert();
 });

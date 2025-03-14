@@ -162,7 +162,7 @@ class WarenkorbLogic
         $gesamtSumme = Number::unformatPreis($this->getZwischenSumme());
 
         if (!empty($_SESSION['trinkgeld'])) {
-            $trinkgeldPreis = $_SESSION['trinkgeld'];
+            $trinkgeldPreis = Number::unformatPreis($_SESSION['trinkgeld']);
             $gesamtSumme = Number::summePreis($gesamtSumme, $trinkgeldPreis);
         }
 

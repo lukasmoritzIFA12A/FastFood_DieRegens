@@ -106,11 +106,13 @@ include 'warenkorb-modal.php';
                                    autocomplete="off" data-euro="Andere"
                                 <?= $warenkorbLogic->isSelectedTrinkgeld("Andere") ? 'checked' : '' ?>>
                             <label class="btn btn-outline-primary" for="btnAndere">Andere</label>
-                            <input type="number" name="andereBetragInput" id="andereBetragInput" step="0.01" min="0"
+                            <input type="text" name="andereBetragInput" id="andereBetragInput" min="0"
                                    class="form-control flex-grow-0"
+                                   pattern="^\d+(\,(\d{1,2}))?$"
                                    value="<?= $warenkorbLogic->getAndereTrinkgeld() ?>"
-                                   style="width: 12.5%;"
-                                <?= $warenkorbLogic->isSelectedTrinkgeld("Andere") ? '' : 'disabled' ?>>
+                                <?= $warenkorbLogic->isSelectedTrinkgeld("Andere") ?
+                                    "style='width: 12.5%;'" :
+                                    "style='width: 12.5%; pointer-events: none; opacity: 0.5; background-color: #ddd;'" ?>>
                         </div>
                     </div>
                 </div>
