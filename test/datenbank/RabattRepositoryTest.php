@@ -14,7 +14,7 @@ class RabattRepositoryTest extends DatenbankTest
     {
         $entityManager = parent::createEntityManager();
 
-        self::$rabattRepository =  new RabattRepository($entityManager);
+        self::$rabattRepository = new RabattRepository($entityManager);
     }
 
     protected static function cleanup(): void
@@ -22,24 +22,24 @@ class RabattRepositoryTest extends DatenbankTest
         self::$rabattRepository->deleteAll();
     }
 
-    public static function createRabatt(): Rabatt
+    public static function createRabatt($rabattCode): Rabatt
     {
         $rabatt = new Rabatt();
-        $rabatt->setCode("RABATT1");
+        $rabatt->setCode($rabattCode);
         $rabatt->setMinderung("24%");
         return $rabatt;
     }
 
     public function testSaveByInsert(): void
     {
-    //given
-        $rabatt = self::createRabatt();
+        //given
+        $rabatt = self::createRabatt("rabattInsert");
 
-    //when
+        //when
         self::$rabattRepository->save($rabatt);
         $savedRabatt = self::$rabattRepository->getById($rabatt->getId());
 
-    //then
+        //then
         $this->assertInstanceOf(Rabatt::class, $savedRabatt);
         $this->assertEquals($rabatt->getCode(), $savedRabatt->getCode());
         $this->assertEquals($rabatt->getMinderung(), $savedRabatt->getMinderung());
@@ -47,17 +47,17 @@ class RabattRepositoryTest extends DatenbankTest
 
     public function testSaveByUpdate(): void
     {
-    //given
-        $rabatt = self::createRabatt();
+        //given
+        $rabatt = self::createRabatt("rabattUpdate");
         self::$rabattRepository->save($rabatt);
 
-    //when
+        //when
         $rabatt->setCode("RABATT_UPDATED");
         $rabatt->setMinderung("20.00");
         self::$rabattRepository->save($rabatt);
         $updatedRabatt = self::$rabattRepository->getById($rabatt->getId());
 
-    //then
+        //then
         $this->assertInstanceOf(Rabatt::class, $updatedRabatt);
         $this->assertEquals($rabatt->getCode(), $updatedRabatt->getCode());
         $this->assertEquals($rabatt->getMinderung(), $updatedRabatt->getMinderung());
@@ -65,66 +65,66 @@ class RabattRepositoryTest extends DatenbankTest
 
     public function testGetAll(): void
     {
-    //given
-        $rabatt = self::createRabatt();
+        //given
+        $rabatt = self::createRabatt("rabattGet1");
         self::$rabattRepository->save($rabatt);
-        $rabatt = self::createRabatt();
+        $rabatt = self::createRabatt("rabattGet2");
         self::$rabattRepository->save($rabatt);
-        $rabatt = self::createRabatt();
+        $rabatt = self::createRabatt("rabattGet3");
         self::$rabattRepository->save($rabatt);
 
-    //when
+        //when
         $allRabatte = self::$rabattRepository->getAll();
 
-    //then
+        //then
         $this->assertCount(3, $allRabatte);
     }
 
     public function testExists(): void
     {
-    //given
-        $rabatt = self::createRabatt();
+        //given
+        $rabatt = self::createRabatt("rabattExists");
         self::$rabattRepository->save($rabatt);
 
-    //when
+        //when
         $exists = self::$rabattRepository->exists($rabatt->getId());
         $doesNotExist = self::$rabattRepository->exists(-1);
 
-    //then
+        //then
         $this->assertTrue($exists);
         $this->assertFalse($doesNotExist);
     }
 
     public function testDeleteById(): void
     {
-    //given
-        $rabatt = self::createRabatt();
+        //given
+        $rabatt = self::createRabatt("rabattDeleteById");
         self::$rabattRepository->save($rabatt);
         $id = $rabatt->getId();
 
-    //when
+        //when
         $deleted = self::$rabattRepository->deleteById($id);
         $stillExists = self::$rabattRepository->exists($id);
 
-    //then
+        //then
         $this->assertTrue($deleted);
         $this->assertFalse($stillExists);
     }
 
     public function testDeleteAll(): void
     {
-    //given
-        $rabatt = self::createRabatt();
+        //given
+        $rabatt = self::createRabatt("rabattDelete1");
         self::$rabattRepository->save($rabatt);
-        $rabatt = self::createRabatt();
+        $rabatt = self::createRabatt("rabattDelete2");
         self::$rabattRepository->save($rabatt);
-        $rabatt = self::createRabatt();
+        $rabatt = self::createRabatt("rabattDelete3");
         self::$rabattRepository->save($rabatt);
 
-    //when
+        //when
         self::$rabattRepository->deleteAll();
 
-    //then
+        //then
         $this->assertEmpty(self::$rabattRepository->getAll());
     }
 }

@@ -28,33 +28,29 @@ document.getElementById('andereBetragInput').addEventListener('change', function
 });
 
 function updateTrinkgeldWert() {
-    let trinkgeld = '';
+    let trinkgeld = '0.00';
+    let istAndereTrinkgeld = false;
 
     const radios = document.querySelectorAll('input[name="betrag"]');
-    radios.forEach(radio => {
+    for (const radio of radios) {
         if (radio.checked) {
             const euroValue = radio.getAttribute('data-euro'); // Euro-Wert aus dem data-Attribut holen
             if (euroValue === 'Andere') {
+                istAndereTrinkgeld = true;
                 trinkgeld = document.getElementById('andereBetragInput').value;
-                trinkgeld = trinkgeld.replace(/[^0-9,.]/g, '').replace('.', ',');
             } else {
                 trinkgeld = euroValue;
             }
+            break;
         }
-    });
-
-    if (trinkgeld.trim() === '') {
-        document.getElementById('trinkgeld').innerText = '-,-- €';
-    } else {
-        document.getElementById('trinkgeld').innerText = trinkgeld + ' €';
     }
-
-    sendTrinkgeldToSession(trinkgeld);
+    sendTrinkgeldToSession(trinkgeld, istAndereTrinkgeld);
 }
 
-function sendTrinkgeldToSession(trinkgeld) {
+function sendTrinkgeldToSession(trinkgeld, istAndereTrinkgeld) {
     const formData = new FormData();
     formData.append("trinkgeld", trinkgeld);
+    formData.append("andereTrinkgeld", istAndereTrinkgeld ? "1" : "0");
 
     fetch("/FastFood/src/components/warenkorb/trinkgeld/trinkgeld-handler.php", {
         method: "POST",
@@ -67,7 +63,9 @@ function sendTrinkgeldToSession(trinkgeld) {
             return response.json();
         }) // Antwort als JSON
         .then(data => {
-            if (!data.success) {
+            if (data.success) {
+                window.location.href = "../warenkorb/warenkorb.php";
+            } else {
                 alert("Schwerwiegender Fehler: Konnte Trinkgeld nicht setzen!");
             }
         })

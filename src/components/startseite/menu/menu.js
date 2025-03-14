@@ -8,13 +8,13 @@ function setMenueDetails(jsonString) {
 //Falls der Parameter schon geparsed wurde, wird er direkt genutzt
     const menue = (typeof jsonString === 'string') ? JSON.parse(jsonString) : jsonString;
 
-    if (Object.keys(menue.Titel).length === 0) {
+    if (!menue.Titel || Object.keys(menue.Titel).length === 0) {
         document.getElementById('menuModalLabel').innerText = "Menü";
     } else {
         document.getElementById('menuModalLabel').innerText = menue.Titel;
     }
 
-    if (Object.keys(menue.Beschreibung).length === 0) {
+    if (!menue.Beschreibung || Object.keys(menue.Beschreibung).length === 0) {
         document.getElementById('menuDescription').innerText = "-Keine Menübeschreibung vorhanden-";
     } else {
         document.getElementById('menuDescription').innerText = menue.Beschreibung;
@@ -22,7 +22,7 @@ function setMenueDetails(jsonString) {
 
     document.getElementById('menuImage').src = getImageHTMLSrc(menue.bild.bild);
 
-    if (Object.keys(menue.Preis).length === 0) {
+    if (!menue.Preis || Object.keys(menue.Preis).length === 0) {
         document.getElementById('menuPrice').innerText = "--.--" + " €";
     } else {
         document.getElementById('menuPrice').innerText = menue.Preis + " €";
@@ -36,7 +36,7 @@ function setMenueDetails(jsonString) {
 }
 
 function loadProducts(menue) {
-    if (Object.keys(menue.produkte).length === 0) {
+    if (!menue.produkte || Object.keys(menue.produkte).length === 0) {
         document.getElementById('menueProductListBtn').style.display = "none";
         return;
     }
@@ -58,19 +58,23 @@ function loadProducts(menue) {
 }
 
 function openProductModal(product, menue) {
+    setProductDetails(product);
+
     document.getElementById('productModal').addEventListener('hidden.bs.modal', function handleModalClose() {
         document.getElementById('productModal').removeEventListener('hidden.bs.modal', handleModalClose);
         setMenueDetails(menue);
         const modal = new bootstrap.Modal(document.getElementById('menuModal'));
         modal.show();
     });
-
-    setProductDetails(product);
 }
 
-function sendMenuToWarenkorb(menuId) {
+function sendMenuToWarenkorb(menuId, removeFromWarenkorb = false) {
     const formData = new FormData();
-    formData.append("menuId", menuId);
+    if (removeFromWarenkorb) {
+        formData.append("warenkorbIndex", menuId);
+    } else {
+        formData.append("menuId", menuId);
+    }
 
     fetch("/FastFood/src/components/startseite/menu/menu-handler.php", {
         method: "POST",
@@ -84,9 +88,19 @@ function sendMenuToWarenkorb(menuId) {
         }) // Antwort als JSON
         .then(data => {
             if (data.success) {
+                if (data.reloadWarenkorb) {
+                    window.location.href = "../warenkorb/warenkorb.php";
+                    return;
+                }
+
                 window.location.href = "../startseite/startseite.php"; // Weiterleiten
             } else {
-                alert("Schwerwiegender Fehler: Konnte Menü nicht setzen!");
+                if (!data.loggedIn) {
+                    const loginModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
+                    loginModal.show();
+                } else {
+                    alert("Schwerwiegender Fehler: Konnte Menü nicht setzen!");
+                }
             }
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!

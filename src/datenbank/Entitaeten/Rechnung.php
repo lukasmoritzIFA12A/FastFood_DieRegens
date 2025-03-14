@@ -19,12 +19,8 @@ class Rechnung
     #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id")]
     private Bestellung $bestellung;
 
-    #[ORM\Column(type: 'datetime')]
-    private DateTime $ZahlungsDatum;
-
-    #[ORM\ManyToOne(targetEntity: Rabatt::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true)]
-    private Rabatt $rabatt;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $ZahlungsDatum;
 
     public function getId(): int
     {
@@ -36,22 +32,12 @@ class Rechnung
         $this->id = $id;
     }
 
-    public function getRabatt(): ?Rabatt
+    public function getZahlungsDatum(): ?string
     {
-        return $this->rabatt;
+        return $this->ZahlungsDatum?->format("d.m.Y - H:i");
     }
 
-    public function setRabatt(?Rabatt $rabatt): void
-    {
-        $this->rabatt = $rabatt;
-    }
-
-    public function getZahlungsDatum(): string
-    {
-        return $this->ZahlungsDatum->format("d.m.Y - H:i");
-    }
-
-    public function setZahlungsDatum(DateTime $ZahlungsDatum): void
+    public function setZahlungsDatum(?DateTime $ZahlungsDatum): void
     {
         $this->ZahlungsDatum = $ZahlungsDatum;
     }
@@ -71,8 +57,7 @@ class Rechnung
         return [
             'id' => $this->getId(),
             'bestellung' => $this->getBestellung()->jsonSerialize(),
-            'ZahlungsDatum' => $this->getZahlungsDatum(),
-            'rabatt' => $this->getRabatt()->jsonSerialize()
+            'ZahlungsDatum' => $this->getZahlungsDatum()
         ];
     }
 }

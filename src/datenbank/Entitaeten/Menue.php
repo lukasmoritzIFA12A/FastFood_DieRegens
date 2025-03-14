@@ -3,6 +3,7 @@
 namespace App\datenbank\Entitaeten;
 
 use App\datenbank\Repositories\MenueRepository;
+use App\utils\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -89,15 +90,11 @@ class Menue
         $summe = "0.00";
 
         foreach ($this->produkte as $produkt) {
-            $produktPreis = $produkt->getPreis();
-            $produktPreis = str_replace('.', '', $produktPreis);
-            $produktPreis = str_replace(',', '.', $produktPreis);
-
-            $summe = bcadd($summe, $produktPreis, 2);
+            $produktPreis = Number::unformatPreis($produkt->getPreis());
+            $summe = Number::summePreis($summe, $produktPreis);
         }
 
-        $summe = preg_replace('/[^0-9.]/', '', $summe);
-        return number_format($summe, 2, ',', '.');
+        return Number::reformatPreis($summe);
     }
 
     public function isAusverkauft(): bool

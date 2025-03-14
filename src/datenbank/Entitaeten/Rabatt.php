@@ -14,10 +14,10 @@ class Rabatt
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(type: "string", length: 255, unique: true)]
     private string $code;
 
-    #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
+    #[ORM\Column(type: "integer")]
     private string $minderung;
 
     public function getId(): int

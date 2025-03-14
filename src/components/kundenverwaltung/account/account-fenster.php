@@ -125,5 +125,6 @@ include 'bestellungen-modal.php';
 <script src="editieren/telefon/telefon.js"></script>
 <script src="editieren/vorname/vorname.js"></script>
 <script src="editieren/passwort/passwort.js"></script>
+<script src="../../../utils/session.js"></script>
 </body>
 </html>

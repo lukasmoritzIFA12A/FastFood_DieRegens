@@ -1,7 +1,14 @@
-document.getElementById("rabattForm").addEventListener("submit", function (event) {
-    event.preventDefault(); // Verhindert Standard-Weiterleitung
+function sendRabattForm() {
+    let input = document.getElementById('rabattcode');
+    input.required = true;
+    let validity = input.reportValidity();
+    input.required = false;
+    if (!validity) {
+        return;
+    }
 
-    let formData = new FormData(this);
+    let formData = new FormData();
+    formData.append('rabattcode', input.value);
 
     fetch("/FastFood/src/components/warenkorb/rabatt/rabatt-handler.php", {
         method: "POST",
@@ -16,9 +23,7 @@ document.getElementById("rabattForm").addEventListener("submit", function (event
         .then(data => {
             if (data.success) {
                 document.getElementById("message").innerText = "";
-
-                checkRabattCode(data.rabatt);
-                onRabattCodeValid(data.rabattcode);
+                onRabattCodeValid();
             } else {
                 if (data.message) {
                     document.getElementById("message").innerText = data.message;
@@ -28,13 +33,9 @@ document.getElementById("rabattForm").addEventListener("submit", function (event
             }
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
-});
-
-function checkRabattCode(rabattEuro) {
-    document.getElementById('rabattEuro').innerText = rabattEuro;
 }
 
-function onRabattCodeValid(rabattcode) {
+function onRabattCodeValid() {
     const submitButton = document.getElementById('submitRabatt');
     const checkIcon = document.getElementById('checkIcon');
 
@@ -53,20 +54,38 @@ function onRabattCodeValid(rabattcode) {
         checkIcon.classList.remove('show', 'fade');
         checkIcon.classList.add('d-none');
 
-        setRabattInputAsDeactivated(rabattcode);
+        window.location.href = "../warenkorb/warenkorb.php";
     }, 1000);
 }
 
-function setRabattInputAsDeactivated(rabattcode) {
-    document.getElementById('rabattcodeAnzeige').innerText = rabattcode;
+function setRabattInputAsDeactivated(rabattcode, rabatt) {
+    document.getElementById('rabattcodeAnzeige').innerText = rabattcode + " - " + rabatt + " %";
 
     document.getElementById('ohneRabattCodeFeld').style.display = 'none';
     document.getElementById('mitRabattCodeFeld').style.display = '';
 }
 
 function setRabattInputAsActivated() {
-    document.getElementById('rabattcode').innerText = '';
+    document.getElementById('rabattcode').value = '';
 
     document.getElementById('ohneRabattCodeFeld').style.display = '';
     document.getElementById('mitRabattCodeFeld').style.display = 'none';
+
+    resetRabatt();
+}
+
+function resetRabatt() {
+    fetch("/FastFood/src/components/warenkorb/rabatt/rabatt-handler.php", {
+        method: "POST",
+        body: null
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+            }
+
+            window.location.href = "../warenkorb/warenkorb.php";
+            return response.json();
+        })
+        .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 }

@@ -14,14 +14,20 @@ $warenkorbLogic = new WarenkorbLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $rabattcode = $_POST['rabattcode'];
+    if (!isset($_POST['rabattcode'])) {
+        unset($_SESSION['rabattcode']);
+        unset($_SESSION['rabatt']);
+        echo json_encode(["success" => true]);
+        exit;
+    }
 
+    $rabattcode = $_POST['rabattcode'];
     $rabatt = $warenkorbLogic->getRabatt($rabattcode);
     if ($rabatt) {
-        $_SESSION['rabatt'] = $rabatt;
+        $_SESSION['rabatt'] = $rabatt->getMinderung();
         $_SESSION['rabattcode'] = $rabattcode;
 
-        echo json_encode(["success" => true, "rabatt" => $rabatt, "rabattcode" => $rabattcode]);
+        echo json_encode(["success" => true, "rabatt" => $rabatt->getMinderung(), "rabattcode" => $rabattcode]);
     } else {
         echo json_encode(["success" => false, "message" => $warenkorbLogic->errorMessage]);
     }

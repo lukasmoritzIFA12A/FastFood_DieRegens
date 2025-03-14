@@ -219,24 +219,24 @@ include '../header/header.php'; // Header einfügen
                     <input type="number" min="0" class="form-control" id="nvPortionSize" name="portionSize">
                 </div>
                 <div class="mb-3">
-                    <label for="nvCalories" class="form-label">Kalorien</label>
+                    <label for="nvCalories" class="form-label">Kalorien (kcal)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvCalories" name="kalorien">
                 </div>
                 <div class="mb-3">
-                    <label for="nvFat" class="form-label">Fett</label>
+                    <label for="nvFat" class="form-label">Fett (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvFat" name="fett">
                 </div>
                 <div class="mb-3">
-                    <label for="nvCarbohydrates" class="form-label">Kohlenhydrate</label>
+                    <label for="nvCarbohydrates" class="form-label">Kohlenhydrate (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvCarbohydrates"
                            name="kohlenhydrate">
                 </div>
                 <div class="mb-3">
-                    <label for="nvSugar" class="form-label">Zucker</label>
+                    <label for="nvSugar" class="form-label">Zucker (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvSugar" name="zucker">
                 </div>
                 <div class="mb-3">
-                    <label for="nvProtein" class="form-label">Eiweiß</label>
+                    <label for="nvProtein" class="form-label">Eiweiß (g)</label>
                     <input type="number" step="0.01" min="0" class="form-control" id="nvProtein" name="eiweiss">
                 </div>
                 <button type="submit" class="btn btn-primary">Energiewerte hinzufügen</button>
@@ -417,5 +417,6 @@ include '../header/header.php'; // Header einfügen
 <script src="content/energiewerte/energiewerte.js"></script>
 <script src="content/zahlungsart/zahlungsart.js"></script>
 <script src="admin.js"></script>
+<script src="../../utils/session.js"></script>
 </body>
 </html>

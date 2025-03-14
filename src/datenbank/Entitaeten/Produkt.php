@@ -3,6 +3,7 @@
 namespace App\datenbank\Entitaeten;
 
 use App\datenbank\Repositories\ProduktRepository;
+use App\utils\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,9 +67,7 @@ class Produkt
 
     public function getPreis(): string
     {
-        $preis = $this->Preis;
-        $preis = preg_replace('/[^0-9.]/', '', $preis);
-        return number_format($preis, 2, ',', '.');
+        return Number::reformatPreis($this->Preis);
     }
 
     public function setPreis(string $Preis): void

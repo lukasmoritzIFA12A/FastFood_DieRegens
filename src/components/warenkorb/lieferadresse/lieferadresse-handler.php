@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    $_SESSION['lieferadresseWasEdited'] = '1';
     $_SESSION['newStreet'] = $_POST['newStreet'];
     $_SESSION['newNumber'] = $_POST['newNumber'];
     $_SESSION['newPostalCode'] = $_POST['newPostalCode'];

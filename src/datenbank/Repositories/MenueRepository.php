@@ -17,7 +17,7 @@ class MenueRepository extends RepositoryAccess
     {
         $bestellungRepository = new BestellungRepository($this->getEntityManager());
         $bestellungen = $bestellungRepository->getAll();
-    //Falls keine Bestellungen gefunden wurden, soll statt dem Top Menü, ein Random Menü angezeigt werden
+        //Falls keine Bestellungen gefunden wurden, soll statt dem Top Menü, ein Random Menü angezeigt werden
         if (!$bestellungen) {
             return $this->getRandomMenue();
         }
@@ -25,9 +25,10 @@ class MenueRepository extends RepositoryAccess
         $menueCount = [];
 
         foreach ($bestellungen as $bestellung) {
-            foreach ($bestellung->getMenues() as $menue) {
-                $menueId = $menue->getId();
-                $menueCount[$menueId] = ($menueCount[$menueId] ?? 0) + 1;
+            foreach ($bestellung->getBestellungmenues() as $bestellungmenue) {
+                $menueId = $bestellungmenue->getMenue()->getId();
+                $count = $bestellungmenue->getMenge();
+                $menueCount[$menueId] = ($menueCount[$menueId] ?? $count) + $count;
             }
         }
 
@@ -39,13 +40,13 @@ class MenueRepository extends RepositoryAccess
             return $this->getRandomMenue();
         }
 
-        return $this->getEntityManager()->getRepository(Menue::class)->find($topMenueId);
+        return $this->find($topMenueId);
     }
 
     public function getRandomMenue(): Menue|bool
     {
-        $menues = $this->getEntityManager()->getRepository(Menue::class)->findAll();
-        $availableMenues = array_filter($menues, function($menue) {
+        $menues = $this->findAll();
+        $availableMenues = array_filter($menues, function ($menue) {
             return !$menue->isAusverkauft();
         });
         return !empty($availableMenues) ? $availableMenues[array_rand($availableMenues)] : false;

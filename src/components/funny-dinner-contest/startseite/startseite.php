@@ -18,6 +18,7 @@ $showCart = false;
 $showMenu = false;
 include '../../header/header.php'; // Header einfügen
 use App\utils\router;
+
 require_once __DIR__ . '/../../../utils/router.php';
 ?>
 <div class="container">
@@ -40,18 +41,21 @@ require_once __DIR__ . '/../../../utils/router.php';
             </ul>
         </div>
         <div class="col-md-6 text-center">
-            <img src="<?= router::url('/../assets/icons/funny-dinner-Burger.png') ?>" alt="Funny Dinner Image" class="img-fluid">
+            <img src="<?= router::url('/../assets/icons/funny-dinner-Burger.png') ?>" alt="Funny Dinner Image"
+                 class="img-fluid">
         </div>
     </div>
     <div class="text-center mt-4">
         <!-- Beide Buttons sind gleich gestylt -->
         <a href="../galerie/galerie.php" class="btn btn-primary btn-lg">Einfach schauen</a>
-        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#uploadModal">Bild Hochladen</button>
+        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#uploadModal">Bild Hochladen
+        </button>
     </div>
 
     <!-- Zur Startseite Button -->
     <div class="text-center mt-3">
-        <a href="../../startseite/startseite.php" class="btn btn-info btn-lg">Zur Startseite</a> <!-- Button führt zurück zur Startseite -->
+        <a href="../../startseite/startseite.php" class="btn btn-info btn-lg">Zur Startseite</a>
+        <!-- Button führt zurück zur Startseite -->
     </div>
 </div>
 
@@ -91,5 +95,6 @@ require_once __DIR__ . '/../../../utils/router.php';
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../../utils/session.js"></script>
 </body>
 </html>

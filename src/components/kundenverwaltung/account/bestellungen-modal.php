@@ -1,6 +1,10 @@
 <?php
 $bestellungen = $bestellungen ?? null;
 $accountLogic = $accountLogic ?? null;
+
+if ($bestellungen) {
+    $bestellungen = array_reverse($bestellungen);
+}
 ?>
 
 <div class="modal fade" id="orderHistory" tabindex="-1" aria-hidden="true">
@@ -23,34 +27,46 @@ $accountLogic = $accountLogic ?? null;
                                         <strong>Bestellung #<?= $bestellungen[$i]->getId() ?>
                                             - <?= $accountLogic->calculatePrice($bestellungen[$i]) ?> €</strong>
                                         <p class="mb-0">
-                                            Datum: <?= $bestellungen[$i]->getBestellungDatum()->format("d.m.Y - H:i") . " Uhr" ?></p>
+                                            Datum: <?= $bestellungen[$i]->getBestellungDatum() . " Uhr" ?></p>
                                         <p class="mb-0">
                                             Zahlungsart: <?= $bestellungen[$i]->getZahlungsart()->getArt() ?></p>
                                     </div>
-                                    <span class="badge"
-                                          style="background-color: <?= $bestellungen[$i]->getBestellstatus()->getFarbe() ?>"><?= $bestellungen[$i]->getBestellstatus()->getStatus() ?></span>
+
+                                    <?php if ($bestellungen[$i]->getBestellstatus() !== null): ?>
+                                        <span class="badge"
+                                              style="background-color: <?= $bestellungen[$i]->getBestellstatus()->getFarbe() ?>"><?= $bestellungen[$i]->getBestellstatus()->getStatus() ?></span>
+                                    <?php else: ?>
+                                        <span class="badge"
+                                              style="background-color: #B0B0B0">Unbekannt</span>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="collapse" id=<?= "orderDetails$i" ?>>
                                     <div class="mt-2">
-                                        <?php if (!$bestellungen[$i]->getMenues()->isEmpty()): ?>
+                                        <?php if (!$bestellungen[$i]->getBestellungmenues()->isEmpty()): ?>
                                             <strong>Menüs:</strong>
                                             <ul>
-                                                <?php foreach ($bestellungen[$i]->getMenues() as $menue): ?>
-                                                    <li><?= $menue->getTitel() ?> - <?= $menue->getPreis() ?> €</li>
+                                                <?php foreach ($bestellungen[$i]->getBestellungmenues() as $bestellungmenue): ?>
+                                                    <li><?= $bestellungmenue->getMenue()->getTitel() ?>
+                                                        (<?= $bestellungmenue->getMenge() ?>x)
+                                                        - <?= $bestellungmenue->getMenue()->getPreis() ?> €
+                                                    </li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         <?php endif; ?>
 
-                                        <?php if (!$bestellungen[$i]->getProdukte()->isEmpty()): ?>
+                                        <?php if (!$bestellungen[$i]->getBestellungprodukte()->isEmpty()): ?>
                                             <strong>Produkte:</strong>
                                             <ul>
-                                                <?php foreach ($bestellungen[$i]->getProdukte() as $produkt): ?>
-                                                    <li><?= $produkt->getTitel() ?> - <?= $produkt->getPreis() ?> €</li>
+                                                <?php foreach ($bestellungen[$i]->getBestellungprodukte() as $bestellungprodukt): ?>
+                                                    <li><?= $bestellungprodukt->getProdukt()->getTitel() ?>
+                                                        (<?= $bestellungprodukt->getMenge() ?>x)
+                                                        - <?= $bestellungprodukt->getProdukt()->getPreis() ?> €
+                                                    </li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         <?php endif; ?>
 
-                                        <?php if ($bestellungen[$i]->getProdukte()->isEmpty() && $bestellungen[$i]->getMenues()->isEmpty()): ?>
+                                        <?php if ($bestellungen[$i]->getBestellungprodukte()->isEmpty() && $bestellungen[$i]->getBestellungmenues()->isEmpty()): ?>
                                             <strong style="color: red">Unerwarteter Fehler: Keine Produkte und Menüs in
                                                 dieser Bestellung!</strong>
                                         <?php endif; ?>

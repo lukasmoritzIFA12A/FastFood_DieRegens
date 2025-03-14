@@ -18,7 +18,16 @@ if ($isLoggedIn) {
 
 $isAdmin = isset($_SESSION['admin']);
 
-$warenkorbLeer = empty($_SESSION['produkt']) && empty($_SESSION['menu']);
+$warenkorbLeer = empty($_SESSION['warenkorb']) || (empty($_SESSION['warenkorb']['menues']) && empty($_SESSION['warenkorb']['produkte']));
+
+$anzahlWarenkorb = 0;
+if (!$warenkorbLeer) {
+    $produktKeys = array_sum($_SESSION['warenkorb']['produkte']);
+    $anzahlWarenkorb += $produktKeys;
+
+    $menuKeys = array_sum($_SESSION['warenkorb']['menues']);
+    $anzahlWarenkorb += $menuKeys;
+}
 
 use App\utils\JSONParser;
 use App\utils\router;
@@ -106,24 +115,12 @@ if ($showMenu) {
             <ul class="navbar-nav"> <!-- Für die letzten beiden Elemente, die ganz rechts sein sollen -->
                 <?php if ($isLoggedIn && $showCart): ?> <!-- Warenkorb nur anzeigen, wenn $showCart true ist -->
                     <li class="nav-item">
-                        <?php if ($warenkorbLeer): ?>
-                            <a href="<?= router::url('/components/warenkorb/warenkorb.php') ?>"
-                               class="nav-link d-flex"
-                               style="pointer-events: none; color: gray; text-decoration: none; cursor: default;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                                     class="bi bi-cart-x me-1" viewBox="0 0 16 16">
-                                    <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
-                                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                                </svg>
-                                Warenkorb (LEER)
-                            </a>
-                        <?php else: ?>
-                            <a href="<?= router::url('/components/warenkorb/warenkorb.php') ?>" class="nav-link d-flex">
-                                <img src="<?= router::url('/../assets/icons/Warenkorb.png') ?>" class="me-1"
-                                     alt="Warenkorb" width="25" height="25">
-                                Warenkorb
-                            </a>
-                        <?php endif; ?>
+                        <a href="<?= router::url('/components/warenkorb/warenkorb.php') ?>" class="nav-link d-flex"
+                            <?= $warenkorbLeer ? "style='pointer-events: none; color: gray; text-decoration: none; cursor: default;'" : "" ?>>
+                            <img src="<?= router::url('/../assets/icons/Warenkorb.png') ?>" class="me-1"
+                                 alt="Warenkorb" width="25" height="25">
+                            Warenkorb (<?= $anzahlWarenkorb ?>)
+                        </a>
                     </li>
                 <?php endif; ?>
 

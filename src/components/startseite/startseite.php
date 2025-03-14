@@ -31,6 +31,7 @@ require_once __DIR__ . '/../../utils/router.php';
 
 include 'menu/menu-modal.php';
 include 'produkt/produkt-modal.php';
+include 'logged-in-modal.php';
 ?>
 
 <!-- Main Content -->
@@ -190,5 +191,6 @@ include 'produkt/produkt-modal.php';
 <script src="menu/menu.js"></script>
 <script src="produkt/produkt.js"></script>
 <script src="../../utils/imageLoader.js"></script>
+<script src="../../utils/session.js"></script>
 </body>
 </html>
