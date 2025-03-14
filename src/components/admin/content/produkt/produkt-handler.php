@@ -17,16 +17,19 @@ $adminLogic = new AdminLogic();
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($_SESSION['admin'])) {
+        $_FILES = array();
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
         exit;
     }
 
     if (!isset($_FILES['bild'])) {
+        $_FILES = array();
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Bild angegeben!"]);
         exit;
     }
 
     if ($_FILES['bild']['error'] !== UPLOAD_ERR_OK) {
+        $_FILES = array();
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Fehler bei dem Upload des Bildes!"]);
         exit;
     }
@@ -34,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fileInfo = pathinfo($_FILES['bild']['name']);
     $fileExtension = $fileInfo['extension'];
     if (!in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png'])) {
+        $_FILES = array();
         echo json_encode(["success" => false, "message" => "Ungültiges Dateiformat"]);
         exit;
     }
@@ -43,11 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']; // Beispiel für erlaubte Dateitypen
 
     if ($fileSize > 5000000) { // max. 5MB (du kannst den Wert nach Bedarf anpassen)
+        $_FILES = array();
         echo json_encode(["success" => false, "message" => "Die Datei ist zu groß!"]);
         exit;
     }
 
     if (!in_array($fileType, $allowedTypes)) {
+        $_FILES = array();
         echo json_encode(["success" => false, "message" => "Ungültiger Dateityp!"]);
         exit;
     }
@@ -73,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
     }
+    $_FILES = array();
 }
 
 exit;
