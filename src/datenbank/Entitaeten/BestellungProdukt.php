@@ -15,11 +15,11 @@ class BestellungProdukt
     private int $id;
 
     #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"], inversedBy: 'bestellungprodukte')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private Bestellung $bestellung;
 
     #[ORM\ManyToOne(targetEntity: Produkt::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private Produkt $produkt;
 
     #[ORM\Column(type: 'integer')]

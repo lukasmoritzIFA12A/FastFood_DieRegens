@@ -9,4 +9,4 @@ setInterval(() => {
         console.log("Cookies & Site Data wurden wohl gelöscht! Neuladen...");
         location.reload();
     }
-}, 1000);
+}, 500);

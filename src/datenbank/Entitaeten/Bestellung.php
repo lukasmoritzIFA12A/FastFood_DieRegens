@@ -21,7 +21,7 @@ class Bestellung
     private DateTime $BestellungDatum;
 
     #[ORM\ManyToOne(targetEntity: Kunde::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Kunde_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "Kunde_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Kunde $kunde;
 
     #[ORM\ManyToOne(targetEntity: Zahlungsart::class, cascade: ["persist"])]
@@ -29,20 +29,20 @@ class Bestellung
     private Zahlungsart $zahlungsart;
 
     #[ORM\ManyToOne(targetEntity: Bestellstatus::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Bestellstatus_id", referencedColumnName: "id", nullable: true)]
+    #[ORM\JoinColumn(name: "Bestellstatus_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?Bestellstatus $bestellstatus;
 
-    #[ORM\OneToMany(targetEntity: BestellungProdukt::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: BestellungProdukt::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bestellungprodukte;
 
-    #[ORM\OneToMany(targetEntity: BestellungMenue::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: BestellungMenue::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bestellungmenues;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
     private ?string $trinkgeld;
 
     #[ORM\ManyToOne(targetEntity: Rabatt::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true)]
+    #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?Rabatt $rabatt;
 
     public function __construct()

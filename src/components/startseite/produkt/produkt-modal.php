@@ -19,7 +19,7 @@
                         <p class="fw-bold fs-5">Preis: <span id="productPrice" class="text-success"></span></p>
 
                         <p class="fw-semibold">Produktbeschreibung:</p>
-                        <p id="productDescription" class="text-muted"></p>
+                        <p id="productDescription" class="text-muted text-wrap overflow-auto d-block" style="max-height: 7.5em; line-height: 1.5em; word-wrap: break-word;"></p>
 
                         <p class="fw-semibold">Zutaten:</p>
                         <p id="productIngredients" class="text-muted"></p>

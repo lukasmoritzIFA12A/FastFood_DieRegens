@@ -20,7 +20,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if (isset($_POST['delete'])) {
+        if ($adminLogic->deleteZutat($_POST['id'])) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
+
     $zutat = $_POST['zutat'];
+
+    if (isset($_POST['update'])) {
+        if ($adminLogic->updateZutat($_POST['id'], $zutat)) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
 
     if ($adminLogic->saveZutat($zutat)) {
         echo json_encode(["success" => true]);

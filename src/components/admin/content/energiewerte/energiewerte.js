@@ -1,18 +1,6 @@
 document.getElementById("energiewerteForm").addEventListener("submit", function (event) {
     event.preventDefault(); // Verhindert Standard-Weiterleitung
 
-    const selectBox = document.getElementById("energiewertProduct");
-    if (selectBox.hasAttribute("readonly")) {
-        selectBox.removeAttribute("readonly");
-        let isValid = this.reportValidity();
-
-        selectBox.setAttribute("readonly", "true");
-        if (!isValid) {
-            alert("Produkt muss ausgewählt werden!");
-            return;
-        }
-    }
-
     let formData = new FormData(this);
 
     fetch("/FastFood/src/components/admin/content/energiewerte/energiewerte-handler.php", {
@@ -27,7 +15,7 @@ document.getElementById("energiewerteForm").addEventListener("submit", function 
         }) // Antwort als JSON
         .then(data => {
             if (data.success) {
-                window.location.href = "../admin/admin-fenster.php"; // Weiterleiten
+                setEnergiewerteAsSet();
             } else {
                 if (data.message) {
                     alert(data.message);
@@ -38,3 +26,12 @@ document.getElementById("energiewerteForm").addEventListener("submit", function 
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 });
+
+function setEnergiewerteAsSet() {
+    const modalElement = document.getElementById('addEnergiewerteModal');
+    const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    modalInstance.hide();
+
+    document.getElementById('energiewertAddButton').style.display = 'none';
+    document.getElementById('energiewertEditButton').style.display = 'inline-flex';
+}

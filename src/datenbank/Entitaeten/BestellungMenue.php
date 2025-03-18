@@ -15,11 +15,11 @@ class BestellungMenue
     private int $id;
 
     #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"], inversedBy: 'bestellungmenues')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private Bestellung $bestellung;
 
     #[ORM\ManyToOne(targetEntity: Menue::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private Menue $menue;
 
     #[ORM\Column(type: 'integer')]

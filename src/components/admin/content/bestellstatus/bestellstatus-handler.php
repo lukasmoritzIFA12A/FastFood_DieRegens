@@ -20,8 +20,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if (isset($_POST['delete'])) {
+        if ($adminLogic->deleteBestellstatus($_POST['id'])) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
+
     $orderStatus = $_POST['status'];
     $orderStatusColor = $_POST['farbe'];
+
+    if (isset($_POST['update'])) {
+        if ($adminLogic->updateBestellstatus($_POST['id'], $orderStatus, $orderStatusColor)) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
 
     if ($adminLogic->saveBestellstatus($orderStatus, $orderStatusColor)) {
         echo json_encode(["success" => true]);

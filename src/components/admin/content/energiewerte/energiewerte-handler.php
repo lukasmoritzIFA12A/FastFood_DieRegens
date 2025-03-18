@@ -15,24 +15,26 @@ $adminLogic = new AdminLogic();
 
 // Prüfen, ob ein POST-Request vorliegt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $adminLogic->unsetEnergiewerteSession();
+
     if (!isset($_SESSION['admin'])) {
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
         exit;
     }
 
-    $produktId = $_POST['energiewertProdukte'];
-    $portionSize = $_POST['portionSize'];
-    $kalorien = $_POST['kalorien'];
-    $fett = $_POST['fett'];
-    $kohlenhydrate = $_POST['kohlenhydrate'];
-    $zucker = $_POST['zucker'];
-    $eiweiss = $_POST['eiweiss'];
-
-    if ($adminLogic->saveEnergieWerte($produktId, $portionSize, $kalorien, $fett, $kohlenhydrate, $zucker, $eiweiss)) {
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+    if (!isset($_POST['portionSize'])) {
+        echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Keine Energiewerte angegeben!"]);
+        exit;
     }
+
+    $_SESSION['portionSize'] = $_POST['portionSize'];
+    $_SESSION['kalorien'] = $_POST['kalorien'];
+    $_SESSION['fett'] = $_POST['fett'];
+    $_SESSION['kohlenhydrate'] = $_POST['kohlenhydrate'];
+    $_SESSION['zucker'] = $_POST['zucker'];
+    $_SESSION['eiweiss'] = $_POST['eiweiss'];
+
+    echo json_encode(["success" => true]);
 }
 
 exit;

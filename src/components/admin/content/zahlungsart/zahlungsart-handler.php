@@ -21,6 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if (isset($_POST['delete'])) {
+        if ($adminLogic->deleteZahlungsart($_POST['id'])) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
+
     if (!isset($_FILES['bild'])) {
         $_FILES = array();
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Bild angegeben!"]);
@@ -58,8 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $tempPath = $_FILES['bild']['tmp_name'];
-
     $art = $_POST['art'];
+
+    if (isset($_POST['update'])) {
+        if ($adminLogic->updateZahlungsart($_POST['id'], $art, $tempPath)) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
 
     if ($adminLogic->saveZahlungsart($art, $tempPath)) {
         echo json_encode(["success" => true]);

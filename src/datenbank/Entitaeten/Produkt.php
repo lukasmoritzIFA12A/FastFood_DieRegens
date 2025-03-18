@@ -17,7 +17,7 @@ class Produkt
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["remove", "persist"])]
     #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
     private Bild $bild;
 
@@ -33,11 +33,11 @@ class Produkt
     #[ORM\Column(type: 'boolean')]
     private bool $ausverkauft;
 
-    #[ORM\ManyToOne(targetEntity: Energiewert::class, cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Energiewert::class, cascade: ["remove", "persist"])]
     #[ORM\JoinColumn(name: "Energiewert_id", referencedColumnName: "id", nullable: true)]
     private ?Energiewert $energiewert;
 
-    #[ORM\ManyToMany(targetEntity: Zutat::class, cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: Zutat::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $zutat;
 
     public function __construct()
@@ -105,9 +105,15 @@ class Produkt
         $this->bild = $bild;
     }
 
-    public function getTitel(): string
+    public function getTitel(int $maxLength = 15): string
     {
-        return $this->Titel;
+        if (!$this->Titel) {
+            return "";
+        }
+
+        return (mb_strlen($this->Titel) > $maxLength)
+            ? mb_substr($this->Titel, 0, $maxLength) . "..."
+            : $this->Titel;
     }
 
     public function setTitel(string $Titel): void

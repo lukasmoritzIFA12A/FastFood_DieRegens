@@ -56,12 +56,12 @@ class AccountLogic
         $adresse->setStadt($Stadt);
 
         $bundesland = BundeslandFetcher::getBundesland($PLZ);
-        if (!$bundesland) {
-            $this->errorMessage = "Unerwarteter Fehler: Bundesland API nicht gefunden!";
-            return false;
+        if ($bundesland) {
+            $adresse->setBundesland($bundesland);
+        } else {
+            error_log("Konnte Bundesland nicht ermitteln!");
+            $adresse->setBundesland("Unbekannt");
         }
-
-        $adresse->setBundesland($bundesland);
 
         $kundeRepository = new KundeRepository($this->entityManager);
         return $kundeRepository->save($kunde);

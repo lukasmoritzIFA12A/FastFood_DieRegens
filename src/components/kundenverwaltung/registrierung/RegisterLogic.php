@@ -94,9 +94,11 @@ class RegisterLogic
             $adresse->setPLZ($plz);
 
             $bundesland = BundeslandFetcher::getBundesland($plz);
-            if (!$bundesland) {
-                $this->errorMessage = "Invalide PLZ!";
-                return false;
+            if ($bundesland) {
+                $adresse->setBundesland($bundesland);
+            } else {
+                error_log("Konnte Bundesland nicht ermitteln!");
+                $adresse->setBundesland("Unbekannt");
             }
 
             $adresse->setBundesland($bundesland);

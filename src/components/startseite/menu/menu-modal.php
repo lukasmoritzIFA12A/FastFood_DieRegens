@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                         <p class="fw-bold fs-5">Preis: <span id="menuPrice" class="text-success"></span></p>
                         <p class="fw-semibold">Menübeschreibung:</p>
-                        <p id="menuDescription" class="text-muted"></p>
+                        <p id="menuDescription" class="text-muted text-wrap overflow-auto d-block" style="max-height: 7.5em; line-height: 1.5em; word-wrap: break-word;"></p>
                     </div>
                 </div>
 

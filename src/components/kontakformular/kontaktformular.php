@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontaktformular</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/FastFood/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
 <?php
@@ -43,7 +43,7 @@ include '../header/header.php';
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.js"></script>
 <script src="../../utils/session.js"></script>
 </body>
 </html>

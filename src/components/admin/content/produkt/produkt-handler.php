@@ -9,6 +9,7 @@ header("Content-Type: application/json"); // Sagen, dass wir JSON zurückgeben
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\components\admin\AdminLogic;
+use App\datenbank\Entitaeten\Energiewert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 // Admin-Logic
@@ -19,6 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($_SESSION['admin'])) {
         $_FILES = array();
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Admin eingeloggt!"]);
+        exit;
+    }
+
+    if (isset($_POST['delete'])) {
+        if ($adminLogic->deleteProdukt($_POST['id'])) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
         exit;
     }
 
@@ -74,7 +84,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if ($adminLogic->saveProdukt($titel, $beschreibung, $preis, $tempPath, $istAusverkauft, $zutatenCollection)) {
+    if (isset($_SESSION['portionSize'])) {
+        $energiewert = new Energiewert();
+        $energiewert->setPortionSize($_SESSION['portionSize']);
+        $energiewert->setKalorien($_SESSION['kalorien']);
+        $energiewert->setFett($_SESSION['fett']);
+        $energiewert->setKohlenhydrate($_SESSION['kohlenhydrate']);
+        $energiewert->setZucker($_SESSION['zucker']);
+        $energiewert->setEiweiss($_SESSION['eiweiss']);
+    } else {
+        $energiewert = null;
+    }
+
+    if (isset($_POST['update'])) {
+        if ($adminLogic->updateProdukt($_POST['id'], $titel, $beschreibung, $preis, $tempPath, $istAusverkauft, $zutatenCollection, $energiewert)) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
+
+    if ($adminLogic->saveProdukt($titel, $beschreibung, $preis, $tempPath, $istAusverkauft, $zutatenCollection, $energiewert)) {
         echo json_encode(["success" => true]);
     } else {
         echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);

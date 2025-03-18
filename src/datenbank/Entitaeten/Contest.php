@@ -14,12 +14,12 @@ class Contest
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["remove", "persist"])]
     #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
     private Bild $bild;
 
     #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "Bestellung_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Bestellung $bestellung;
 
     #[ORM\Column(type: 'boolean')]

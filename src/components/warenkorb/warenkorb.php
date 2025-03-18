@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warenkorb</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/FastFood/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
 
@@ -280,7 +280,7 @@ include 'warenkorb-modal.php';
         </div>
     </form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="warenkorb.js"></script>
     <script src="lieferadresse/lieferadresse.js"></script>
     <script src="rabatt/rabatt.js"></script>

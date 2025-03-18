@@ -22,6 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
 
+    if (isset($_POST['delete'])) {
+        if ($adminLogic->deleteMenue($_POST['id'])) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
+    }
+
     if (!isset($_FILES['bild'])) {
         $_FILES = array();
         echo json_encode(["success" => false, "message" => "Unerwarteter Fehler: Kein Bild angegeben!"]);
@@ -69,6 +78,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (is_numeric($rawprodukt)) {
             $produkteCollection->add(intval($rawprodukt));
         }
+    }
+
+    if (isset($_POST['update'])) {
+        if ($adminLogic->updateMenue($_POST['id'], $titel, $beschreibung, $tempPath, $produkteCollection)) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => $adminLogic->errorMessage]);
+        }
+        exit;
     }
 
     if ($adminLogic->saveMenue($titel, $beschreibung, $tempPath, $produkteCollection)) {

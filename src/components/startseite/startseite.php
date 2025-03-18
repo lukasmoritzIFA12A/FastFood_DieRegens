@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startseite - MacAPPLE</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/FastFood/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="startseite.css" rel="stylesheet">
 </head>
 <body>
@@ -107,7 +106,12 @@ include 'logged-in-modal.php';
             <div class="row">
                 <?php if (empty($produktList)): ?>
                     <div class="col-12 text-center">
-                        <i class="bi bi-cart-x" style="font-size: 50px; margin-bottom: 20px;"></i>
+                        <div style="font-size: 50px; margin-bottom: 20px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-x" viewBox="0 0 16 16">
+                                <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
+                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                            </svg>
+                        </div>
                         <h3>Keine Produkte gefunden.😥</h3>
                         <br>
                         <p>Leider konnten wir keine Produkte finden.</p>
@@ -149,7 +153,12 @@ include 'logged-in-modal.php';
             <div class="row">
                 <?php if (empty($menueList)): ?>
                     <div class="col-12 text-center">
-                        <i class="bi bi-cart-x" style="font-size: 50px; margin-bottom: 20px;"></i>
+                        <div style="font-size: 50px; margin-bottom: 20px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-x" viewBox="0 0 16 16">
+                                <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
+                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                            </svg>
+                        </div>
                         <h3>Keine Menüs gefunden.😥</h3>
                         <br>
                         <p>Leider konnten wir keine Menüs finden.</p>
@@ -186,7 +195,7 @@ include 'logged-in-modal.php';
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="startseite.js"></script>
 <script src="menu/menu.js"></script>
 <script src="produkt/produkt.js"></script>

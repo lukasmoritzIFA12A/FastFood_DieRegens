@@ -15,8 +15,8 @@ class Kunde
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Adresse::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Adresse_id", referencedColumnName: "id")]
+    #[ORM\ManyToOne(targetEntity: Adresse::class, cascade: ["remove", "persist"])]
+    #[ORM\JoinColumn(name: "Adresse_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Adresse $adresse;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -31,8 +31,8 @@ class Kunde
     #[ORM\Column(type: 'datetime')]
     private DateTime $Registrierungsdatum;
 
-    #[ORM\ManyToOne(targetEntity: Login::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id")]
+    #[ORM\ManyToOne(targetEntity: Login::class, cascade: ["remove", "persist"])]
+    #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Login $login;
 
     public function getId(): int
