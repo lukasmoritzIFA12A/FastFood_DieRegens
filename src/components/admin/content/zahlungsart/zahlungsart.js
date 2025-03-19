@@ -103,9 +103,10 @@ function reloadZahlungsartTabelle() {
 function setZahlungsart(jsonString) {
     const zahlungsart = (typeof jsonString === 'string') ? JSON.parse(jsonString) : jsonString;
 
-    document.getElementById("newStreet").value = adresse.Strassenname;
-    document.getElementById("newNumber").value = adresse.Hausnummer;
-    document.getElementById("newPostalCode").value = adresse.PLZ;
-    document.getElementById("newCity").value = adresse.Stadt;
-    document.getElementById("newZusatz").value = adresse.Zusatz;
+    document.getElementById("editZahlungsartId").value = zahlungsart.id;
+
+    setImageAsFile(zahlungsart.bild.bild, "editZahlungsartBild");
+    document.getElementById("zahlungsartImageLoaded").src = getImageHTMLSrc(zahlungsart.bild.bild);
+
+    document.getElementById("editZahlungsartArt").value = zahlungsart.Art;
 }

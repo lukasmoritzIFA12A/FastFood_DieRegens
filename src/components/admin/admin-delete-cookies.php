@@ -9,6 +9,8 @@ echo '<script>
     sessionStorage.clear();
 </script>';
 
+setcookie("cookie_name", "", time() - 3600, "/");
+session_unset();
 session_destroy();
 
 header("Location: ../startseite/startseite.php");

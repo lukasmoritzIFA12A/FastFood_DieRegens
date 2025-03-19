@@ -28,8 +28,14 @@ if ($bestellungen) {
                                             - <?= $accountLogic->calculatePrice($bestellungen[$i]) ?> €</strong>
                                         <p class="mb-0">
                                             Datum: <?= $bestellungen[$i]->getBestellungDatum() . " Uhr" ?></p>
-                                        <p class="mb-0">
-                                            Zahlungsart: <?= $bestellungen[$i]->getZahlungsart()->getArt() ?></p>
+
+                                        <?php if(!empty($bestellungen[$i]->getZahlungsart())): ?>
+                                            <p class="mb-0">
+                                                Zahlungsart: <?= $bestellungen[$i]->getZahlungsart()->getArt() ?></p>
+                                        <?php else: ?>
+                                            <p class="mb-0">
+                                                Zahlungsart: Unbekannt</p>
+                                        <?php endif; ?>
                                     </div>
 
                                     <?php if ($bestellungen[$i]->getBestellstatus() !== null): ?>

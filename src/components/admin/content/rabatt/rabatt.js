@@ -103,9 +103,7 @@ function reloadRabattTabelle() {
 function setRabatt(jsonString) {
     const rabatt = (typeof jsonString === 'string') ? JSON.parse(jsonString) : jsonString;
 
-    document.getElementById("newStreet").value = adresse.Strassenname;
-    document.getElementById("newNumber").value = adresse.Hausnummer;
-    document.getElementById("newPostalCode").value = adresse.PLZ;
-    document.getElementById("newCity").value = adresse.Stadt;
-    document.getElementById("newZusatz").value = adresse.Zusatz;
+    document.getElementById("editRabattId").value = rabatt.id;
+    document.getElementById("editRabattCode").value = rabatt.code;
+    document.getElementById("editRabatt").value = rabatt.minderung;
 }

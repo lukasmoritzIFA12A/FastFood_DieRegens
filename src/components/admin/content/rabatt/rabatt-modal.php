@@ -9,31 +9,17 @@
             </div>
             <form method="POST" id="rabattEditForm" action="#">
                 <div class="modal-body">
-                    <div class="d-flex gap-5">
-                        <div>
-                            <label for="newStreet" class="form-label">Straße</label>
-                            <input type="text" class="form-control" id="newStreet" name="newStreet">
-                        </div>
-                        <div>
-                            <label for="newNumber" class="form-label">Haus-Nr.</label>
-                            <input type="text" class="form-control" id="newNumber" name="newNumber">
-                        </div>
-                    </div>
-
-                    <div class="d-flex gap-5">
-                        <div>
-                            <label for="newPostalCode" class="form-label mt-2">PLZ</label>
-                            <input type="text" class="form-control" id="newPostalCode" name="newPostalCode">
-                        </div>
-                        <div>
-                            <label for="newCity" class="form-label mt-2">Stadt</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity">
-                        </div>
-                    </div>
-
                     <div>
-                        <label for="newZusatz" class="form-label mt-2">Zusatz</label>
-                        <input type="text" class="form-control" id="newZusatz" name="newZusatz">
+                        <label for="editRabattId" class="form-label mt-2">ID</label>
+                        <input type="text" class="form-control disabledInput" id="editRabattId" name="id" required>
+                    </div>
+                    <div>
+                        <label for="editRabattCode" class="form-label mt-2">Rabatt Code</label>
+                        <input type="text" class="form-control" id="editRabattCode" name="rabattCode" required>
+                    </div>
+                    <div>
+                        <label for="editRabatt" class="form-label mt-2">Rabatt (in %)</label>
+                        <input type="text" class="form-control" id="editRabatt" name="rabatt" required>
                     </div>
                 </div>
                 <div class="modal-footer">

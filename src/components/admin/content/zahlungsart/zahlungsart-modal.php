@@ -9,31 +9,23 @@
             </div>
             <form method="POST" id="zahlungsartEditForm" action="#">
                 <div class="modal-body">
-                    <div class="d-flex gap-5">
-                        <div>
-                            <label for="newStreet" class="form-label">Straße</label>
-                            <input type="text" class="form-control" id="newStreet" name="newStreet">
-                        </div>
-                        <div>
-                            <label for="newNumber" class="form-label">Haus-Nr.</label>
-                            <input type="text" class="form-control" id="newNumber" name="newNumber">
-                        </div>
-                    </div>
-
-                    <div class="d-flex gap-5">
-                        <div>
-                            <label for="newPostalCode" class="form-label mt-2">PLZ</label>
-                            <input type="text" class="form-control" id="newPostalCode" name="newPostalCode">
-                        </div>
-                        <div>
-                            <label for="newCity" class="form-label mt-2">Stadt</label>
-                            <input type="text" class="form-control" id="newCity" name="newCity">
-                        </div>
-                    </div>
-
                     <div>
-                        <label for="newZusatz" class="form-label mt-2">Zusatz</label>
-                        <input type="text" class="form-control" id="newZusatz" name="newZusatz">
+                        <label for="editZahlungsartId" class="form-label mt-2">ID</label>
+                        <input type="text" class="form-control disabledInput" id="editZahlungsartId" name="id" required>
+                    </div>
+                    <div>
+                        <label for="editZahlungsartArt" class="form-label mt-2">Zahlungsart</label>
+                        <input type="text" class="form-control" id="editZahlungsartArt" name="art" required>
+                    </div>
+
+                    <label for="editZahlungsartBild" class="form-label">Zahlungsart Bild hochladen</label>
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="editZahlungsartBild" name="bild" onchange="showImage(event, 'zahlungsartImageLoaded')">
+                    </div>
+                    <div class="mb-3">
+                        <img alt="Zahlungsart Bild"
+                             class="img-thumbnail" id="zahlungsartImageLoaded" width="100" height="100"
+                             onerror="this.src='../../../assets/img/noimage.jpg';">
                     </div>
                 </div>
                 <div class="modal-footer">

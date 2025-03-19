@@ -25,8 +25,8 @@ class Bestellung
     private Kunde $kunde;
 
     #[ORM\ManyToOne(targetEntity: Zahlungsart::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Zahlungsart_id", referencedColumnName: "id")]
-    private Zahlungsart $zahlungsart;
+    #[ORM\JoinColumn(name: "Zahlungsart_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    private ?Zahlungsart $zahlungsart;
 
     #[ORM\ManyToOne(targetEntity: Bestellstatus::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "Bestellstatus_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
@@ -81,12 +81,12 @@ class Bestellung
         $this->BestellungDatum = $BestellungDatum;
     }
 
-    public function getZahlungsart(): Zahlungsart
+    public function getZahlungsart(): ?Zahlungsart
     {
         return $this->zahlungsart;
     }
 
-    public function setZahlungsart(Zahlungsart $zahlungsart): void
+    public function setZahlungsart(?Zahlungsart $zahlungsart): void
     {
         $this->zahlungsart = $zahlungsart;
     }
@@ -147,7 +147,7 @@ class Bestellung
             'id' => $this->getId(),
             'BestellungDatum' => $this->getBestellungDatum(),
             'kunde' => $this->getKunde()->jsonSerialize(),
-            'zahlungsart' => $this->getZahlungsart()->jsonSerialize(),
+            'zahlungsart' => $this->getZahlungsart()?->jsonSerialize(),
             'bestellstatus' => $this->getBestellstatus()?->jsonSerialize(),
             'menues' => $this->getBestellungmenues()->map(fn($c) => $c->jsonSerialize())->toArray(),
             'produkte' => $this->getBestellungprodukte()->map(fn($c) => $c->jsonSerialize())->toArray(),

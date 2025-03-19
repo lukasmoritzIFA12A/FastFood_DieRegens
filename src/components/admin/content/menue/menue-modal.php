@@ -10,13 +10,13 @@
             <form method="POST" id="menueEditForm" action="#">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="id" class="form-label mt-2">ID</label>
+                        <label for="menueid" class="form-label mt-2">ID</label>
                         <input type="text" class="form-control disabledInput" id="menueid" name="id" required>
                     </div>
                     <!-- Menü Bild -->
-                    <label for="bild" class="form-label">Menü Bild hochladen</label>
+                    <label for="menueBild" class="form-label">Menü Bild hochladen</label>
                     <div class="mb-3">
-                        <input type="file" class="form-control" id="bild" name="bild" onchange="showImage(event)">
+                        <input type="file" class="form-control" id="menueBild" name="bild" onchange="showImage(event, 'menuImageLoaded')">
                     </div>
                     <div class="mb-3">
                         <img alt="Menü Bild"

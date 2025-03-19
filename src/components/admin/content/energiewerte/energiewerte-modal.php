@@ -42,3 +42,48 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="addEditProduktEnergiewerteModal" tabindex="-1" aria-labelledby="addEditProduktEnergiewerteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="#" id="editProduktEnergiewerteForm" method="post">
+                <div class="modal-header">
+                    <h3 class="mb-3">Energiewerte hinzufügen</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editProduktPortionSize" class="form-label">Portionsgröße</label>
+                        <input type="number" min="0" class="form-control" id="editProduktPortionSize" name="portionSize" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProduktCalories" class="form-label">Kalorien (kcal)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="editProduktCalories" name="kalorien" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProduktFat" class="form-label">Fett (g)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="editProduktFat" name="fett" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProduktCarbohydrates" class="form-label">Kohlenhydrate (g)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="editProduktCarbohydrates"
+                               name="kohlenhydrate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProduktSugar" class="form-label">Zucker (g)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="editProduktSugar" name="zucker" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProduktProtein" class="form-label">Eiweiß (g)</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="editProduktProtein" name="eiweiss" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Energiewerte hinzufügen</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

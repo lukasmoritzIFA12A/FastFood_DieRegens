@@ -9,6 +9,7 @@ header("Content-Type: application/json"); // Sagen, dass wir JSON zurückgeben
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 use App\components\admin\AdminLogic;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 // Admin-Logic
 $adminLogic = new AdminLogic();

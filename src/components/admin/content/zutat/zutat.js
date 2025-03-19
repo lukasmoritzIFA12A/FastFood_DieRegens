@@ -103,9 +103,6 @@ function reloadZutatTabelle() {
 function setZutat(jsonString) {
     const zutat = (typeof jsonString === 'string') ? JSON.parse(jsonString) : jsonString;
 
-    document.getElementById("newStreet").value = adresse.Strassenname;
-    document.getElementById("newNumber").value = adresse.Hausnummer;
-    document.getElementById("newPostalCode").value = adresse.PLZ;
-    document.getElementById("newCity").value = adresse.Stadt;
-    document.getElementById("newZusatz").value = adresse.Zusatz;
+    document.getElementById("zutatid").value = zutat.id;
+    document.getElementById("zutatName").value = zutat.ZutatName;
 }

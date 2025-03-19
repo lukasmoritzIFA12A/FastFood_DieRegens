@@ -11,36 +11,6 @@ function filterProducts() {
     });
 }
 
-function clearEnergiewertProductSearchInput() {
-    const input = document.getElementById("energiewertProductSearch");
-    if (input) input.value = "";
-
-    filterEnergiewertProduct();
-}
-
-function addProductToEnergiewert(productName, productId) {
-    const addedProduct = document.getElementById('energiewertProduct');
-    const produkteInput = document.getElementById('energiewertProdukteInput');
-
-    if (produkteInput.value !== "") {
-        alert("Nur ein Produkt kann ausgewählt werden!");
-        return;
-    }
-
-    produkteInput.value = productId;
-    addedProduct.value = productName;
-}
-
-function filterEnergiewertProduct() {
-    const searchInput = document.getElementById('energiewertProductSearch');
-    const filter = searchInput.value.toLowerCase().trim();
-    const rows = document.querySelectorAll('#energiewertProductTable tbody tr');
-    rows.forEach(row => {
-        const productName = row.querySelector('.product-name').textContent.toLowerCase().trim();
-        row.style.display = productName.includes(filter) ? '' : 'none';
-    });
-}
-
 // Produkt zum Menü hinzufügen
 function addProductToMenu(productName, productId) {
     if (produkte.has(productId)) {
@@ -152,4 +122,40 @@ function clearZutatSearchInput() {
     if (input) input.value = "";
 
     filterZutaten();
+}
+
+function showImage(event, element) {
+    const file = event.target.files[0]; // Das erste ausgewählte File
+
+    if (!file) {
+        alert("Kein Bild ausgewählt!");
+        return;
+    }
+
+    const allowedExtensions = ['jpg', 'jpeg', 'png'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        alert("Die Datei ist zu groß! (Maximal 5MB)");
+        return;
+    }
+
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+        alert("Ungültiges Dateiformat! Bitte wähle ein Bild im JPG, JPEG oder PNG Format.");
+        return;
+    }
+
+    if (!allowedTypes.includes(file.type)) {
+        alert("Ungültiger Dateityp! Bitte wähle ein JPG, JPEG oder PNG Bild.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = document.getElementById(element);
+        img.src = e.target.result; // Setze die Quelle des Bildes auf die geladene Datei
+    };
+    reader.readAsDataURL(file);
 }
