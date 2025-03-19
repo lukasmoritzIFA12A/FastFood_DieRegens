@@ -54,7 +54,7 @@ if ($showMenu) {
             <ul class="navbar-nav mx-auto"> <!-- zentriert die ersten Elemente -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="burgerDropdown" role="button"
-                       data-bs-toggle="dropdown">Burger</a>
+                       data-bs-toggle="dropdown">Produkte</a>
                     <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
                         <?php if (empty($produktList)): ?>
                             <li class="dropdown-item text-center">-Keine Inhalte-</li>

@@ -105,7 +105,7 @@ class Produkt
         $this->bild = $bild;
     }
 
-    public function getTitel(int $maxLength = 15): string
+    public function getTitel(int $maxLength = 40): string
     {
         if (!$this->Titel) {
             return "";

@@ -27,6 +27,9 @@ class Menue
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $Beschreibung;
 
+    #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
+    private string $Preis;
+
     #[ORM\ManyToMany(targetEntity: Produkt::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $produkte;
 
@@ -55,6 +58,16 @@ class Menue
         $this->bild = $bild;
     }
 
+    public function getPreis(): string
+    {
+        return Number::reformatPreis($this->Preis);
+    }
+
+    public function setPreis(string $Preis): void
+    {
+        $this->Preis = $Preis;
+    }
+
     public function getBeschreibung(): ?string
     {
         return $this->Beschreibung;
@@ -65,7 +78,7 @@ class Menue
         $this->Beschreibung = $Beschreibung;
     }
 
-    public function getTitel(int $maxLength = 15): string
+    public function getTitel(int $maxLength = 40): string
     {
         if (!$this->Titel) {
             return "";
@@ -89,18 +102,6 @@ class Menue
     public function setProdukte(Collection $produkte): void
     {
         $this->produkte = $produkte;
-    }
-
-    public function getPreis(): string
-    {
-        $summe = "0.00";
-
-        foreach ($this->produkte as $produkt) {
-            $produktPreis = Number::unformatPreis($produkt->getPreis());
-            $summe = Number::summePreis($summe, $produktPreis);
-        }
-
-        return Number::reformatPreis($summe);
     }
 
     public function isAusverkauft(): bool

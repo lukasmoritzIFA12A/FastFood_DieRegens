@@ -17,6 +17,11 @@ class Zutat
     #[ORM\Column(type: 'string', length: 255)]
     private string $ZutatName;
 
+    public function __construct(string $ZutatName = null)
+    {
+        $this->ZutatName = $ZutatName;
+    }
+
     public function getId(): int
     {
         return $this->id;

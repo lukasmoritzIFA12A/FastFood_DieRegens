@@ -19,6 +19,11 @@ class Bild
 
     private string|false|null $cachedBild = null;
 
+    public function __construct($bild = null)
+    {
+        $this->bild = $bild;
+    }
+
     public function getId(): int
     {
         return $this->id;
