@@ -1,0 +1,16 @@
+admin bestellstatus anpassen -> & filtern
+
+admin kundendaten einsehen
+admin bilder freischalten -> Funny Dinner Contest
+
+
+vielleicht auf PHP Version 8.3 upgraden wegen DateMalformedException
+
+
+
+
+
+header soll beim scrollen mitkommen
+wenn Produkt bei menüauswahl ausvekrauft ist, dann soll das sichtbar sein
+wenn Produkt schon ausgewählt wurde bei Menüerstellen, dann soll das sichtbar sein
+wenn Zutat schon ausgewählt wurde bei Produkterstellen, dann soll das sichtbar sein

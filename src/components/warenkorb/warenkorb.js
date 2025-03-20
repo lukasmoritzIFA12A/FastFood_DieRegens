@@ -33,10 +33,10 @@ document.getElementById("warenkorbForm").addEventListener("submit", function (ev
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 });
 
-function removeMenuToWarenkorb(menueId) {
-    sendMenuToWarenkorb(menueId.toString(), true);
+function updateProduktQuantityInWarenkorb(produktId, quantity) {
+    sendProductToWarenkorb(produktId.toString(), quantity.toString(), true);
 }
 
-function removeProductToWarenkorb(produktId) {
-    sendProductToWarenkorb(produktId.toString(), true);
+function updateMenuQuantityInWarenkorb(menueId, quantity) {
+    sendMenuToWarenkorb(menueId.toString(), quantity.toString(), true);
 }

@@ -12,6 +12,7 @@ use App\datenbank\Entitaeten\Zahlungsart;
 use App\datenbank\Entitaeten\Zutat;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\BestellstatusRepository;
+use App\datenbank\Repositories\BestellungRepository;
 use App\datenbank\Repositories\EnergiewertRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
@@ -75,7 +76,7 @@ class AdminLogic
         return $produktRepository->save($produkt);
     }
 
-    public function saveMenue($titel, $beschreibung, $tempPath, $rawProdukte): bool
+    public function saveMenue($titel, $beschreibung, $preis, $tempPath, $rawProdukte): bool
     {
         $menue = new Menue();
         $menue->setTitel($titel);
@@ -86,6 +87,7 @@ class AdminLogic
         $bild->setBild($fileData);
 
         $menue->setBild($bild);
+        $menue->setPreis($preis);
 
         $produkte = new ArrayCollection();
         $produktRepository = new ProduktRepository($this->entityManager);
@@ -277,7 +279,7 @@ class AdminLogic
         return $bestellstatusRepository->save($bestellstatusObj);
     }
 
-    public function updateMenue($id, $titel, $beschreibung, $tempPath, $produkteCollection): bool
+    public function updateMenue($id, $titel, $beschreibung, $preis, $tempPath, $produkteCollection): bool
     {
         $menueRepository = new MenueRepository($this->entityManager);
         $menueObj = $menueRepository->getById($id);
@@ -294,6 +296,7 @@ class AdminLogic
         $bild->setBild($fileData);
 
         $menueObj->setBild($bild);
+        $menueObj->setPreis($preis);
 
         $produkte = new ArrayCollection();
         $produktRepository = new ProduktRepository($this->entityManager);
@@ -390,5 +393,15 @@ class AdminLogic
         $zutatObj->setZutatName($zutat);
 
         return $zutatRepository->save($zutatObj);
+    }
+
+    public function getAllBestellungen(): array
+    {
+        $bestellungRepository = new BestellungRepository($this->entityManager);
+        $bestellungen = $bestellungRepository->getAll();
+        if (!$bestellungen) {
+            return [];
+        }
+        return $bestellungen;
     }
 }

@@ -73,7 +73,7 @@ class Bestellung
 
     public function getBestellungDatum(): string
     {
-        return $this->BestellungDatum->format("d.m.Y - H:i");
+        return $this->BestellungDatum->format("d.m.Y");
     }
 
     public function setBestellungDatum(DateTime $BestellungDatum): void

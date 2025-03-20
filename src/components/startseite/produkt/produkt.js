@@ -45,7 +45,7 @@ function setProductDetails(jsonString) {
     }
 
     document.getElementById("warenkorbProdukt").addEventListener("click", function () {
-        sendProductToWarenkorb(produkt.id);
+        sendProductToWarenkorb(produkt.id, document.getElementById('produktQuantityInput').value);
     });
 }
 
@@ -58,13 +58,14 @@ function setEnergiewertDetails(energiewert) {
     document.getElementById('protein').textContent = energiewert.Eiweiss;
 }
 
-function sendProductToWarenkorb(productId, removeFromWarenkorb = false) {
+function sendProductToWarenkorb(productId, produktQuantityInput, removeFromWarenkorb = false) {
     const formData = new FormData();
     if (removeFromWarenkorb) {
         formData.append("warenkorbIndex", productId);
     } else {
         formData.append("productId", productId);
     }
+    formData.append("produktAnzahl", produktQuantityInput);
 
     fetch("/FastFood/src/components/startseite/produkt/produkt-handler.php", {
         method: "POST",
@@ -95,3 +96,15 @@ function sendProductToWarenkorb(productId, removeFromWarenkorb = false) {
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 }
+
+document.getElementById("increaseProduktQuantity")?.addEventListener("click", function() {
+    let input = document.getElementById("produktQuantityInput");
+    input.value = parseInt(input.value) + 1;
+});
+
+document.getElementById("decreaseProduktQuantity")?.addEventListener("click", function() {
+    let input = document.getElementById("produktQuantityInput");
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+});

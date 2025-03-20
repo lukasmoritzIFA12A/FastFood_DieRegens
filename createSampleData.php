@@ -2,18 +2,28 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use App\datenbank\Entitaeten\Admin;
+use App\datenbank\Entitaeten\Adresse;
+use App\datenbank\Entitaeten\Bestellstatus;
 use App\datenbank\Entitaeten\Bild;
 use App\datenbank\Entitaeten\Energiewert;
+use App\datenbank\Entitaeten\Kunde;
+use App\datenbank\Entitaeten\Login;
 use App\datenbank\Entitaeten\Menue;
 use App\datenbank\Entitaeten\Produkt;
 use App\datenbank\Entitaeten\Rabatt;
 use App\datenbank\Entitaeten\Zahlungsart;
 use App\datenbank\Entitaeten\Zutat;
 use App\datenbank\EntityManagerFactory;
+use App\datenbank\Repositories\AdminRepository;
+use App\datenbank\Repositories\BestellstatusRepository;
+use App\datenbank\Repositories\KundeRepository;
+use App\datenbank\Repositories\LoginRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\RabattRepository;
 use App\datenbank\Repositories\ZahlungsartRepository;
 use App\datenbank\Repositories\ZutatRepository;
+use App\validation\PasswortHash;
 use Doctrine\Common\Collections\ArrayCollection;
 
 try {
@@ -398,11 +408,11 @@ try {
     ]));
     $energiewertProteinshake = new Energiewert();
     $energiewertProteinshake->setPortionSize("150g");
-    $energiewertProteinshake->setKalorien("80");
-    $energiewertProteinshake->setFett("2");
-    $energiewertProteinshake->setKohlenhydrate("12");
-    $energiewertProteinshake->setZucker("6");
-    $energiewertProteinshake->setEiweiss("4");
+    $energiewertProteinshake->setKalorien("250");
+    $energiewertProteinshake->setFett("6");
+    $energiewertProteinshake->setKohlenhydrate("30");
+    $energiewertProteinshake->setZucker("22");
+    $energiewertProteinshake->setEiweiss("25");
     $produktProteinshake->setEnergiewert($energiewertProteinshake);
     $produktProteinshake->setBild(new Bild(file_get_contents("assets/sample/menueProdukte/Schoko Proteinshake.jpg")));
     $produktProteinshake->setAusverkauft(false);
@@ -484,6 +494,93 @@ try {
     $menueRepository->save($menueFruehstueck);
 
     echo "Menüs und Produkte wurden hinzugefügt...\n";
+
+    /*
+     * Bestellstatus hinzufügen
+     */
+    $bestellstatusBestellungErhalten = new Bestellstatus();
+    $bestellstatusBestellungErhalten->setStatus("Bestellung erhalten");
+    $bestellstatusBestellungErhalten->setFarbe("#4682B4");
+
+    $bestellstatusInBearbeitung = new Bestellstatus();
+    $bestellstatusInBearbeitung->setStatus("In Bearbeitung");
+    $bestellstatusInBearbeitung->setFarbe("#FFDF00");
+
+    $bestellstatusVersandt = new Bestellstatus();
+    $bestellstatusVersandt->setStatus("Versandt");
+    $bestellstatusVersandt->setFarbe("#228B22");
+
+    $bestellstatusStorniert = new Bestellstatus();
+    $bestellstatusStorniert->setStatus("Storniert");
+    $bestellstatusStorniert->setFarbe("#FF0000");
+
+    $bestellstatusZugestellt = new Bestellstatus();
+    $bestellstatusZugestellt->setStatus("Zugestellt");
+    $bestellstatusZugestellt->setFarbe("#008000");
+
+    $bestellstatusRepository = new BestellstatusRepository($entityManager);
+    $bestellstatusRepository->save($bestellstatusBestellungErhalten);
+    $bestellstatusRepository->save($bestellstatusInBearbeitung);
+    $bestellstatusRepository->save($bestellstatusVersandt);
+    $bestellstatusRepository->save($bestellstatusStorniert);
+    $bestellstatusRepository->save($bestellstatusZugestellt);
+
+    echo "Bestellstatus wurde hinzugefügt...\n";
+
+    /*
+     * Admin Login hinzufügen
+     */
+    $login = new Login();
+    $login->setNutzername("admin");
+
+    $hashedPassword = PasswortHash::hashPassword("admin");
+    $login->setPasswort($hashedPassword);
+
+    $loginRepository = new LoginRepository($entityManager);
+    $loginRepository->save($login);
+
+    $admin = new Admin();
+    $admin->setLogin($login);
+
+    $adminRepository = new AdminRepository($entityManager);
+    $adminRepository->save($admin);
+
+    echo "Admin Login wurde hinzugefügt unter den Credentials: \n";
+    echo "Nutzername: admin\n";
+    echo "Passwort: admin\n";
+
+    /*
+     * Nutzer hinzufügen
+     */
+
+    $login = new Login();
+    $login->setNutzername("Max");
+
+    $hashedPassword = PasswortHash::hashPassword("1234");
+    $login->setPasswort($hashedPassword);
+
+    $kunde = new Kunde();
+    $kunde->setVorname("Maximilian");
+    $kunde->setNachname("Mustermann");
+    $kunde->setTelefonnummer("09557425839");
+    $kunde->setRegistrierungsdatum(new DateTime());
+    $kunde->setLogin($login);
+
+    $adresse = new Adresse();
+    $adresse->setStrassenname("Musterstr.");
+    $adresse->setHausnummer("1a");
+    $adresse->setBundesland("Berlin");
+    $adresse->setPLZ("80448");
+    $adresse->setStadt("Berlin");
+    $adresse->setZusatz("5. Stock");
+    $kunde->setAdresse($adresse);
+
+    $kundeRepository = new KundeRepository($entityManager);
+    $kundeRepository->save($kunde);
+
+    echo "Kunde wurde hinzugefügt unter den Credentials: \n";
+    echo "Nutzername: Max\n";
+    echo "Passwort: 1234\n";
 
 } catch (ErrorException $e) {
     echo "Fehler: " . $e->getMessage();

@@ -34,7 +34,7 @@ class Rechnung
 
     public function getZahlungsDatum(): ?string
     {
-        return $this->ZahlungsDatum?->format("d.m.Y - H:i");
+        return $this->ZahlungsDatum?->format("d.m.Y");
     }
 
     public function setZahlungsDatum(?DateTime $ZahlungsDatum): void

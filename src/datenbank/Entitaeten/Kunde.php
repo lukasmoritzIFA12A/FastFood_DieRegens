@@ -87,7 +87,7 @@ class Kunde
 
     public function getRegistrierungsdatum(): string
     {
-        return $this->Registrierungsdatum->format("d.m.Y - H:i");
+        return $this->Registrierungsdatum->format("d.m.Y");
     }
 
     public function setRegistrierungsdatum(DateTime $Registrierungsdatum): void

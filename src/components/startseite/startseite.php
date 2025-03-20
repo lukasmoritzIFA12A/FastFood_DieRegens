@@ -142,7 +142,7 @@ include 'logged-in-modal.php';
                                      onerror="this.src='../../../assets/img/noimage.jpg';">
                                 <div class="card-body text-center">
                                     <h5 class="mb-2"><?= $produkt->getTitel() ?></h5>
-                                    <p class="fw-bold text-primary fs-4"><?= $produkt->getPreis() ?> €</p>
+                                    <p class="fw-bold text-success fs-4"><?= $produkt->getPreis() ?> €</p>
                                     <button class="btn btn-primary"
                                             style="width: 25vh;"
                                             data-bs-toggle="modal" data-bs-target="#productModal"
@@ -200,7 +200,7 @@ include 'logged-in-modal.php';
                                      onerror="this.src='../../../assets/img/noimage.jpg';">
                                 <div class="card-body text-center">
                                     <h5 class="mb-2"><?= $menue->getTitel() ?></h5>
-                                    <p class="fw-bold text-primary fs-4"><?= $menue->getPreis() ?> €</p>
+                                    <p class="fw-bold text-success fs-4"><?= $menue->getPreis() ?> €</p>
                                     <button class="btn btn-primary"
                                             style="width: 25vh;"
                                             data-bs-toggle="modal" data-bs-target="#menuModal"

@@ -9,3 +9,39 @@
     opacity: 0.5;
     background-color: #ddd;
 }
+
+.btn-success-animation {
+    position: relative;
+    overflow: visible;
+}
+
+.btn-success-animation::after {
+    content: "\2713"; /* Unicode für Haken */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) scale(0) rotate(0deg);
+    color: #28a745; /* schönes Grün */
+    font-size: 1.5rem;
+    opacity: 0;
+}
+
+/* Keyframe-Animation für den "Pop"-Effekt */
+@keyframes pop {
+    0% {
+        transform: translateY(-50%) scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-50%) scale(1.5) rotate(20deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.btn-success-animation.success::after {
+    animation: pop 0.5s ease-out forwards;
+}

@@ -100,7 +100,7 @@ include 'bestellungen-modal.php';
             </tr>
             <tr>
                 <th>Registrierungsdatum:</th>
-                <td id="registrierungsdatum"><?= $account->getRegistrierungsdatum() . " Uhr" ?></td>
+                <td id="registrierungsdatum"><?= $account->getRegistrierungsdatum() ?></td>
                 <td></td>
             </tr>
         </table>
