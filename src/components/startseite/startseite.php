@@ -106,13 +106,6 @@ include 'logged-in-modal.php';
             <div class="row">
                 <?php if (empty($produktList)): ?>
                     <div class="col-12 text-center">
-                        <div style="font-size: 50px; margin-bottom: 20px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-cart-x" viewBox="0 0 16 16">
-                                <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                            </svg>
-                        </div>
                         <h3>Keine Produkte gefunden.😥</h3>
                         <br>
                         <p>Leider konnten wir keine Produkte finden.</p>
@@ -126,29 +119,41 @@ include 'logged-in-modal.php';
                             <?php if ($produkt->isAusverkauft()): ?>
                                 <img src="<?= ImageLoader::getImageHTMLSrc($produkt->getBild()); ?>"
                                      alt="Produkt Bild"
-                                     style="width: 250px; height: 250px; object-fit: cover; border-radius: 10px; filter: grayscale(100%);"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 19vh; min-height: 19vh; object-fit: cover; border-radius: 1vh; filter: grayscale(100%);"
                                      onerror="this.src='../../../assets/img/noimage.jpg';">
-                                <div class="card-body text-center">
-                                    <h5 class="mb-2" style="color: #888"><?= $produkt->getTitel() ?></h5>
-                                    <p class="fw-bold text-secondary fs-4"><s><?= $produkt->getPreis() ?> €</s></p>
-                                    <button class="btn btn-secondary" style="width: 25vh;" disabled>
-                                        AUSVERKAUFT!
-                                    </button>
+                                <div class="card-body text-center d-flex flex-column"
+                                     style="min-height: 20vh; max-height: 20vh;">
+                                    <div>
+                                        <h5 class="mb-2" style="color: #888"><?= $produkt->getTitel() ?></h5>
+                                        <p class="fw-bold text-secondary fs-4"><s><?= $produkt->getPreis() ?> €</s></p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-secondary" style="width: 25vh;" disabled>
+                                            AUSVERKAUFT!
+                                        </button>
+                                    </div>
                                 </div>
                             <?php else: ?>
                                 <img src="<?= ImageLoader::getImageHTMLSrc($produkt->getBild()); ?>"
                                      alt="Produkt Bild"
-                                     style="width: 250px; height: 250px; object-fit: cover; border-radius: 10px;"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 19vh; min-height: 19vh; object-fit: cover; border-radius: 1vh;"
                                      onerror="this.src='../../../assets/img/noimage.jpg';">
-                                <div class="card-body text-center">
-                                    <h5 class="mb-2"><?= $produkt->getTitel() ?></h5>
-                                    <p class="fw-bold text-success fs-4"><?= $produkt->getPreis() ?> €</p>
-                                    <button class="btn btn-primary"
-                                            style="width: 25vh;"
-                                            data-bs-toggle="modal" data-bs-target="#productModal"
-                                            onclick="setProductDetails('<?= JSONParser::getJSONEncodedString($produkt->jsonSerialize()) ?>')">
-                                        Jetzt bestellen
-                                    </button>
+                                <div class="card-body text-center d-flex flex-column"
+                                     style="min-height: 20vh; max-height: 20vh;">
+                                    <div>
+                                        <h5 class="mb-2"><?= $produkt->getTitel() ?></h5>
+                                        <p class="fw-bold text-success fs-4"><?= $produkt->getPreis() ?> €</p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-primary"
+                                                style="width: 25vh;"
+                                                data-bs-toggle="modal" data-bs-target="#productModal"
+                                                onclick="setProductDetails('<?= JSONParser::getJSONEncodedString($produkt->jsonSerialize()) ?>')">
+                                            Jetzt bestellen
+                                        </button>
+                                    </div>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -163,13 +168,6 @@ include 'logged-in-modal.php';
             <div class="row">
                 <?php if (empty($menueList)): ?>
                     <div class="col-12 text-center">
-                        <div style="font-size: 50px; margin-bottom: 20px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class="bi bi-cart-x" viewBox="0 0 16 16">
-                                <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z"/>
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                            </svg>
-                        </div>
                         <h3>Keine Menüs gefunden.😥</h3>
                         <br>
                         <p>Leider konnten wir keine Menüs finden.</p>
@@ -184,29 +182,39 @@ include 'logged-in-modal.php';
                             <?php if ($menue->isAusverkauft()): ?>
                                 <img src="<?= ImageLoader::getImageHTMLSrc($menue->getBild()); ?>"
                                      alt="Menü Bild"
-                                     style="width: 250px; height: 250px; object-fit: cover; border-radius: 10px;filter: grayscale(100%);"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 20vh; min-height: 20vh; object-fit: cover; border-radius: 1vh; filter: grayscale(100%);"
                                      onerror="this.src='../../../assets/img/noimage.jpg';">
-                                <div class="card-body text-center">
-                                    <h5 class="mb-2" style="color: #888"><?= $menue->getTitel() ?></h5>
-                                    <p class="fw-bold text-secondary fs-4"><s><?= $menue->getPreis() ?> €</s></p>
-                                    <button class="btn btn-secondary" style="width: 25vh;" disabled>
-                                        AUSVERKAUFT!
-                                    </button>
+                                <div class="card-body text-center d-flex flex-column">
+                                    <div>
+                                        <h5 class="mb-2" style="color: #888"><?= $menue->getTitel() ?></h5>
+                                        <p class="fw-bold text-secondary fs-4"><s><?= $menue->getPreis() ?> €</s></p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-secondary" style="width: 25vh;" disabled>
+                                            AUSVERKAUFT!
+                                        </button>
+                                    </div>
                                 </div>
                             <?php else: ?>
                                 <img src="<?= ImageLoader::getImageHTMLSrc($menue->getBild()); ?>"
                                      alt="Menü Bild"
-                                     style="width: 250px; height: 250px; object-fit: cover; border-radius: 10px;"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 20vh; min-height: 20vh; object-fit: cover; border-radius: 1vh;"
                                      onerror="this.src='../../../assets/img/noimage.jpg';">
-                                <div class="card-body text-center">
-                                    <h5 class="mb-2"><?= $menue->getTitel() ?></h5>
-                                    <p class="fw-bold text-success fs-4"><?= $menue->getPreis() ?> €</p>
-                                    <button class="btn btn-primary"
-                                            style="width: 25vh;"
-                                            data-bs-toggle="modal" data-bs-target="#menuModal"
-                                            onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($menue->jsonSerialize()) ?>')">
-                                        Jetzt bestellen
-                                    </button>
+                                <div class="card-body text-center d-flex flex-column">
+                                    <div>
+                                        <h5 class="mb-2"><?= $menue->getTitel() ?></h5>
+                                        <p class="fw-bold text-success fs-4"><?= $menue->getPreis() ?> €</p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-primary"
+                                                style="width: 25vh;"
+                                                data-bs-toggle="modal" data-bs-target="#menuModal"
+                                                onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($menue->jsonSerialize()) ?>')">
+                                            Jetzt bestellen
+                                        </button>
+                                    </div>
                                 </div>
                             <?php endif; ?>
                         </div>

@@ -2,9 +2,11 @@ body {
     background-color: #f0f8ff;
     font-family: 'Arial', sans-serif;
 }
+
 .container {
     margin-top: 50px;
 }
+
 .funny-dinner-container {
     display: flex;
     flex-direction: row;
@@ -12,6 +14,7 @@ body {
     justify-content: space-between;
     flex-wrap: wrap; /* Flexibles Layout */
 }
+
 .funny-dinner-container img {
     width: 100%;
     max-width: 450px; /* Bildgröße angepasst */
@@ -19,6 +22,7 @@ body {
     border-radius: 20px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
+
 .instructions {
     flex: 1 1 50%; /* Textbereich weiter schmaler gemacht */
     padding: 20px;
@@ -27,31 +31,33 @@ body {
     color: #fff;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
+
 .instructions h1 {
     font-size: 2.5rem;
     font-weight: bold;
 }
+
 .instructions p {
     line-height: 1.6;
     font-size: 1.1rem;
 }
+
 .steps {
     list-style-type: none;
     padding: 0;
 }
+
 .steps li {
     margin: 15px 0;
     font-size: 1.2rem;
     display: flex;
     align-items: center;
 }
+
 .steps li i {
     margin-right: 10px;
 }
-.steps li:hover {
-    color: #ff7e5f;
-    cursor: pointer;
-}
+
 .text-center a {
     font-size: 1.1rem;
     padding: 12px 20px;
@@ -63,11 +69,13 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin: 0 10px;
 }
+
 .text-center a:hover {
     background-color: #0056b3;
     border-color: #0056b3;
     transform: scale(1.03);
 }
+
 .text-center button {
     font-size: 1.1rem;
     padding: 12px 20px;
@@ -79,16 +87,19 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin: 0 10px;
 }
+
 .text-center button:hover {
     background-color: #218838;
     border-color: #218838;
     transform: scale(1.03);
 }
+
 @media (max-width: 767px) {
     .funny-dinner-container {
         flex-direction: column;
         align-items: center;
     }
+
     .instructions {
         max-width: 100%;
     }

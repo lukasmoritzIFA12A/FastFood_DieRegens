@@ -4,7 +4,6 @@ namespace App\components\admin;
 
 use App\datenbank\Entitaeten\Bestellstatus;
 use App\datenbank\Entitaeten\Bild;
-use App\datenbank\Entitaeten\Energiewert;
 use App\datenbank\Entitaeten\Menue;
 use App\datenbank\Entitaeten\Produkt;
 use App\datenbank\Entitaeten\Rabatt;
@@ -13,13 +12,13 @@ use App\datenbank\Entitaeten\Zutat;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\BestellstatusRepository;
 use App\datenbank\Repositories\BestellungRepository;
+use App\datenbank\Repositories\ContestRepository;
 use App\datenbank\Repositories\EnergiewertRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
 use App\datenbank\Repositories\RabattRepository;
 use App\datenbank\Repositories\ZahlungsartRepository;
 use App\datenbank\Repositories\ZutatRepository;
-use DeepCopy\f001\B;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 
@@ -403,5 +402,71 @@ class AdminLogic
             return [];
         }
         return $bestellungen;
+    }
+
+    public function deleteBestellung(string $id): bool
+    {
+        $bestellungRepository = new BestellungRepository($this->entityManager);
+        return $bestellungRepository->deleteById($id);
+    }
+
+    public function updateBestellungBestellstatus(string $bestellungId, string $bestellStatusId): bool
+    {
+        $bestellungRepository = new BestellungRepository($this->entityManager);
+        $bestellungObj = $bestellungRepository->getById($bestellungId);
+        if (!$bestellungObj) {
+            $this->errorMessage = "Konnte Bestellung nicht finden!";
+            return false;
+        }
+
+        $bestellstatusRepository = new BestellstatusRepository($this->entityManager);
+        $bestellstatusObj = $bestellstatusRepository->getById($bestellStatusId);
+        if (!$bestellstatusObj) {
+            $this->errorMessage = "Konnte Bestellstatus nicht finden!";
+            return false;
+        }
+
+        $bestellungObj->setBestellstatus($bestellstatusObj);
+        return $bestellungRepository->save($bestellungObj);
+    }
+
+    public function getAllContests(): array
+    {
+        $contestRepository = new ContestRepository($this->entityManager);
+        $contest = $contestRepository->getAll();
+        if (!$contest) {
+            return [];
+        }
+        return $contest;
+    }
+
+    public function contestAblehnen(string $id): bool
+    {
+        $contestRepository = new ContestRepository($this->entityManager);
+        return $contestRepository->deleteById($id);
+    }
+
+    public function contestFreigeben(string $id): bool
+    {
+        $contestRepository = new ContestRepository($this->entityManager);
+        $contest = $contestRepository->getById($id);
+        if (!$contest) {
+            $this->errorMessage = "Konnte Contest nicht finden!";
+            return false;
+        }
+        $contest->setFreigeschalten(true);
+        return $contestRepository->save($contest);
+    }
+
+    public function contestWiderrufen(string $id): bool
+    {
+        $contestRepository = new ContestRepository($this->entityManager);
+        $contest = $contestRepository->getById($id);
+        if (!$contest) {
+            $this->errorMessage = "Konnte Contest nicht finden!";
+            return false;
+        }
+        $contest->setFreigeschalten(false);
+        return $contestRepository->save($contest);
     }
 }

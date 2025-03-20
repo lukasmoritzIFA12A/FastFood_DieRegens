@@ -14,8 +14,8 @@ class Contest
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["remove", "persist"])]
-    #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Bild $bild;
 
     #[ORM\ManyToOne(targetEntity: Bestellung::class, cascade: ["persist"])]

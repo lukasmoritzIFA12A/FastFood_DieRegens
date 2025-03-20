@@ -17,6 +17,9 @@ if ($isLoggedIn) {
 }
 
 $isAdmin = isset($_SESSION['admin']);
+if ($isAdmin) {
+    $showCart = false;
+}
 
 $warenkorbLeer = empty($_SESSION['warenkorb']) || (empty($_SESSION['warenkorb']['menues']) && empty($_SESSION['warenkorb']['produkte']));
 
@@ -105,7 +108,7 @@ if ($showMenu) {
                 </li>
 
                 <li class="nav-item"><a class="nav-link"
-                                        href="<?= router::url('/components/funny-dinner-contest/startseite/startseite.php') ?>">Funny-Dinner-Contest</a>
+                                        href="<?= router::url('/components/funnyDinnerContest/startseite/startseite.php') ?>">Funny-Dinner-Contest</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
                                         href="<?= router::url('/components/kontakformular/kontaktformular.php') ?>">Kontakt</a>

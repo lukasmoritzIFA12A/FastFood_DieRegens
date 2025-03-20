@@ -12,14 +12,30 @@
 ob_start();
 require_once __DIR__ . '/../../error/error-handler.php';
 require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../utils/router.php';
+
+use App\components\funnyDinnerContest\ContestLogic;
+use App\utils\router;
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$contestLogic = new ContestLogic();
+
+$loggedIn = !empty($_SESSION['user']);
+
+if ($loggedIn) {
+    $bestellungen = $contestLogic->getAllBestellungenFromKunde($_SESSION['user']);
+} else {
+    $bestellungen = [];
+}
 
 $showLogin = true;
 $showCart = false;
 $showMenu = false;
 include '../../header/header.php'; // Header einfügen
-use App\utils\router;
-
-require_once __DIR__ . '/../../../utils/router.php';
+include 'logged-in-modal.php';
 ?>
 <div class="container">
     <div class="row funny-dinner-container">
@@ -34,10 +50,10 @@ require_once __DIR__ . '/../../../utils/router.php';
                 Spaßfaktor.</p>
             <h2>So geht’s:</h2>
             <ul class="steps">
-                <li><i class="fas fa-camera"></i> 📸 Bestellung fotografieren</li>
-                <li><i class="fas fa-upload"></i> ⬆️ Bild hochladen</li>
-                <li><i class="fas fa-thumbs-up"></i> 👍 Bewertungen sammeln</li>
-                <li><i class="fas fa-trophy"></i> 🏆 Die meisten Votes gewinnen!</li>
+                <li>📸 Bestellung fotografieren</li>
+                <li>⬆️ Bild hochladen</li>
+                <li>👍 Bewertungen sammeln</li>
+                <li>🏆 Die meisten Votes gewinnen!</li>
             </ul>
         </div>
         <div class="col-md-6 text-center">
@@ -48,14 +64,9 @@ require_once __DIR__ . '/../../../utils/router.php';
     <div class="text-center mt-4">
         <!-- Beide Buttons sind gleich gestylt -->
         <a href="../galerie/galerie.php" class="btn btn-primary btn-lg">Einfach schauen</a>
-        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#uploadModal">Bild Hochladen
+        <button class="btn btn-success btn-lg" onclick="bildHochladen(<?= $loggedIn ?>)">
+            Bild Hochladen
         </button>
-    </div>
-
-    <!-- Zur Startseite Button -->
-    <div class="text-center mt-3">
-        <a href="../../startseite/startseite.php" class="btn btn-info btn-lg">Zur Startseite</a>
-        <!-- Button führt zurück zur Startseite -->
     </div>
 </div>
 
@@ -68,33 +79,38 @@ require_once __DIR__ . '/../../../utils/router.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
             </div>
             <div class="modal-body">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="orderOption" id="order1" value="16.02.25">
-                    <label class="form-check-label" for="order1">
-                        vom 16.02.25 (Schweine Burger, Menü 1, Cola, ...)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="orderOption" id="order2" value="03.01.25">
-                    <label class="form-check-label" for="order2">
-                        vom 03.01.25 (Schweine Burger, Menü 1, Cola, ...)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="orderOption" id="order3" value="18.03.24">
-                    <label class="form-check-label" for="order3">
-                        vom 18.03.24 (Schweine Burger, Menü 1, Cola, ...)
-                    </label>
+
+                <div class="order-list-container"
+                     style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                    <?php foreach ($bestellungen as $bestellung): ?>
+                        <?php
+                        $hint = $contestLogic->getBestellungHint($bestellung);
+                        ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="orderOption"
+                                   id="<?= $bestellung->getId() ?>"
+                                   value="<?= $bestellung->getBestellungDatum() ?>"
+                                   onchange="checkSelection()">
+                            <label class="form-check-label" for="<?= $bestellung->getId() ?>">
+                                vom <?= $bestellung->getBestellungDatum() ?> (<?= $hint ?>)
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
 
-                <!-- Hier kannst du weitere Bestellungen hinzufügen -->
-                <button class="btn btn-primary mt-3">Bild auswählen</button>
+                <input type="file" id="fileInput" style="display: none;">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary mt-3" id="bildAuswahlButton" onclick="bildAuswahl()" disabled>Bild
+                        auswählen
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.js"></script>
+<script src="startseite.js"></script>
 <script src="../../../utils/session.js"></script>
 </body>
 </html>

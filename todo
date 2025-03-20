@@ -1,13 +1,15 @@
-admin bestellstatus anpassen -> & filtern
-
 admin kundendaten einsehen
-admin bilder freischalten -> Funny Dinner Contest
+Funny Dinner Contest
+wenn funny dinner contest leer ist, dann soll da was stehen
 
+postbox
+kundenvorlieben anzeigen
+bestellhäufigkeit anzeigen
 
 vielleicht auf PHP Version 8.3 upgraden wegen DateMalformedException
 
 
-
+Unit Tests prüfen!
 
 
 header soll beim scrollen mitkommen

@@ -94,13 +94,15 @@ include 'content/edit/zutat/zutat-edit-modal.php';
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab"
+                    <button class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button"
+                            role="tab"
                             aria-controls="menu" aria-selected="false">Menü hinzufügen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="orderStatus-tab" data-bs-toggle="tab" data-bs-target="#orderStatus"
-                            type="button" role="tab" aria-controls="orderStatus" aria-selected="false">Bestellstatus hinzufügen
+                            type="button" role="tab" aria-controls="orderStatus" aria-selected="false">Bestellstatus
+                        hinzufügen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -110,7 +112,8 @@ include 'content/edit/zutat/zutat-edit-modal.php';
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="zahlungsart-tab" data-bs-toggle="tab" data-bs-target="#zahlungsart"
-                            type="button" role="tab" aria-controls="zahlungsart" aria-selected="false">Zahlungsart hinzufügen
+                            type="button" role="tab" aria-controls="zahlungsart" aria-selected="false">Zahlungsart
+                        hinzufügen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -145,40 +148,51 @@ include 'content/edit/zutat/zutat-edit-modal.php';
         <div class="tab-pane fade" id="see" role="tabpanel">
             <ul class="nav nav-pills mt-3" id="see" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="see-product-tab" data-bs-toggle="tab" data-bs-target="#see-product"
-                            type="button" role="tab" aria-controls="see-product" aria-selected="true" onclick="reloadProduktTabelle()">Produkte einsehen
+                    <button class="nav-link active" id="see-product-tab" data-bs-toggle="tab"
+                            data-bs-target="#see-product"
+                            type="button" role="tab" aria-controls="see-product" aria-selected="true"
+                            onclick="reloadProduktTabelle()">Produkte einsehen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="see-menu-tab" data-bs-toggle="tab" data-bs-target="#see-menu" type="button" role="tab"
+                    <button class="nav-link" id="see-menu-tab" data-bs-toggle="tab" data-bs-target="#see-menu"
+                            type="button" role="tab"
                             aria-controls="see-menu" aria-selected="false" onclick="reloadMenueTabelle()">Menüs einsehen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="see-orderStatus-tab" data-bs-toggle="tab" data-bs-target="#see-orderStatus"
-                            type="button" role="tab" aria-controls="see-orderStatus" aria-selected="false" onclick="reloadBestellstatusTabelle()">Bestellstatus einsehen
+                    <button class="nav-link" id="see-orderStatus-tab" data-bs-toggle="tab"
+                            data-bs-target="#see-orderStatus"
+                            type="button" role="tab" aria-controls="see-orderStatus" aria-selected="false"
+                            onclick="reloadBestellstatusTabelle()">Bestellstatus einsehen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="see-zutat-tab" data-bs-toggle="tab" data-bs-target="#see-zutat" type="button"
-                            role="tab" aria-controls="see-zutat" aria-selected="false" onclick="reloadZutatTabelle()">Zutaten einsehen
+                    <button class="nav-link" id="see-zutat-tab" data-bs-toggle="tab" data-bs-target="#see-zutat"
+                            type="button"
+                            role="tab" aria-controls="see-zutat" aria-selected="false" onclick="reloadZutatTabelle()">
+                        Zutaten einsehen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="see-zahlungsart-tab" data-bs-toggle="tab" data-bs-target="#see-zahlungsart"
-                            type="button" role="tab" aria-controls="see-zahlungsart" aria-selected="false" onclick="reloadZahlungsartTabelle()">Zahlungsarten einsehen
+                    <button class="nav-link" id="see-zahlungsart-tab" data-bs-toggle="tab"
+                            data-bs-target="#see-zahlungsart"
+                            type="button" role="tab" aria-controls="see-zahlungsart" aria-selected="false"
+                            onclick="reloadZahlungsartTabelle()">Zahlungsarten einsehen
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="see-rabatt-tab" data-bs-toggle="tab" data-bs-target="#see-rabatt"
-                            type="button" role="tab" aria-controls="see-rabatt" aria-selected="false" onclick="reloadRabattTabelle()">Rabatte einsehen
+                            type="button" role="tab" aria-controls="see-rabatt" aria-selected="false"
+                            onclick="reloadRabattTabelle()">Rabatte einsehen
                     </button>
                 </li>
             </ul>
 
             <!-- Tab Content -->
             <div class="tab-content mt-3" id="see-adminTabContent">
-                <div class="tab-pane fade show active" id="see-product" role="tabpanel" aria-labelledby="see-product-tab">
+                <div class="tab-pane fade show active" id="see-product" role="tabpanel"
+                     aria-labelledby="see-product-tab">
                     <?php include 'content/basic/produkt/produkt-table.php'; ?>
                 </div>
 
@@ -200,7 +214,7 @@ include 'content/edit/zutat/zutat-edit-modal.php';
         </div>
 
         <div class="tab-pane fade" id="unlock" role="tabpanel">
-
+            <?php include 'content/basic/contest/contest-table.php'; ?>
         </div>
 
         <div class="tab-pane fade" id="order" role="tabpanel">
@@ -213,20 +227,6 @@ include 'content/edit/zutat/zutat-edit-modal.php';
 <script src="/FastFood/assets/jquery-3.7.1.min.js"></script>
 <script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.js"></script>
 <script src="/FastFood/assets/datatables/datatables.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#bestellTabelle').DataTable({
-            "order": [[0, 'desc']],
-            "paging": false,
-            "searching": false,
-            "info": false,
-            "lengthChange": false,
-            "columnDefs": [
-                { "orderable": false, "targets": [-1] }
-            ]
-        });
-    });
-</script>
 
 <script src="content/basic/produkt/produkt.js"></script>
 <script src="content/add/produkt/produkt-add.js"></script>
@@ -261,6 +261,10 @@ include 'content/edit/zutat/zutat-edit-modal.php';
 <script src="content/add/rabatt/rabatt-add.js"></script>
 <script src="content/delete/rabatt/rabatt-delete.js"></script>
 <script src="content/edit/rabatt/rabatt-edit.js"></script>
+
+<script src="content/basic/bestellung/bestellung.js"></script>
+
+<script src="content/basic/contest/contest.js"></script>
 
 <script src="admin.js"></script>
 <script src="../../utils/session.js"></script>

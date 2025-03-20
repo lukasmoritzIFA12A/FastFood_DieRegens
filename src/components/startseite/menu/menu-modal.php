@@ -15,7 +15,8 @@
                     <div class="col-md-6">
                         <p class="fw-bold fs-5">Preis: <span id="menuPrice" class="text-success"></span></p>
                         <p class="fw-semibold">Menübeschreibung:</p>
-                        <p id="menuDescription" class="text-muted text-wrap overflow-auto d-block" style="max-height: 7.5em; line-height: 1.5em; word-wrap: break-word;"></p>
+                        <p id="menuDescription" class="text-muted text-wrap overflow-auto d-block"
+                           style="max-height: 7.5em; line-height: 1.5em; word-wrap: break-word;"></p>
                     </div>
                 </div>
 
@@ -43,7 +44,7 @@
                 <!-- Mengenwähler und "In den Warenkorb"-Schaltfläche zentriert -->
                 <div class="d-flex align-items-center">
                     <!-- Mengenwähler -->
-                    <div class="input-group me-3" style="width: 120px;">
+                    <div class="input-group me-3" style="width: 12vh;">
                         <button class="btn btn-outline-secondary" type="button" id="decreaseMenuQuantity">-</button>
                         <input type="text" id="menuQuantityInput" class="form-control text-center" value="1" readonly>
                         <button class="btn btn-outline-secondary" type="button" id="increaseMenuQuantity">+</button>

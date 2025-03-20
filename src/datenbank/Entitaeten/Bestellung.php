@@ -3,6 +3,7 @@
 namespace App\datenbank\Entitaeten;
 
 use App\datenbank\Repositories\BestellungRepository;
+use App\utils\Number;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -139,6 +140,26 @@ class Bestellung
     public function setRabatt(?Rabatt $rabatt): void
     {
         $this->rabatt = $rabatt;
+    }
+
+    public function getPreis(): string
+    {
+        $summe = "0.00";
+
+        foreach ($this->bestellungprodukte as $bestellungprodukte) {
+            $produkt = $bestellungprodukte->getProdukt();
+            if ($produkt) {
+                $summe = Number::multiplierPreis(Number::unformatPreis($produkt->getPreis()), $bestellungprodukte->getMenge());
+            }
+        }
+        foreach ($this->bestellungmenues as $bestellungmenue) {
+            $menue = $bestellungmenue->getMenue();
+            if ($menue) {
+                $summe = Number::multiplierPreis(Number::unformatPreis($menue->getPreis()), $bestellungmenue->getMenge());
+            }
+        }
+
+        return Number::reformatPreis($summe);
     }
 
     public function jsonSerialize(): array
