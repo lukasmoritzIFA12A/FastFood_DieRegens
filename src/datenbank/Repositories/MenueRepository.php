@@ -26,6 +26,10 @@ class MenueRepository extends RepositoryAccess
 
         foreach ($bestellungen as $bestellung) {
             foreach ($bestellung->getBestellungmenues() as $bestellungmenue) {
+                if ($bestellungmenue->getMenue()->isAusverkauft()) {
+                    continue;
+                }
+
                 $menueId = $bestellungmenue->getMenue()->getId();
                 $count = $bestellungmenue->getMenge();
                 $menueCount[$menueId] = ($menueCount[$menueId] ?? $count) + $count;

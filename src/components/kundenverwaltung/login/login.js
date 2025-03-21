@@ -1,16 +1,20 @@
 function togglePassword() {
     const passwordInput = document.getElementById("password"); // Passwortfeld holen
-    const passwordIcon = document.getElementById("passwordIcon"); // Icon im Button holen
+
+    const passwordIconClosed = document.getElementById("eyeClosed");
+    const passwordIconOpened = document.getElementById("eyeOpened");
+
 
     // Sichtbarkeit des Passworts umschalten
     if (passwordInput.type === "password") {
         passwordInput.type = "text"; // Zeige das Passwort
-        passwordIcon.classList.remove("bi-eye-slash"); // Wechsle das Icon
-        passwordIcon.classList.add("bi-eye");
+
+        passwordIconClosed.style.display = 'none';
+        passwordIconOpened.style.display = '';
     } else {
         passwordInput.type = "password"; // Verstecke das Passwort
-        passwordIcon.classList.remove("bi-eye"); // Wechsle das Icon zurück
-        passwordIcon.classList.add("bi-eye-slash");
+        passwordIconClosed.style.display = '';
+        passwordIconOpened.style.display = 'none';
     }
 }
 

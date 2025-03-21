@@ -27,10 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['menuId'])) {
+        $anzahl = $_POST['menuAnzahl'] ?? "1";
+
         if (!isset($_SESSION['warenkorb']['menues'][$_POST['menuId']])) {
-            $_SESSION['warenkorb']['menues'][$_POST['menuId']] = 1; // Erstes Vorkommen
+            $_SESSION['warenkorb']['menues'][$_POST['menuId']] = $anzahl; // Erstes Vorkommen
         } else {
-            $_SESSION['warenkorb']['menues'][$_POST['menuId']]++; // Menge erhöhen
+            $_SESSION['warenkorb']['menues'][$_POST['menuId']] += $anzahl; // Menge erhöhen
         }
 
         echo json_encode(["success" => true]);
@@ -39,9 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $index = $_POST['warenkorbIndex'];
     if (isset($_SESSION['warenkorb']['menues'][$index])) {
-        if ($_SESSION['warenkorb']['menues'][$index] > 1) {
-            // Count um 1 verringern
-            $_SESSION['warenkorb']['menues'][$index]--;
+        $anzahl = $_POST['menuAnzahl'] ?? "1";
+
+        if (intval($anzahl) > 0) {
+            // Count um $anzahl verringern
+            $_SESSION['warenkorb']['menues'][$index] = $anzahl;
         } else {
             // Produkt vollständig entfernen
             unset($_SESSION['warenkorb']['menues'][$index]);

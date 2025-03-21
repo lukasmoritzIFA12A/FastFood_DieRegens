@@ -3,6 +3,7 @@
 namespace App\datenbank\Entitaeten;
 
 use App\datenbank\Repositories\BestellungRepository;
+use App\utils\Number;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,28 +22,28 @@ class Bestellung
     private DateTime $BestellungDatum;
 
     #[ORM\ManyToOne(targetEntity: Kunde::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Kunde_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "Kunde_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Kunde $kunde;
 
     #[ORM\ManyToOne(targetEntity: Zahlungsart::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Zahlungsart_id", referencedColumnName: "id")]
-    private Zahlungsart $zahlungsart;
+    #[ORM\JoinColumn(name: "Zahlungsart_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    private ?Zahlungsart $zahlungsart;
 
     #[ORM\ManyToOne(targetEntity: Bestellstatus::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Bestellstatus_id", referencedColumnName: "id", nullable: true)]
+    #[ORM\JoinColumn(name: "Bestellstatus_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?Bestellstatus $bestellstatus;
 
-    #[ORM\OneToMany(targetEntity: BestellungProdukt::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: BestellungProdukt::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bestellungprodukte;
 
-    #[ORM\OneToMany(targetEntity: BestellungMenue::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: BestellungMenue::class, mappedBy: 'bestellung', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bestellungmenues;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2, nullable: true)]
     private ?string $trinkgeld;
 
     #[ORM\ManyToOne(targetEntity: Rabatt::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true)]
+    #[ORM\JoinColumn(name: "Rabatt_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?Rabatt $rabatt;
 
     public function __construct()
@@ -73,7 +74,7 @@ class Bestellung
 
     public function getBestellungDatum(): string
     {
-        return $this->BestellungDatum->format("d.m.Y - H:i");
+        return $this->BestellungDatum->format("d.m.Y");
     }
 
     public function setBestellungDatum(DateTime $BestellungDatum): void
@@ -81,12 +82,12 @@ class Bestellung
         $this->BestellungDatum = $BestellungDatum;
     }
 
-    public function getZahlungsart(): Zahlungsart
+    public function getZahlungsart(): ?Zahlungsart
     {
         return $this->zahlungsart;
     }
 
-    public function setZahlungsart(Zahlungsart $zahlungsart): void
+    public function setZahlungsart(?Zahlungsart $zahlungsart): void
     {
         $this->zahlungsart = $zahlungsart;
     }
@@ -141,13 +142,33 @@ class Bestellung
         $this->rabatt = $rabatt;
     }
 
+    public function getPreis(): string
+    {
+        $summe = "0.00";
+
+        foreach ($this->bestellungprodukte as $bestellungprodukte) {
+            $produkt = $bestellungprodukte->getProdukt();
+            if ($produkt) {
+                $summe = Number::multiplierPreis(Number::unformatPreis($produkt->getPreis()), $bestellungprodukte->getMenge());
+            }
+        }
+        foreach ($this->bestellungmenues as $bestellungmenue) {
+            $menue = $bestellungmenue->getMenue();
+            if ($menue) {
+                $summe = Number::multiplierPreis(Number::unformatPreis($menue->getPreis()), $bestellungmenue->getMenge());
+            }
+        }
+
+        return Number::reformatPreis($summe);
+    }
+
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->getId(),
             'BestellungDatum' => $this->getBestellungDatum(),
             'kunde' => $this->getKunde()->jsonSerialize(),
-            'zahlungsart' => $this->getZahlungsart()->jsonSerialize(),
+            'zahlungsart' => $this->getZahlungsart()?->jsonSerialize(),
             'bestellstatus' => $this->getBestellstatus()?->jsonSerialize(),
             'menues' => $this->getBestellungmenues()->map(fn($c) => $c->jsonSerialize())->toArray(),
             'produkte' => $this->getBestellungprodukte()->map(fn($c) => $c->jsonSerialize())->toArray(),

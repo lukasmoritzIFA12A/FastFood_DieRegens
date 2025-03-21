@@ -3,7 +3,6 @@ if (!localStorage.getItem("sessionID")) {
     localStorage.setItem("sessionID", Date.now().toString());
 }
 
-// Alle 1 Sekunde checken, ob er noch da ist
 setInterval(() => {
     if (!localStorage.getItem("sessionID")) {
         console.log("Cookies & Site Data wurden wohl gelöscht! Neuladen...");

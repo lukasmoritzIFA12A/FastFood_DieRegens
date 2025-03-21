@@ -31,7 +31,7 @@ function setMenueDetails(jsonString) {
     loadProducts(menue);
 
     document.getElementById("warenkorbMenu").addEventListener("click", function () {
-        sendMenuToWarenkorb(menue.id);
+        sendMenuToWarenkorb(menue.id, document.getElementById('menuQuantityInput').value);
     });
 }
 
@@ -68,13 +68,14 @@ function openProductModal(product, menue) {
     });
 }
 
-function sendMenuToWarenkorb(menuId, removeFromWarenkorb = false) {
+function sendMenuToWarenkorb(menuId, menuQuantityInput, removeFromWarenkorb = false) {
     const formData = new FormData();
     if (removeFromWarenkorb) {
         formData.append("warenkorbIndex", menuId);
     } else {
         formData.append("menuId", menuId);
     }
+    formData.append("menuAnzahl", menuQuantityInput);
 
     fetch("/FastFood/src/components/startseite/menu/menu-handler.php", {
         method: "POST",
@@ -105,3 +106,15 @@ function sendMenuToWarenkorb(menuId, removeFromWarenkorb = false) {
         })
         .catch(error => console.error("Fehler:", error)); // Falls was schiefgeht, loggen!
 }
+
+document.getElementById("increaseMenuQuantity")?.addEventListener("click", function() {
+    let input = document.getElementById("menuQuantityInput");
+    input.value = parseInt(input.value) + 1;
+});
+
+document.getElementById("decreaseMenuQuantity")?.addEventListener("click", function() {
+    let input = document.getElementById("menuQuantityInput");
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+});

@@ -15,7 +15,8 @@
                     <div class="col-md-6">
                         <p class="fw-bold fs-5">Preis: <span id="menuPrice" class="text-success"></span></p>
                         <p class="fw-semibold">Menübeschreibung:</p>
-                        <p id="menuDescription" class="text-muted"></p>
+                        <p id="menuDescription" class="text-muted text-wrap overflow-auto d-block"
+                           style="max-height: 7.5em; line-height: 1.5em; word-wrap: break-word;"></p>
                     </div>
                 </div>
 
@@ -36,9 +37,22 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer d-flex justify-content-center">
+            <div class="modal-footer d-flex justify-content-between align-items-center">
+                <!-- Schließen-Schaltfläche linksbündig -->
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
-                <button type="button" id="warenkorbMenu" class="btn btn-success">In den Warenkorb</button>
+
+                <!-- Mengenwähler und "In den Warenkorb"-Schaltfläche zentriert -->
+                <div class="d-flex align-items-center">
+                    <!-- Mengenwähler -->
+                    <div class="input-group me-3" style="width: 12vh;">
+                        <button class="btn btn-outline-secondary" type="button" id="decreaseMenuQuantity">-</button>
+                        <input type="text" id="menuQuantityInput" class="form-control text-center" value="1" readonly>
+                        <button class="btn btn-outline-secondary" type="button" id="increaseMenuQuantity">+</button>
+                    </div>
+
+                    <!-- "In den Warenkorb"-Schaltfläche -->
+                    <button type="button" id="warenkorbMenu" class="btn btn-success">In den Warenkorb</button>
+                </div>
             </div>
         </div>
     </div>

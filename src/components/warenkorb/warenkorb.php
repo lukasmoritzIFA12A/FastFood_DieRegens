@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warenkorb</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/FastFood/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
 
@@ -108,7 +108,7 @@ include 'warenkorb-modal.php';
                             <label class="btn btn-outline-primary" for="btnAndere">Andere</label>
                             <input type="text" name="andereBetragInput" id="andereBetragInput" min="0"
                                    class="form-control flex-grow-0"
-                                   pattern="^\d+(\,(\d{1,2}))?$"
+                                   pattern="^\d+(.\d{1.2})?$"
                                    value="<?= $warenkorbLogic->getAndereTrinkgeld() ?>"
                                 <?= $warenkorbLogic->isSelectedTrinkgeld("Andere") ?
                                     "style='width: 12.5%;'" :
@@ -214,17 +214,32 @@ include 'warenkorb-modal.php';
                                     ?>
 
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span><?= htmlspecialchars($menue->getTitel()) ?> (<?= $count ?>x)</span>
-                                        <div class="d-flex align-items-center" style="gap: 10px;">
+                                        <div class="d-flex flex-grow-1">
+                                            <span class="text-truncate" style="white-space: normal;"><?= htmlspecialchars($menue->getTitel()) ?></span>
+                                        </div>
+
+                                        <div class="ms-auto me-2" style="flex-shrink: 0;">
                                             <span><?= $gesamtPreis ?> €</span>
-                                            <button type="button"
-                                                    class="btn btn-danger p-1 d-flex align-items-center justify-content-center"
-                                                    style="width: 25px; height: 25px; margin-left: 15px;"
-                                                    onclick="removeMenuToWarenkorb(<?= $menueId ?>)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                     fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                                                </svg>
+                                        </div>
+
+                                        <!-- Counter -->
+                                        <div class="input-group" style="width: 12vh; flex-shrink: 0;">
+                                            <button class="btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                                                    type="button"
+                                                    style="height: 3vh;"
+                                                    onclick="updateMenuQuantityInWarenkorb(<?= $menueId ?>, <?= $count - 1 ?>)">
+                                                -
+                                            </button>
+                                            <input type="text"
+                                                   class="form-control text-center"
+                                                   value="<?= $count ?>"
+                                                   style="height: 3vh;"
+                                                   readonly>
+                                            <button class="btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                                                    type="button"
+                                                    style="height: 3vh;"
+                                                    onclick="updateMenuQuantityInWarenkorb(<?= $menueId ?>, <?= $count + 1 ?>)">
+                                                +
                                             </button>
                                         </div>
                                     </li>
@@ -244,17 +259,32 @@ include 'warenkorb-modal.php';
                                     ?>
 
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span><?= htmlspecialchars($produkt->getTitel()) ?> (<?= $count ?>x)</span>
-                                        <div class="d-flex align-items-center" style="gap: 10px;">
+                                        <div class="d-flex flex-grow-1 me-2">
+                                            <span class="text-truncate" style="white-space: normal;"><?= htmlspecialchars($produkt->getTitel()) ?></span>
+                                        </div>
+
+                                        <div class="ms-auto me-2" style="flex-shrink: 0;">
                                             <span><?= $gesamtPreis ?> €</span>
-                                            <button type="button"
-                                                    class="btn btn-danger p-1 d-flex align-items-center justify-content-center"
-                                                    style="width: 25px; height: 25px; margin-left: 15px;"
-                                                    onclick="removeProductToWarenkorb(<?= $produktId ?>)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                     fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                                                </svg>
+                                        </div>
+
+                                        <!-- Counter -->
+                                        <div class="input-group" style="width: 12vh; flex-shrink: 0;">
+                                            <button class="btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                                                    type="button"
+                                                    style="height: 3vh;"
+                                                    onclick="updateProduktQuantityInWarenkorb(<?= $produktId ?>, <?= $count - 1 ?>)">
+                                                -
+                                            </button>
+                                            <input type="text"
+                                                   class="form-control text-center"
+                                                   value="<?= $count ?>"
+                                                   style="height: 3vh;"
+                                                   readonly>
+                                            <button class="btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                                                    type="button"
+                                                    style="height: 3vh;"
+                                                    onclick="updateProduktQuantityInWarenkorb(<?= $produktId ?>, <?= $count + 1 ?>)">
+                                                +
                                             </button>
                                         </div>
                                     </li>
@@ -262,8 +292,8 @@ include 'warenkorb-modal.php';
                             </ul>
                         </div>
 
-                        <p>Rabatt: <span class="float-end"
-                                         id="rabattEuro"><?= $warenkorbLogic->getRabattProzent() ?> %</span>
+                        <p>Rabatt (<?= $warenkorbLogic->getRabattProzent() ?> %): <span class="float-end"
+                                         id="rabattEuro"><?= $warenkorbLogic->getRabattSumme() ?> €</span>
                         </p>
                         <p>Zwischensumme: <span class="float-end"><?= $warenkorbLogic->getZwischenSumme() ?> €</span>
                         </p>
@@ -280,7 +310,7 @@ include 'warenkorb-modal.php';
         </div>
     </form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="warenkorb.js"></script>
     <script src="lieferadresse/lieferadresse.js"></script>
     <script src="rabatt/rabatt.js"></script>

@@ -31,6 +31,7 @@ class MenueRepositoryTest extends DatenbankTest
         $menue = new Menue();
         $menue->setTitel("Cooles Menue");
         $menue->setProdukte($produkte);
+        $menue->setPreis("1,00");
         return $menue;
     }
 

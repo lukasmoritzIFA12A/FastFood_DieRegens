@@ -11,7 +11,7 @@ class Admin
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Login::class, cascade: ["persist"])]
-    #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id")]
+    #[ORM\JoinColumn(name: "Login_id", referencedColumnName: "id", onDelete: "CASCADE")]
     private Login $login;
 
     public function getLogin(): Login

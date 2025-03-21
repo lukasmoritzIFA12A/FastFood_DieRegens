@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startseite - MacAPPLE</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="/FastFood/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="startseite.css" rel="stylesheet">
 </head>
 <body>
@@ -53,7 +52,7 @@ include 'logged-in-modal.php';
                         <img src="<?= ImageLoader::getImageHTMLSrc($topMenue->getBild()); ?>"
                              alt="Top Menü Bild"
                              class="img-fluid rounded-start"
-                             style="object-fit: cover; width: 250px; height: 250px;"
+                             style="object-fit: cover; width: 250px; height: 250px; border-radius: 10px;"
                              onerror="this.src='../../../assets/img/noimage.jpg';">
                     </div>
 
@@ -88,15 +87,15 @@ include 'logged-in-modal.php';
     <!-- Categories Section -->
     <div class="text-center mb-4">
         <div class="d-inline-flex align-items-center gap-3">
-            <!-- Button für Burger -->
+            <!-- Button für Produkte -->
             <button class="btn btn-outline-primary" id="burgerBtn">
-                <img src="<?= router::url('/../assets/icons/Burger_Icon.png') ?>" alt="Burger" style="width: 50px;">
-                <p>Burger</p>
+                <img src="<?= router::url('/../assets/icons/Burger_Icon.png') ?>" alt="Produkte" style="width: 7vh;">
+                <p>Produkte</p>
             </button>
 
             <!-- Button für Menü -->
             <button class="btn btn-outline-primary" id="menuBtn">
-                <img src="<?= router::url('/../assets/icons/Menu_Icon.png') ?>" alt="Menü" style="width: 50px;">
+                <img src="<?= router::url('/../assets/icons/Menu_Icon.png') ?>" alt="Menü" style="width: 7vh;">
                 <p>Menüs</p>
             </button>
         </div>
@@ -107,7 +106,6 @@ include 'logged-in-modal.php';
             <div class="row">
                 <?php if (empty($produktList)): ?>
                     <div class="col-12 text-center">
-                        <i class="bi bi-cart-x" style="font-size: 50px; margin-bottom: 20px;"></i>
                         <h3>Keine Produkte gefunden.😥</h3>
                         <br>
                         <p>Leider konnten wir keine Produkte finden.</p>
@@ -117,26 +115,47 @@ include 'logged-in-modal.php';
 
                 <?php foreach ($produktList as $produkt): ?>
                     <div class="col-md-2 mb-4">
-                        <div class="card align-items-center">
-                            <img src="<?= ImageLoader::getImageHTMLSrc($produkt->getBild()); ?>"
-                                 alt="Produkt Bild"
-                                 style="width: 250px; height: 250px; object-fit: cover;"
-                                 onerror="this.src='../../../assets/img/noimage.jpg';">
-                            <div class="card-body">
-                                <p class="text-center"><?= $produkt->getTitel() ?> - <?= $produkt->getPreis() ?> €</p>
-
-                                <?php if ($produkt->isAusverkauft()): ?>
-                                    <button id="orderButton" class="btn btn-secondary" style="width: 250px;" disabled>
-                                        AUSVERKAUFT!
-                                    </button>
-                                <?php else: ?>
-                                    <button id="orderButton" class="btn btn-primary" style="width: 250px;"
-                                            data-bs-toggle="modal" data-bs-target="#productModal"
-                                            onclick="setProductDetails('<?= JSONParser::getJSONEncodedString($produkt->jsonSerialize()) ?>')">
-                                        Jetzt bestellen
-                                    </button>
-                                <?php endif; ?>
-                            </div>
+                        <div class="card align-items-center" style="height: 40vh;">
+                            <?php if ($produkt->isAusverkauft()): ?>
+                                <img src="<?= ImageLoader::getImageHTMLSrc($produkt->getBild()); ?>"
+                                     alt="Produkt Bild"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 19vh; min-height: 19vh; object-fit: cover; border-radius: 1vh; filter: grayscale(100%);"
+                                     onerror="this.src='../../../assets/img/noimage.jpg';">
+                                <div class="card-body text-center d-flex flex-column"
+                                     style="min-height: 20vh; max-height: 20vh;">
+                                    <div>
+                                        <h5 class="mb-2" style="color: #888"><?= $produkt->getTitel() ?></h5>
+                                        <p class="fw-bold text-secondary fs-4"><s><?= $produkt->getPreis() ?> €</s></p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-secondary" style="width: 25vh;" disabled>
+                                            AUSVERKAUFT!
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <img src="<?= ImageLoader::getImageHTMLSrc($produkt->getBild()); ?>"
+                                     alt="Produkt Bild"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 19vh; min-height: 19vh; object-fit: cover; border-radius: 1vh;"
+                                     onerror="this.src='../../../assets/img/noimage.jpg';">
+                                <div class="card-body text-center d-flex flex-column"
+                                     style="min-height: 20vh; max-height: 20vh;">
+                                    <div>
+                                        <h5 class="mb-2"><?= $produkt->getTitel() ?></h5>
+                                        <p class="fw-bold text-success fs-4"><?= $produkt->getPreis() ?> €</p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-primary"
+                                                style="width: 25vh;"
+                                                data-bs-toggle="modal" data-bs-target="#productModal"
+                                                onclick="setProductDetails('<?= JSONParser::getJSONEncodedString($produkt->jsonSerialize()) ?>')">
+                                            Jetzt bestellen
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -149,7 +168,6 @@ include 'logged-in-modal.php';
             <div class="row">
                 <?php if (empty($menueList)): ?>
                     <div class="col-12 text-center">
-                        <i class="bi bi-cart-x" style="font-size: 50px; margin-bottom: 20px;"></i>
                         <h3>Keine Menüs gefunden.😥</h3>
                         <br>
                         <p>Leider konnten wir keine Menüs finden.</p>
@@ -159,26 +177,46 @@ include 'logged-in-modal.php';
 
                 <?php foreach ($menueList as $menue): ?>
                     <div class="col-md-2 mb-4">
-                        <div class="card align-items-center">
-                            <img src="<?= ImageLoader::getImageHTMLSrc($menue->getBild()); ?>"
-                                 alt="Menü Bild"
-                                 style="width: 250px; height: 250px; object-fit: cover;"
-                                 onerror="this.src='../../../assets/img/noimage.jpg';">
-                            <div class="card-body">
-                                <p class="text-center"><?= $menue->getTitel() ?> - <?= $menue->getPreis() ?> €</p>
+                        <div class="card align-items-center" style="height: 40vh;">
 
-                                <?php if ($menue->isAusverkauft()): ?>
-                                    <button class="btn btn-secondary" style="width: 250px;" disabled>
-                                        AUSVERKAUFT!
-                                    </button>
-                                <?php else: ?>
-                                    <button class="btn btn-primary" style="width: 250px;" data-bs-toggle="modal"
-                                            data-bs-target="#menuModal"
-                                            onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($menue->jsonSerialize()) ?>')">
-                                        Jetzt bestellen
-                                    </button>
-                                <?php endif; ?>
-                            </div>
+                            <?php if ($menue->isAusverkauft()): ?>
+                                <img src="<?= ImageLoader::getImageHTMLSrc($menue->getBild()); ?>"
+                                     alt="Menü Bild"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 20vh; min-height: 20vh; object-fit: cover; border-radius: 1vh; filter: grayscale(100%);"
+                                     onerror="this.src='../../../assets/img/noimage.jpg';">
+                                <div class="card-body text-center d-flex flex-column">
+                                    <div>
+                                        <h5 class="mb-2" style="color: #888"><?= $menue->getTitel() ?></h5>
+                                        <p class="fw-bold text-secondary fs-4"><s><?= $menue->getPreis() ?> €</s></p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-secondary" style="width: 25vh;" disabled>
+                                            AUSVERKAUFT!
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <img src="<?= ImageLoader::getImageHTMLSrc($menue->getBild()); ?>"
+                                     alt="Menü Bild"
+                                     class="mt-2"
+                                     style="width: 25vh; max-height: 20vh; min-height: 20vh; object-fit: cover; border-radius: 1vh;"
+                                     onerror="this.src='../../../assets/img/noimage.jpg';">
+                                <div class="card-body text-center d-flex flex-column">
+                                    <div>
+                                        <h5 class="mb-2"><?= $menue->getTitel() ?></h5>
+                                        <p class="fw-bold text-success fs-4"><?= $menue->getPreis() ?> €</p>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <button class="btn btn-primary"
+                                                style="width: 25vh;"
+                                                data-bs-toggle="modal" data-bs-target="#menuModal"
+                                                onclick="setMenueDetails('<?= JSONParser::getJSONEncodedString($menue->jsonSerialize()) ?>')">
+                                            Jetzt bestellen
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -186,7 +224,7 @@ include 'logged-in-modal.php';
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="startseite.js"></script>
 <script src="menu/menu.js"></script>
 <script src="produkt/produkt.js"></script>

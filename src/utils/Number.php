@@ -6,12 +6,20 @@ class Number
 {
     public static function unformatPreis($preis): string
     {
+        if (!$preis) {
+            return "";
+        }
+
         $preis = str_replace('.', '', $preis);
         return str_replace(',', '.', $preis);
     }
 
     public static function reformatPreis($preis): string
     {
+        if (!$preis) {
+            return "";
+        }
+
         $preis = preg_replace('/[^0-9.]/', '', $preis);
         return number_format($preis, 2, ',', '.');
     }

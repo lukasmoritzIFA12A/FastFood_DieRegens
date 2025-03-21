@@ -162,7 +162,7 @@ class WarenkorbLogic
         $gesamtSumme = Number::unformatPreis($this->getZwischenSumme());
 
         if (!empty($_SESSION['trinkgeld'])) {
-            $trinkgeldPreis = Number::unformatPreis($_SESSION['trinkgeld']);
+            $trinkgeldPreis = $_SESSION['trinkgeld'];
             $gesamtSumme = Number::summePreis($gesamtSumme, $trinkgeldPreis);
         }
 
@@ -191,10 +191,10 @@ class WarenkorbLogic
     public function getAndereTrinkgeld(): string
     {
         if ($this->isSelectedTrinkgeld("Andere")) {
-            return Number::reformatPreis($_SESSION['trinkgeld']);
+            return $_SESSION['trinkgeld'];
         }
 
-        return "0,00";
+        return "0.00";
     }
 
     public function getRabattProzent(): string
@@ -210,7 +210,41 @@ class WarenkorbLogic
         return "0";
     }
 
+    public function getRabattSumme(): string
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (isset($_SESSION['rabatt'])) {
+            $gesamtSumme = $this->getProduktMenuePreis();
+            $rabattProzent = $_SESSION['rabatt'];
+
+            $gesamtSumme = Number::prozentPreis($gesamtSumme, $rabattProzent);
+            return Number::reformatPreis($gesamtSumme);
+        }
+
+        return "0,00";
+    }
+
     public function getZwischenSumme(): string
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $gesamtSumme = $this->getProduktMenuePreis();
+
+        if (!empty($_SESSION['rabatt'])) {
+            $rabattProzent = $_SESSION['rabatt'];
+            $zwischensumme = Number::prozentPreis($gesamtSumme, $rabattProzent);
+            $gesamtSumme = Number::subtraktionPreis($gesamtSumme, $zwischensumme);
+        }
+
+        return Number::reformatPreis($gesamtSumme);
+    }
+
+    public function getProduktMenuePreis(): string
     {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -240,14 +274,7 @@ class WarenkorbLogic
             $produktPreisGesamt = Number::multiplierPreis($produktPreis, $count);
             $gesamtSumme = Number::summePreis($gesamtSumme, $produktPreisGesamt);
         }
-
-        if (!empty($_SESSION['rabatt'])) {
-            $rabattProzent = $_SESSION['rabatt'];
-            $zwischensumme = Number::prozentPreis($gesamtSumme, $rabattProzent);
-            $gesamtSumme = Number::subtraktionPreis($gesamtSumme, $zwischensumme);
-        }
-
-        return Number::reformatPreis($gesamtSumme);
+        return $gesamtSumme;
     }
 
     public function getTrinkgeldSumme(): string

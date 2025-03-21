@@ -27,10 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['productId'])) {
+        $anzahl = $_POST['produktAnzahl'] ?? "1";
+
         if (!isset($_SESSION['warenkorb']['produkte'][$_POST['productId']])) {
-            $_SESSION['warenkorb']['produkte'][$_POST['productId']] = 1; // Erstes Vorkommen
+            $_SESSION['warenkorb']['produkte'][$_POST['productId']] = $anzahl; // Erstes Vorkommen
         } else {
-            $_SESSION['warenkorb']['produkte'][$_POST['productId']]++; // Menge erhöhen
+            $_SESSION['warenkorb']['produkte'][$_POST['productId']] += $anzahl; // Menge erhöhen
         }
 
         echo json_encode(["success" => true]);
@@ -39,9 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $index = $_POST['warenkorbIndex'];
     if (isset($_SESSION['warenkorb']['produkte'][$index])) {
-        if ($_SESSION['warenkorb']['produkte'][$index] > 1) {
-            // Count um 1 verringern
-            $_SESSION['warenkorb']['produkte'][$index]--;
+        $anzahl = $_POST['produktAnzahl'] ?? "1";
+
+        if (intval($anzahl) > 0) {
+            // Count um $anzahl verringern
+            $_SESSION['warenkorb']['produkte'][$index] = $anzahl;
         } else {
             // Produkt vollständig entfernen
             unset($_SESSION['warenkorb']['produkte'][$index]);

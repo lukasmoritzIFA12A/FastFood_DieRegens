@@ -17,7 +17,7 @@ class Zahlungsart
     #[ORM\Column(type: 'string', length: 255)]
     private string $Art;
 
-    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["remove", "persist"])]
     #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
     private Bild $bild;
 

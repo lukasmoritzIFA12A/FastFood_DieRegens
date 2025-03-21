@@ -17,7 +17,7 @@ class Menue
     #[ORM\GeneratedValue]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: Bild::class, cascade: ["remove", "persist"])]
     #[ORM\JoinColumn(name: "Bild_id", referencedColumnName: "id")]
     private Bild $bild;
 
@@ -27,7 +27,10 @@ class Menue
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $Beschreibung;
 
-    #[ORM\ManyToMany(targetEntity: Produkt::class, cascade: ["persist"])]
+    #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
+    private string $Preis;
+
+    #[ORM\ManyToMany(targetEntity: Produkt::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $produkte;
 
     public function __construct()
@@ -55,6 +58,16 @@ class Menue
         $this->bild = $bild;
     }
 
+    public function getPreis(): string
+    {
+        return Number::reformatPreis($this->Preis);
+    }
+
+    public function setPreis(string $Preis): void
+    {
+        $this->Preis = $Preis;
+    }
+
     public function getBeschreibung(): ?string
     {
         return $this->Beschreibung;
@@ -65,9 +78,15 @@ class Menue
         $this->Beschreibung = $Beschreibung;
     }
 
-    public function getTitel(): string
+    public function getTitel(int $maxLength = 40): string
     {
-        return $this->Titel;
+        if (!$this->Titel) {
+            return "";
+        }
+
+        return (mb_strlen($this->Titel) > $maxLength)
+            ? mb_substr($this->Titel, 0, $maxLength) . "..."
+            : $this->Titel;
     }
 
     public function setTitel(string $Titel): void
@@ -85,20 +104,12 @@ class Menue
         $this->produkte = $produkte;
     }
 
-    public function getPreis(): string
-    {
-        $summe = "0.00";
-
-        foreach ($this->produkte as $produkt) {
-            $produktPreis = Number::unformatPreis($produkt->getPreis());
-            $summe = Number::summePreis($summe, $produktPreis);
-        }
-
-        return Number::reformatPreis($summe);
-    }
-
     public function isAusverkauft(): bool
     {
+        if ($this->produkte->isEmpty()) {
+            return true;
+        }
+
         foreach ($this->produkte as $produkt) {
             if ($produkt->isAusverkauft()) {
                 return true;
