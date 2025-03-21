@@ -1,17 +1,9 @@
-admin kundendaten einsehen
-Funny Dinner Contest
-wenn funny dinner contest leer ist, dann soll da was stehen
-
-postbox
-kundenvorlieben anzeigen
-bestellhäufigkeit anzeigen
-
 vielleicht auf PHP Version 8.3 upgraden wegen DateMalformedException
 
-
-Unit Tests prüfen!
-
-
+kundenvorlieben anzeigen
+bestellhäufigkeit anzeigen
+admin kundendaten einsehen
+wenn funny dinner contest leer ist, dann soll da was stehen
 header soll beim scrollen mitkommen
 wenn Produkt bei menüauswahl ausvekrauft ist, dann soll das sichtbar sein
 wenn Produkt schon ausgewählt wurde bei Menüerstellen, dann soll das sichtbar sein

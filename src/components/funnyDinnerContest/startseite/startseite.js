@@ -42,7 +42,12 @@ document.getElementById('fileInput').addEventListener('change', function () {
         }) // Antwort als JSON
         .then(data => {
             if (data.success) {
-                window.location.href = "../galerie/galerie.php"; // Weiterleiten
+                const uploadModal = document.getElementById('uploadModal');
+                const modalInstance = bootstrap.Modal.getInstance(uploadModal) || new bootstrap.Modal(uploadModal);
+                modalInstance.hide();
+
+                const modal = new bootstrap.Modal(document.getElementById('contestHochgeladenModal'));
+                modal.show();
             } else {
                 if (data.message) {
                     alert(data.message);

@@ -191,10 +191,10 @@ class WarenkorbLogic
     public function getAndereTrinkgeld(): string
     {
         if ($this->isSelectedTrinkgeld("Andere")) {
-            return Number::reformatPreis($_SESSION['trinkgeld']);
+            return $_SESSION['trinkgeld'];
         }
 
-        return "0,00";
+        return "0.00";
     }
 
     public function getRabattProzent(): string

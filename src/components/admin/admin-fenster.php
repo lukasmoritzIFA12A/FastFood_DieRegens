@@ -83,6 +83,11 @@ include 'content/edit/zutat/zutat-edit-modal.php';
                     type="button" role="tab" aria-controls="order" aria-selected="true">Bestellungen einsehen
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="message-tab" data-bs-toggle="tab" data-bs-target="#message"
+                    type="button" role="tab" aria-controls="message" aria-selected="true">Kundennachricht senden
+            </button>
+        </li>
     </ul>
 
     <div class="tab-content" id="mainTabsContent">
@@ -220,6 +225,13 @@ include 'content/edit/zutat/zutat-edit-modal.php';
         <div class="tab-pane fade" id="order" role="tabpanel">
             <?php include 'content/basic/bestellung/bestellung-table.php'; ?>
         </div>
+
+        <div class="tab-pane fade" id="message" role="tabpanel">
+            <?php
+                $kunden = $adminLogic->getAllKunden();
+            ?>
+            <?php include 'content/basic/postbox/postbox.php'; ?>
+        </div>
     </div>
 </div>
 
@@ -265,6 +277,8 @@ include 'content/edit/zutat/zutat-edit-modal.php';
 <script src="content/basic/bestellung/bestellung.js"></script>
 
 <script src="content/basic/contest/contest.js"></script>
+
+<script src="content/basic/postbox/postbox.js"></script>
 
 <script src="admin.js"></script>
 <script src="../../utils/session.js"></script>

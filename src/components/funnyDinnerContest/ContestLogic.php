@@ -4,10 +4,13 @@ namespace App\components\funnyDinnerContest;
 
 use App\datenbank\Entitaeten\Bild;
 use App\datenbank\Entitaeten\Contest;
+use App\datenbank\Entitaeten\Kunde;
+use App\datenbank\Entitaeten\Rating;
 use App\datenbank\EntityManagerFactory;
 use App\datenbank\Repositories\BestellungRepository;
 use App\datenbank\Repositories\ContestRepository;
 use App\datenbank\Repositories\KundeRepository;
+use App\datenbank\Repositories\RatingRepository;
 use Doctrine\ORM\EntityManager;
 
 class ContestLogic
@@ -88,5 +91,54 @@ class ContestLogic
             return [];
         }
         return $contests;
+    }
+
+    public function saveRating(string $contestId, string $rating, string $kundeId): bool
+    {
+        $contestRepository = new ContestRepository($this->entityManager);
+        $contestObj = $contestRepository->getById($contestId);
+        if (!$contestObj) {
+            $this->errorMessage = "Konnte Contest nicht finden!";
+            return false;
+        }
+
+        $kundeRepository = new KundeRepository($this->entityManager);
+        $kundeObj = $kundeRepository->getById($kundeId);
+        if (!$kundeObj) {
+            $this->errorMessage = "Kunde konnte nicht gefunden werden!";
+            return false;
+        }
+
+        $ratingObj = new Rating();
+        $ratingObj->setContest($contestObj);
+        $ratingObj->setKunde($kundeObj);
+        $ratingObj->setRating(intval($rating));
+
+        $ratingRepository = new RatingRepository($this->entityManager);
+        return $ratingRepository->save($ratingObj);
+    }
+
+    public function getKundeByUserName(string $user): Kunde|bool
+    {
+        $kundeRepository = new KundeRepository($this->entityManager);
+        $kunde = $kundeRepository->findByUsername($user);
+        if (!$kunde) {
+            return false;
+        }
+        return $kunde;
+    }
+
+    public function hasUserRatedAlreadyOnContest(Kunde $kunde, Contest $contest): bool
+    {
+        $ratingRepository = new RatingRepository($this->entityManager);
+        $ratings = $ratingRepository->getKundenRatingsFromContest($kunde, $contest);
+        return !empty($ratings);
+    }
+
+    public function getUserRatingFromContest(Kunde $kunde, Contest $contest): Rating
+    {
+        $ratingRepository = new RatingRepository($this->entityManager);
+        $ratings = $ratingRepository->getKundenRatingsFromContest($kunde, $contest);
+        return $ratings[0];
     }
 }

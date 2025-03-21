@@ -136,7 +136,7 @@ try {
     echo "Zutaten wurden hinzugefügt...\n";
 
     /*
-     * Rabatt hinzufügen
+     * Rabatte hinzufügen
      */
     $rabattNeu = new Rabatt();
     $rabattNeu->setCode("Neu");

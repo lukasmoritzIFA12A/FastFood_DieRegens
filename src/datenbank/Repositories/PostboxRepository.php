@@ -2,29 +2,27 @@
 
 namespace App\datenbank\Repositories;
 
-use App\datenbank\Entitaeten\Kunde;
-use App\datenbank\Entitaeten\Rating;
+use App\datenbank\Entitaeten\Login;
+use App\datenbank\Entitaeten\Postbox;
 use App\datenbank\RepositoryAccess;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NonUniqueResultException;
 
-class RatingRepository extends RepositoryAccess
+class PostboxRepository extends RepositoryAccess
 {
     public function __construct(EntityManager $entityManager)
     {
-        parent::__construct($entityManager, Rating::class);
+        parent::__construct($entityManager, Postbox::class);
     }
 
-    public function getKundenRatingsFromContest($kunde, $contest): array|bool
+    public function findAllByKunde($kunde): array|bool
     {
         try {
             $query = $this->getEntityManager()->createQueryBuilder()
-                ->select('r')
-                ->from(Rating::class, 'r')
-                ->where('r.kunde = :kundeId')
-                ->andWhere('r.contest = :contestId')
+                ->select('p')
+                ->from(Postbox::class, 'p')
+                ->where('p.kunde = :kundeId')
                 ->setParameter('kundeId', $kunde->getId())
-                ->setParameter('contestId', $contest->getId())
                 ->getQuery();
 
             $result = $query->getResult();

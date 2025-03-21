@@ -1,4 +1,8 @@
 <?php
+use App\components\postbox\PostboxLogic;
+use App\utils\JSONParser;
+use App\utils\router;
+
 // Falls keine Werte gesetzt sind, werden Standardwerte genommen (alle sichtbar)
 $showCart = $showCart ?? true;
 $showLogin = $showLogin ?? true;
@@ -32,8 +36,14 @@ if (!$warenkorbLeer) {
     $anzahlWarenkorb += $menuKeys;
 }
 
-use App\utils\JSONParser;
-use App\utils\router;
+if ($isLoggedIn) {
+    $nachrichten = (new PostboxLogic())->getUngeleseneNachrichtenFromKunde($_SESSION['user']);
+    if ($nachrichten) {
+        $anzahlNachrichten = count($nachrichten);
+    } else {
+        $anzahlNachrichten = 0;
+    }
+}
 
 require_once __DIR__ . '/../../utils/router.php';
 
@@ -110,13 +120,25 @@ if ($showMenu) {
                 <li class="nav-item"><a class="nav-link"
                                         href="<?= router::url('/components/funnyDinnerContest/startseite/startseite.php') ?>">Funny-Dinner-Contest</a>
                 </li>
-                <li class="nav-item"><a class="nav-link"
-                                        href="<?= router::url('/components/kontakformular/kontaktformular.php') ?>">Kontakt</a>
-                </li>
             </ul>
 
             <ul class="navbar-nav"> <!-- Für die letzten beiden Elemente, die ganz rechts sein sollen -->
                 <?php if ($isLoggedIn && $showCart): ?> <!-- Warenkorb nur anzeigen, wenn $showCart true ist -->
+                    <li class="nav-item me-3">
+                        <button type="button" class="btn btn-outline-secondary position-relative" onclick="window.location.href='../postbox/postbox.php'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope mb-1" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
+                            </svg>
+                            Mail
+                            <?php if ($anzahlNachrichten > 0): ?>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <?= $anzahlNachrichten ?>
+                                <span class="visually-hidden">unread messages</span>
+                            <?php endif; ?>
+                          </span>
+                        </button>
+                    </li>
+
                     <li class="nav-item">
                         <a href="<?= router::url('/components/warenkorb/warenkorb.php') ?>" class="nav-link d-flex"
                             <?= $warenkorbLeer ? "style='pointer-events: none; color: gray; text-decoration: none; cursor: default;'" : "" ?>>

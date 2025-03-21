@@ -17,22 +17,44 @@ body {
 .card-footer {
     background-color: #f9f9f9;
 }
-.rating {
-    font-size: 1.5rem;
-    color: #ccc;
-    cursor: pointer;
+
+.ratingStars {
+    color: orange;
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Abstand zwischen Sternen */
 }
-.rating:hover,
-.rating:hover ~ .rating {
-    color: #ffcc00;
+
+.rating-star {
+    width: 30px;
+    height: 30px;
+    transition: all 0.2s ease; /* Sanfte Übergänge für alle Effekte */
+    cursor: pointer; /* Zeigt einen Pointer beim Überfahren */
 }
-.rating .fa-star {
-    font-size: 1.5rem;
-    color: #ccc;
-    cursor: pointer;
+
+/* Hover-Effekt */
+.rating-star:hover {
+    transform: scale(1.1); /* Leichte Vergrößerung beim Überfahren */
+    filter: brightness(1.2); /* Etwas heller */
 }
-.rating .fa-star.selected,
-.rating .fa-star:hover,
-.rating .fa-star:hover ~ .fa-star {
-    color: #ffcc00;
+
+/* Aktiver Zustand (während des Klickens) */
+.rating-star:active {
+    transform: scale(0.95); /* Leicht verkleinern beim Klicken */
+    border: 2px solid white; /* Weißer Rahmen */
+    border-radius: 50%; /* Runder Rahmen */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* Leichter Glow-Effekt */
+}
+
+/* Gefüllter Stern */
+.rating-star.bi-star-fill {
+    filter: drop-shadow(0 0 3px rgba(255, 165, 0, 0.5)); /* Leichter Orangenschatten */
+}
+
+/* Zusätzlicher Effekt für bessere Sichtbarkeit */
+.ratingStars:hover .rating-star {
+    opacity: 0.8; /* Leichte Transparenz für nicht-gehoverte Sterne */
+}
+.ratingStars .rating-star:hover {
+    opacity: 1; /* Volle Deckkraft für den gehoverten Stern */
 }

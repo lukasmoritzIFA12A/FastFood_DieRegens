@@ -36,6 +36,7 @@ $showCart = false;
 $showMenu = false;
 include '../../header/header.php'; // Header einfügen
 include 'logged-in-modal.php';
+include 'bild-hochgeladen-modal.php';
 ?>
 <div class="container">
     <div class="row funny-dinner-container">

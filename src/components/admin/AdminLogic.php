@@ -14,6 +14,7 @@ use App\datenbank\Repositories\BestellstatusRepository;
 use App\datenbank\Repositories\BestellungRepository;
 use App\datenbank\Repositories\ContestRepository;
 use App\datenbank\Repositories\EnergiewertRepository;
+use App\datenbank\Repositories\KundeRepository;
 use App\datenbank\Repositories\MenueRepository;
 use App\datenbank\Repositories\ProduktRepository;
 use App\datenbank\Repositories\RabattRepository;
@@ -468,5 +469,15 @@ class AdminLogic
         }
         $contest->setFreigeschalten(false);
         return $contestRepository->save($contest);
+    }
+
+    public function getAllKunden(): array
+    {
+        $kundeRepository = new KundeRepository($this->entityManager);
+        $kunden = $kundeRepository->getAll();
+        if (!$kunden) {
+            return [];
+        }
+        return $kunden;
     }
 }

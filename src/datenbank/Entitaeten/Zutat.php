@@ -17,7 +17,7 @@ class Zutat
     #[ORM\Column(type: 'string', length: 255)]
     private string $ZutatName;
 
-    public function __construct(string $ZutatName = null)
+    public function __construct(string $ZutatName = "")
     {
         $this->ZutatName = $ZutatName;
     }

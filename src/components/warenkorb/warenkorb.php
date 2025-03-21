@@ -108,7 +108,7 @@ include 'warenkorb-modal.php';
                             <label class="btn btn-outline-primary" for="btnAndere">Andere</label>
                             <input type="text" name="andereBetragInput" id="andereBetragInput" min="0"
                                    class="form-control flex-grow-0"
-                                   pattern="^\d+(,\d{1,2})?$"
+                                   pattern="^\d+(.\d{1.2})?$"
                                    value="<?= $warenkorbLogic->getAndereTrinkgeld() ?>"
                                 <?= $warenkorbLogic->isSelectedTrinkgeld("Andere") ?
                                     "style='width: 12.5%;'" :

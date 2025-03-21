@@ -9,8 +9,10 @@ In MySQL MUSS **max_allowed_packet** unbedingt erhöht werden damit die Contest 
 Dies ist notwendig da Bilder, die über eine Kamera erstellt wurden, im Durchschnitt größer als der Standard Wert sind.
 Gehe dazu unter `xampp/mysql/bin/my.ini`. Dort einfach den Wert von `max_allowed_packet` auf `10M` erhöhen.
 
+Composer wird für dieses Projekt benötigt, installiere es bitte unter https://getcomposer.org/download/.
+
 Composer Install muss in diesem Projekt ausgeführt werden, um alle Abhängigkeiten zu installieren.
-Außerdem muss `composer dump-autoload` am Anfang einmal ausgeführt werden in der Konsole.
+Außerdem sollte `composer dump-autoload` am Anfang einmal ausgeführt werden in der Konsole.
 
 ## Datenbankschema
 
@@ -22,48 +24,14 @@ Die Testdatenbank wird für die SQL Unit-Tests genutzt.
 Um die SQL Schemas auszuführen, einfach in der MySQL Konsole folgendes ausführen:
 `mysql -u root < [PFAD_ZUM_SQL]`
 
-## Datenbank Zugriff
-
-Um im Projekt auf die Datenbank zuzugreifen, muss folgendes gemacht werden:
-
-```php
-/**
-* Beispiel für die Tabelle `Adresse`
- */
-
-$entityManager = EntityManagerFactory::createEntityManager();
-$adresseRepository = new AdresseRepository($entityManager);
-
-/**
-* CRUD Operationen (Create, Read, Update, Delete)
- */
-
-//Create & Update (Nutzt die selbe Funktion)
-$adresse = new Adresse();
-$adresse->setStrassenname("Teststr.");
-
-$adresseRepository->save($adresse);
-
-//Read
-$adresse = $adresseRepository->getById(1);
-
-//Delete
-$adresseRepository->deleteById(1);
-
-/**
-* Eigene SQL Abfragen für komplexere Abfragen.
- * Diese einfach in das gewollte Repository (bsp. AdresseRepository) schreiben
- */
-
-$queryBuilder = $adresseRepository->createQueryBuilder("a"); //A ist das Alias
-
-$name = "Gesuchte Str.";
-
-$query = $queryBuilder
-    ->where('a.Strassenname = :name')
-    ->setParameter('name', $name)
-    ->getQuery();
-
-$adresse = $query->getOneOrNullResult();
-```
-
+Daraufhin können Testdaten für das Programm erstellt werden:
+`php .\createSampleData.php`
+Dies dropped ALLE Daten in der Datenbank `fastfood`. 
+Dann werden folgende Testdaten erstellt:
+- Zahlungsarten
+- Zutaten
+- Rabatte
+- Menüs mit deren Produkten
+- Bestellstatus
+- 1 Admin Login
+- 1 Nutzer

@@ -46,8 +46,11 @@ $bestellstatuse = $adminLogic->getAllBestellstatus();
                     <tr>
                         <td class="text-center"><?= $bestellung->getId() ?></td>
                         <td class="text-center"><?= $bestellung->getBestellungDatum() ?></td>
-                        <td class="text-center"><?= $bestellung->getKunde()->getId() ?>
-                            - <?= $bestellung->getKunde()->getNachname() ?></td>
+                        <td class="text-center">
+                            <?= $bestellung->getKunde()->getVorname()[0]."." ?>
+                            - <?= $bestellung->getKunde()->getNachname() ?>
+                            (<?= $bestellung->getKunde()->getId() ?>)
+                        </td>
                         <td class="text-center"><?= $bestellung->getZahlungsart()?->getArt() ?? 'Bestellt' ?></td>
                         <td class="text-center">
                             <ul class="list-unstyled mb-0">
