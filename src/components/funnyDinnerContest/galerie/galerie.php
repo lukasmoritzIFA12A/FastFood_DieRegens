@@ -23,7 +23,8 @@ if (session_status() == PHP_SESSION_NONE) {
 $contestLogic = new ContestLogic();
 
 $loggedIn = !empty($_SESSION['user']);
-if ($loggedIn) {
+$isAdmin = !empty($_SESSION['admin']);
+if ($loggedIn && !$isAdmin) {
     $loggedInKunde = $contestLogic->getKundeByUserName($_SESSION['user']);
 } else {
     $loggedInKunde = null;
@@ -40,15 +41,20 @@ include 'logged-in-rating-modal.php';
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">Funny-Dinner-Contest - Galerie</h1>
-    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        <?php if (empty($contests)): ?>
-            <div class="col-12 text-center">
+    <?php if (empty($contests)): ?>
+        <div class="d-flex justify-content-center align-items-center" style="margin-top: 8rem;">
+            <div class="text-center">
                 <h3>Keine Contests gefunden.😥</h3>
                 <br>
                 <p>Leider konnten wir keine Contests finden.</p>
                 <p>Versuche es später noch einmal oder erstell selber eins!</p>
+                <button class="btn btn-primary" onclick="window.location.href='../startseite/startseite.php'">
+                    Zurück zur Contest Startseite
+                </button>
             </div>
-        <?php else: ?>
+        </div>
+    <?php else: ?>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
             <?php foreach ($contests as $contest): ?>
                 <?php
                 if ($loggedIn) {
@@ -192,8 +198,8 @@ include 'logged-in-rating-modal.php';
                     <?php endif; ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
 </div>
 
 <script src="/FastFood/assets/bootstrap/js/bootstrap.bundle.js"></script>

@@ -24,8 +24,9 @@ if (session_status() == PHP_SESSION_NONE) {
 $contestLogic = new ContestLogic();
 
 $loggedIn = !empty($_SESSION['user']);
+$isAdmin = !empty($_SESSION['admin']);
 
-if ($loggedIn) {
+if ($loggedIn && !$isAdmin) {
     $bestellungen = $contestLogic->getAllBestellungenFromKunde($_SESSION['user']);
 } else {
     $bestellungen = [];
@@ -80,23 +81,31 @@ include 'bild-hochgeladen-modal.php';
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
             </div>
             <div class="modal-body">
-
                 <div class="order-list-container"
                      style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
-                    <?php foreach ($bestellungen as $bestellung): ?>
-                        <?php
-                        $hint = $contestLogic->getBestellungHint($bestellung);
-                        ?>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="orderOption"
-                                   id="<?= $bestellung->getId() ?>"
-                                   value="<?= $bestellung->getBestellungDatum() ?>"
-                                   onchange="checkSelection()">
-                            <label class="form-check-label" for="<?= $bestellung->getId() ?>">
-                                vom <?= $bestellung->getBestellungDatum() ?> (<?= $hint ?>)
-                            </label>
+                    <?php if(empty($bestellungen)): ?>
+                        <div class="text-center">
+                            <p>Du hast noch keine Bestellungen getätigt 😮</p>
+                            <button class="btn btn-primary" onclick="window.location.href='../../startseite/startseite.php'">
+                                Ich will bestellen!
+                            </button>
                         </div>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php foreach ($bestellungen as $bestellung): ?>
+                            <?php
+                            $hint = $contestLogic->getBestellungHint($bestellung);
+                            ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="orderOption"
+                                       id="<?= $bestellung->getId() ?>"
+                                       value="<?= $bestellung->getBestellungDatum() ?>"
+                                       onchange="checkSelection()">
+                                <label class="form-check-label" for="<?= $bestellung->getId() ?>">
+                                    vom <?= $bestellung->getBestellungDatum() ?> (<?= $hint ?>)
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
 
                 <input type="file" id="fileInput" style="display: none;">
